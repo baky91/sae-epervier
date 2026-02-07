@@ -3,17 +3,12 @@
 
 ## Structure des fichiers
 
-- **game/**
-
-Le jeu Godot, l'écran central
-
-- **server/**
-
-Le serveur relais (NodeJS, Socket.io)
-
-- **controller/**
-
+- **game-controller/** : 
 Le contrôleur pour les joueurs (Web)
+
+- **game-host/** : Le jeu Godot, l'écran central
+
+- **server/** : Le serveur relais (NodeJS, Socket.io)
 
 ## Branches
 
