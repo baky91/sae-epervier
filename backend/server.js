@@ -51,6 +51,10 @@ io.on("connection", (socket) => {
     console.log(data);
   });
 
+  socket.on("use_bonus", (data) => {
+    console.log(data);
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
