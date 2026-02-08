@@ -6,8 +6,10 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+app.use(express.static("public"));
+
 app.get("/", (req, res) => {
-  res.send("<h1>Hello World!</h1>");
+  res.sendFile(join(__dirname, "public", "index.html"));
 });
 
 app.use(express.static("public"));

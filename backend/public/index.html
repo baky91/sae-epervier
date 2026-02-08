@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrôleur de Joueur - Jeu de l'Épervier</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Conteneur principal -->
+    <div id="app" class="controller-container">
+        <div class="controller-wrapper">
+            <div id="controller" class="controller"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // Empêche le zoom au double-tap
+        document.addEventListener('touchstart', function (event) {
+        if (event.touches.length > 1) {
+            event.preventDefault(); // Bloque le pinch-to-zoom (zoom à deux doigts)
+        }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault(); // Bloque le double-tap zoom
+        }
+        lastTouchEnd = now;
+        }, false);
+    </script>
+    <script src="/js/player-controller.js"></script>
+    <script>
+        const controller = new PlayerController('controller', {
+            playerNumber: 1,
+            playerName: 'AlexGamer',
+            role: 'survivor',
+            speedBonus: 3,
+            dashBonus: 2,
+            onMove: (x, y) => console.log('Survivant se déplace:', { x, y }),
+            onUseSpeedBonus: () => {
+                controller.setSpeedBonus(controller.speedBonus - 1);
+                console.log('Survivant - Bonus vitesse utilisé !');
+            },
+            onUseDashBonus: () => {
+                controller.setDashBonus(controller.dashBonus - 1);
+                console.log('Survivant - Bonus dash utilisé !');
+            }
+        });
+    </script>
+    
+</body>
+</html>
