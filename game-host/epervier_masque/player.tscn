@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bpwe1tbe4oedb"]
+
+[ext_resource type="Script" uid="uid://8hcm2vquklo1" path="res://player.gd" id="1_4flbx"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_r0tex"]
+radius = 16.0
+height = 32.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r0tex"]
+custom_solver_bias = 1.0
+radius = 16.0
+
+[node name="Player" type="CharacterBody2D" unique_id=1143993447 groups=["joueurs"]]
+script = ExtResource("1_4flbx")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=52939148]
+modulate = Color(0, 0.309804, 1, 1)
+position = Vector2(110, 94)
+mesh = SubResource("SphereMesh_r0tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1007058073]
+position = Vector2(110, 94)
+shape = SubResource("CircleShape2D_r0tex")
