@@ -7,10 +7,33 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server }); // On lie ws au serveur http
 
-app.use(express.static("public"));
+// SECURITE
+
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
 
 app.get("/", (req, res) => {
+  res.send(
+    "<h1>L'épervier masqué - Godot</h1><a href='game'>Game</a><br><a href='controller'>Controller</a>",
+  );
+});
+
+// FICHIERS STATIQUES
+
+app.use(express.static("public"));
+app.use(express.static("game"));
+
+// ROUTES
+
+app.get("/controller", (req, res) => {
   res.sendFile(join(__dirname, "public", "index.html"));
+});
+
+app.get("/game", (req, res) => {
+  res.sendFile(join(__dirname, "game", "TestExportWeb.html"));
 });
 
 let counterPlayers = 0;

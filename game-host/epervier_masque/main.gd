@@ -1,12 +1,16 @@
 extends Node2D
 
-@export var player_scene: PackedScene = preload("res://Player.tscn")
+@export var player_scene: PackedScene = preload("res://player.tscn")
 
 var socket = WebSocketPeer.new()
 var url = "ws://localhost:3000"
 var players = {}
 
 func _ready():
+	if OS.has_feature("web"):
+		var host = JavaScriptBridge.eval("window.location.hostname")
+		url = "ws://" + host + ":3000/?clientType=host"
+	
 	socket.connect_to_url(url)
 	print("Tentative de connexion au serveur...")
 
