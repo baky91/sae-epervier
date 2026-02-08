@@ -170,7 +170,7 @@ class PlayerController {
                     </div>
                 </div>
                 <div class="status-badge ${config.color}">
-                    ${config.status}
+                    ${config.label}
                 </div>
             </div>
 

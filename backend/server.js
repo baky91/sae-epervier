@@ -12,10 +12,44 @@ app.get("/", (req, res) => {
   res.sendFile(join(__dirname, "public", "index.html"));
 });
 
-app.use(express.static("public"));
+let counterPlayers = 0;
+let players = {};
+
+/* example */
+// player = {
+//   id: 1,
+//   name: "Player1",
+//   role: "survivor",
+//   bonus: {
+//     speed: 2,
+//     dash: 0,
+//   },
+// };
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  const type = socket.handshake.query?.clientType;
+
+  if (type === "player") {
+    counterPlayers++;
+    socket.join("players_room");
+    players[counterPlayers] = socket;
+
+    const name = socket.handshake.query?.name;
+
+    socket.emit("newplayer", {
+      player_id: counterPlayers,
+      player_name: name,
+    });
+
+    console.log("Socked joined players room");
+  } else {
+    socket.join("host_room");
+    console.log("Socked joined host room");
+  }
+
+  socket.on("move", (data) => {
+    console.log(data);
+  });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");

@@ -33,23 +33,55 @@
         }, false);
     </script>
     <script src="/js/player-controller.js"></script>
+    <script src="socket.io/socket.io.js"></script>
     <script>
-        const controller = new PlayerController('controller', {
-            playerNumber: 1,
-            playerName: 'AlexGamer',
-            role: 'survivor',
-            speedBonus: 3,
-            dashBonus: 2,
-            onMove: (x, y) => console.log('Survivant se déplace:', { x, y }),
-            onUseSpeedBonus: () => {
-                controller.setSpeedBonus(controller.speedBonus - 1);
-                console.log('Survivant - Bonus vitesse utilisé !');
-            },
-            onUseDashBonus: () => {
-                controller.setDashBonus(controller.dashBonus - 1);
-                console.log('Survivant - Bonus dash utilisé !');
-            }
-        });
+        const socket = io({query: {clientType: "player", name: "AlexGamer"}});
+
+        socket.on("newplayer", (data) => {
+            const player_id = data.player_id
+            const player_name = data.player_name
+
+            const controller = new PlayerController('controller', {
+                playerNumber: player_id,
+                playerName: player_name,
+                role: 'sparrowhawk',
+                speedBonus: 0,
+                dashBonus: 2,
+
+                onMove: (x, y) => console.log('Survivant se déplace:', { x, y }),
+                onUseSpeedBonus: () => {
+                    controller.setSpeedBonus(controller.speedBonus - 1);
+                    console.log('Survivant - Bonus vitesse utilisé !');
+                },
+                onUseDashBonus: () => {
+                    controller.setDashBonus(controller.dashBonus - 1);
+                    console.log('Survivant - Bonus dash utilisé !');
+                }
+            });
+    
+            let currentInput = { x: 0, y: 0 };
+    
+            controller.onMove = (x, y) => {
+                currentInput.x = x;
+                currentInput.y = y;
+            };
+            
+            // On envoie la donnée au serveur à intervalle régulier
+            setInterval(() => {
+                // On n'envoie que si le joystick n'est pas au repos
+                if (currentInput.x !== 0 || currentInput.y !== 0) {
+                    socket.emit("move", {
+                        "player_id": player_id, 
+                        "x": currentInput.x,
+                        "y": currentInput.y}
+                    );
+                }
+            }, 1000 / 30); // 30 FPS
+
+        })
+
+
+
     </script>
     
 </body>
