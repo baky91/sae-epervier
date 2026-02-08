@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
 const { join } = require("node:path");
-const { WebSocketServer } = require("ws"); // Import de ws
+const { WebSocketServer } = require("ws");
 
 const app = express();
 const server = http.createServer(app);
@@ -71,8 +71,19 @@ wss.on("connection", (ws, req) => {
   });
 
   ws.on("close", () => {
-    if (ws === hostSocket) hostSocket = null;
-    console.log("Utilisateur déconnecté");
+    if (ws !== hostSocket) {
+      console.log(`Joueur ${ws.playerId} déconnecté`);
+      if (hostSocket) {
+        hostSocket.send(
+          JSON.stringify({
+            type: "player_left",
+            player_id: ws.playerId,
+          }),
+        );
+      }
+    } else {
+      hostSocket = null;
+    }
   });
 });
 

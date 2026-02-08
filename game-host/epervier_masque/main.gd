@@ -46,7 +46,9 @@ func _spawn_player(id: int, p_name: String):
 		
 		add_child(new_player)
 		players[id] = new_player
-		new_player.global_position = Vector2(500, 300) # Position par défaut
+		# new_player.global_position = Vector2(500, 300) # Position par défaut
+		new_player.global_position = Vector2(randf_range(100, 500), randf_range(100, 500)) # Position aléatoire
+
 		print("Joueur apparu : ", p_name)
 
 func _update_player_movement(id: int, move_data: Dictionary):
