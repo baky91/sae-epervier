@@ -23,21 +23,23 @@ app.get("/", (req, res) => {
 
 // FICHIERS STATIQUES
 
-app.use(express.static("public"));
+app.use(express.static("controller"));
 app.use(express.static("game"));
 
 // ROUTES
 
 app.get("/controller", (req, res) => {
-  res.sendFile(join(__dirname, "public", "index.html"));
+  res.sendFile(join(__dirname, "controller", "index.html"));
 });
 
 app.get("/game", (req, res) => {
-  res.sendFile(join(__dirname, "game", "TestExportWeb.html"));
+  res.sendFile(join(__dirname, "game", "index.html"));
 });
 
 let counterPlayers = 0;
 let hostSocket = null; // Référence vers l'écran Godot
+
+const ROLES = ["survivor", "sparrowhawk"];
 
 wss.on("connection", (ws, req) => {
   // Extraction des paramètres de l'URL (ex: ?clientType=player&name=Alex)
@@ -49,6 +51,7 @@ wss.on("connection", (ws, req) => {
     counterPlayers++;
     ws.playerId = counterPlayers;
     ws.playerName = name;
+    ws.playerRole = ROLES[Math.floor(Math.random() * ROLES.length)];
 
     // On confirme au joueur sa création
     ws.send(
@@ -57,6 +60,7 @@ wss.on("connection", (ws, req) => {
         data: {
           player_id: ws.playerId,
           player_name: ws.playerName,
+          player_role: ws.playerRole,
         },
       }),
     );

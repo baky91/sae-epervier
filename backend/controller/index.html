@@ -116,6 +116,7 @@
             if (msg.type === "newplayer") {
                 const player_id = msg.data.player_id;
                 const player_name = msg.data.player_name;
+                const player_role = msg.data.player_role
 
                 let lastEmitTime = 0;
                 const EMIT_INTERVAL = 40; 
@@ -124,7 +125,7 @@
                 const controller = new PlayerController('controller', {
                     playerNumber: player_id,
                     playerName: player_name,
-                    role: 'sparrowhawk',
+                    role: player_role,
                     speedBonus: 2,
                     dashBonus: 2,
                     onMove: (x, y) => {

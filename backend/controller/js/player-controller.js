@@ -243,6 +243,12 @@ class PlayerController {
     });
   }
 
+  updateRole(newRole) {
+    this.role = newRole;
+    this.render();
+    this.initJoystick();
+  }
+
   initJoystick() {
     const joystickContainer = document.getElementById(`joystick`);
     this.joystick = new VirtualJoystick(joystickContainer, 200, (x, y) => {
