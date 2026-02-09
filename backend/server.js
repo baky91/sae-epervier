@@ -54,7 +54,10 @@ wss.on("connection", (ws, req) => {
     ws.send(
       JSON.stringify({
         type: "newplayer",
-        data: { player_id: ws.playerId, player_name: ws.playerName },
+        data: {
+          player_id: ws.playerId,
+          player_name: ws.playerName,
+        },
       }),
     );
 

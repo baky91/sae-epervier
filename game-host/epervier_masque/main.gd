@@ -39,8 +39,12 @@ func _handle_server_message(json):
 		"move":
 			_update_player_movement(json.player_id, json.data)
 
+		"use_bonus":
+			_apply_player_bonus(json.player_id, json.data.bonus)
+			
 		"player_left":
 			_remove_player(json.player_id)
+			
 
 func _spawn_player(id: int, p_name: String):
 	if not players.has(id):
@@ -60,6 +64,23 @@ func _update_player_movement(id: int, move_data: Dictionary):
 		# On transforme les données x, y du joystick en Vector2
 		var dir = Vector2(move_data.x, move_data.y)
 		players[id]._direction = dir
+
+func _apply_player_bonus(id: int, bonus: String):
+	if bonus == "speed":
+		# Appliquer un boost de vitesse de 50% durant 5 secondes
+		var initialSpeed = players[id]._speed
+		players[id]._speed *= 1.5
+		
+		# Créer un timer de 5 secondes
+		await get_tree().create_timer(5.0).timeout
+		players[id]._speed = initialSpeed # On remet la vitesse initiale
+	else: # Bonus Dash
+		var initialSpeed = players[id]._speed
+		players[id]._speed *= 2
+		
+		# Créer un timer de 1 secondes
+		await get_tree().create_timer(1.0).timeout
+		players[id]._speed = initialSpeed # On remet la vitesse de base
 
 func _remove_player(id: int):
 	if players.has(id):
