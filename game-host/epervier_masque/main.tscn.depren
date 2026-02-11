@@ -1,13 +1,15 @@
 [gd_scene format=3 uid="uid://cry7jyu4bwxbf"]
 
-[ext_resource type="Script" uid="uid://cjyxjtufkasja" path="res://Network/server.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://8hcm2vquklo1" path="res://Player/player.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://utiorlwxn1rw" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://clbwgwantnols" path="res://Assets/misspompadour-gruen-mit-limette-farbe-wand-ansicht.jpg" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://p67nowx4s37f" path="res://joueur.tscn" id="2_0xm2m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
 size = Vector2(1151, 59.5)
 
 [node name="main" type="Node2D" unique_id=350301161]
-script = ExtResource("1_0xm2m")
+script = ExtResource("1_h2yge")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=90500025]
 position = Vector2(2191, -260)
@@ -44,8 +46,9 @@ offset_right = 894.0
 offset_bottom = 733.0
 color = Color(0.243137, 0.780392, 0, 0.215686)
 
-[node name="PlayersContainer" type="Container" parent="." unique_id=463390049]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Joueur" parent="." unique_id=814111625 instance=ExtResource("2_0xm2m")]
+visible = false
+position = Vector2(-19, 14)
+script = ExtResource("1_0xm2m")
 
 [connection signal="body_entered" from="Zone haut" to="." method="_on_zone_haut_body_entered"]
