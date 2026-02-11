@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node server"
+    "start": "node server",
+    "build:game": "..\\..\\Godot_v4.6-stable_win64.exe --headless ..\\game-host\\epervier_masque\\project.godot --export-release Web"
   },
   "keywords": [],
   "author": "",
