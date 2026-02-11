@@ -41,6 +41,8 @@ let hostSocket = null; // Référence vers l'écran Godot
 
 const ROLES = ["survivor", "sparrowhawk"];
 
+// COMMUNICATIONS SOCKETS
+
 wss.on("connection", (ws, req) => {
   // Extraction des paramètres de l'URL (ex: ?clientType=player&name=Alex)
   const params = new URLSearchParams(req.url.split("?")[1]);
@@ -112,6 +114,7 @@ wss.on("connection", (ws, req) => {
         );
       }
     } else {
+      console.log("Écran Godot (Host) déconnecté");
       hostSocket = null;
     }
   });
