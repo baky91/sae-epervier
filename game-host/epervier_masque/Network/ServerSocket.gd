@@ -1,10 +1,6 @@
 extends Node2D
 
-var arena_scene: PackedScene = preload("res://main.tscn")
-var player_scene: PackedScene = preload("res://Player/player.tscn")
-
 signal player_connected(id: int, name: String)
-#signal player_move(id: int, x: float, y: float)
 signal player_use_bonus(id: int, bonus_name: String)
 signal player_left(id: int)
 

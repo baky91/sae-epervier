@@ -14,7 +14,7 @@ var id: int
 var speed: int = 300
 var direction: Vector2 = Vector2.ZERO
 var role: Role
-
+	
 func _physics_process(_delta: float) -> void:
 	velocity = direction * speed
 	move_and_slide()
@@ -22,4 +22,6 @@ func _physics_process(_delta: float) -> void:
 func set_color(color: Color):
 	MeshInstance2D.mesh.material.albedo_color = color
 
+func set_label(text: String):
+	$LabelNumber.text = text
 	
