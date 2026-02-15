@@ -10,17 +10,16 @@ enum Role {
 	SPARROWHAWK
 }
 
-var _id: int
-var _speed: int = 300
-var _direction: Vector2 = Vector2.ZERO
-var _role: Role
+var id: int
+var speed: int = 300
+var direction: Vector2 = Vector2.ZERO
+var role: Role
 
-func _physics_process(delta: float) -> void:
-	velocity = _direction * _speed
+func _physics_process(_delta: float) -> void:
+	velocity = direction * speed
 	move_and_slide()
 
 func set_color(color: Color):
 	MeshInstance2D.mesh.material.albedo_color = color
-	
-	
+
 	

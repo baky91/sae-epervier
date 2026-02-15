@@ -1,3 +1,16 @@
 [gd_scene format=3 uid="uid://dkfx43wtkgmah"]
 
+[ext_resource type="Script" uid="uid://d0ix40thmevt7" path="res://World/Arena.gd" id="1_ra8g6"]
+[ext_resource type="Texture2D" uid="uid://c6o2fu260qre4" path="res://Assets/grass-grid.png" id="2_piv0h"]
+
 [node name="Arena" type="Node2D" unique_id=944765600]
+script = ExtResource("1_ra8g6")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1942510949]
+texture_repeat = 2
+position = Vector2(640, 360)
+texture = ExtResource("2_piv0h")
+region_enabled = true
+region_rect = Rect2(0, 0, 1280, 720)
+
+[node name="Players" type="Node2D" parent="." unique_id=401491857]
