@@ -10,6 +10,7 @@ var url = "ws://localhost:3000"
 var players_inputs_buffer = {}
 
 func _ready():
+	#Bonus.player_get_bonus.connect(_on_player_get_bonus)
 	if OS.has_feature("web"):
 		var host = JavaScriptBridge.eval("window.location.hostname")
 		url = "ws://" + host + ":3000/?clientType=host"
@@ -48,3 +49,6 @@ func _handle_server_message(json):
 			
 		"player_left":
 			player_left.emit(int(json.player_id))
+
+func _on_player_get_bonus():
+	pass

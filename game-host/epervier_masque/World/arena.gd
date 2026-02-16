@@ -1,6 +1,7 @@
 extends Node2D
 
 var player_scene = preload("res://Player/player.tscn")
+var bonus_scene = preload("res://World/bonus.tscn")
 
 var players_nodes = {}
 
@@ -58,3 +59,8 @@ func _on_player_left(id: int):
 		players_nodes[id].queue_free()
 		players_nodes.erase(id)
 		print("Player n°" + str(id) + " left.")
+
+
+func _on_timer_bonus_timeout() -> void:
+	var bonus = bonus_scene.instantiate()
+	add_child(bonus)

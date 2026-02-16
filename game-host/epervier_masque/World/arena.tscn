@@ -46,3 +46,9 @@ position = Vector2(1290, 360)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D4" unique_id=1254123239]
 shape = SubResource("RectangleShape2D_piv0h")
+
+[node name="TimerBonus" type="Timer" parent="." unique_id=1189824554]
+wait_time = 15.0
+autostart = true
+
+[connection signal="timeout" from="TimerBonus" to="." method="_on_timer_bonus_timeout"]

@@ -14,6 +14,10 @@ var id: int
 var speed: int = 300
 var direction: Vector2 = Vector2.ZERO
 var role: Role
+var bonus: Dictionary = {
+	"speed": 0,
+	"dash": 0
+}
 	
 func _physics_process(_delta: float) -> void:
 	velocity = direction * speed
@@ -25,3 +29,10 @@ func set_color(color: Color):
 func set_label(text: String):
 	$LabelNumber.text = text
 	
+func add_bonus(bonus_name: String):
+	print(bonus_name)
+	print(bonus)
+	if bonus.has(bonus_name):
+		bonus[bonus_name] += 1
+		print("Player " + str(id) + " : Bonus " + bonus_name + " added.")
+		
