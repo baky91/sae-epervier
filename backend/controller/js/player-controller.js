@@ -7,12 +7,12 @@ class VirtualJoystick {
     this.isActive = false;
     this.stickPosition = { x: 0, y: 0 };
     this.maxDistance = size / 2 - 30;
+    this.touchId = null; // AJOUT : On stocke l'ID du doigt
 
     this.init();
   }
 
   init() {
-    // Create joystick elements
     this.container.className = "virtual-joystick";
     this.container.style.width = `${this.size}px`;
     this.container.style.height = `${this.size}px`;
@@ -38,52 +38,101 @@ class VirtualJoystick {
     this.stick = stick;
     this.stickSize = stickSize;
 
-    // Event listeners
-    this.container.addEventListener("mousedown", this.handleStart.bind(this));
-    this.container.addEventListener("touchstart", this.handleStart.bind(this));
-    document.addEventListener("mousemove", this.handleMove.bind(this));
-    document.addEventListener("touchmove", this.handleMove.bind(this));
-    document.addEventListener("mouseup", this.handleEnd.bind(this));
-    document.addEventListener("touchend", this.handleEnd.bind(this));
+    // Écouteurs d'événements
+    // On utilise bind(this) pour garder le contexte
+    this.boundStart = this.handleStart.bind(this);
+    this.boundMove = this.handleMove.bind(this);
+    this.boundEnd = this.handleEnd.bind(this);
+
+    this.container.addEventListener("mousedown", this.boundStart);
+    this.container.addEventListener("touchstart", this.boundStart, {
+      passive: false,
+    });
+
+    document.addEventListener("mousemove", this.boundMove);
+    document.addEventListener("touchmove", this.boundMove, { passive: false });
+
+    document.addEventListener("mouseup", this.boundEnd);
+    document.addEventListener("touchend", this.boundEnd);
   }
 
   handleStart(e) {
+    if (this.isActive) return; // Déjà actif
     e.preventDefault();
+
     this.isActive = true;
+
+    // Gestion Tactile vs Souris
+    if (e.changedTouches) {
+      this.touchId = e.changedTouches[0].identifier; // On mémorise CETTE touche
+    } else {
+      this.touchId = null; // Souris
+    }
+
     this.updatePosition(e);
   }
 
   handleMove(e) {
     if (!this.isActive) return;
-    e.preventDefault();
-    this.updatePosition(e);
+
+    // Si c'est du tactile, on vérifie que c'est le bon doigt qui bouge
+    if (e.changedTouches) {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === this.touchId) {
+          e.preventDefault();
+          this.updateStick(
+            e.changedTouches[i].clientX,
+            e.changedTouches[i].clientY,
+          );
+          break;
+        }
+      }
+    } else {
+      // Souris
+      e.preventDefault();
+      this.updateStick(e.clientX, e.clientY);
+    }
   }
 
-  handleEnd() {
+  handleEnd(e) {
     if (!this.isActive) return;
-    this.isActive = false;
 
-    // Reset stick to center
+    // Si tactile, on vérifie si le doigt relevé est celui du joystick
+    if (e.changedTouches) {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === this.touchId) {
+          this.resetJoystick();
+          break;
+        }
+      }
+    } else {
+      // Souris
+      this.resetJoystick();
+    }
+  }
+
+  resetJoystick() {
+    this.isActive = false;
+    this.touchId = null;
+
+    // Reset visuel
+    this.stick.style.transition = "0.1s"; // Petit effet retour ressort
     this.stick.style.top = `${(this.size - this.stickSize) / 2}px`;
     this.stick.style.left = `${(this.size - this.stickSize) / 2}px`;
+
+    // On enlève la transition après pour le mouvement suivant
+    setTimeout(() => {
+      this.stick.style.transition = "none";
+    }, 100);
 
     this.stickPosition = { x: 0, y: 0 };
     this.onMove(0, 0);
   }
 
-  updatePosition(e) {
+  updateStick(clientX, clientY) {
     const rect = this.container.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-
-    let clientX, clientY;
-    if (e.type.startsWith("touch")) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-    } else {
-      clientX = e.clientX;
-      clientY = e.clientY;
-    }
 
     let deltaX = clientX - centerX;
     let deltaY = clientY - centerY;
@@ -230,17 +279,28 @@ class PlayerController {
     const speedBtn = document.getElementById(`speed-btn`);
     const dashBtn = document.getElementById(`dash-btn`);
 
-    speedBtn.addEventListener("click", () => {
+    // Fonction générique pour gérer l'action (évite de dupliquer le code)
+    const handleSpeed = (e) => {
+      // Empêche le clic fantôme si on utilise touchstart
+      if (e.cancelable) e.preventDefault();
       if (this.speedBonus > 0 && this.role !== "infected") {
         this.onUseSpeedBonus();
       }
-    });
+    };
 
-    dashBtn.addEventListener("click", () => {
+    const handleDash = (e) => {
+      if (e.cancelable) e.preventDefault();
       if (this.dashBonus > 0 && this.role !== "infected") {
         this.onUseDashBonus();
       }
-    });
+    };
+
+    // On écoute le tactile (instantané) ET le clic (souris/fallback)
+    speedBtn.addEventListener("touchstart", handleSpeed, { passive: false });
+    speedBtn.addEventListener("click", handleSpeed);
+
+    dashBtn.addEventListener("touchstart", handleDash, { passive: false });
+    dashBtn.addEventListener("click", handleDash);
   }
 
   updateRole(newRole) {
