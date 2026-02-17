@@ -301,6 +301,11 @@ class PlayerController {
 
     dashBtn.addEventListener("touchstart", handleDash, { passive: false });
     dashBtn.addEventListener("click", handleDash);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "KeyX") handleDash(e);
+      else if (e.code === "KeyC") handleSpeed(e);
+    });
   }
 
   updateRole(newRole) {
