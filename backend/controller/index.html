@@ -110,6 +110,8 @@
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
         const socket = new WebSocket(`${protocol}://${window.location.host}/?clientType=player&name=AlexGamer`);
 
+        let controller = null;
+
         socket.onmessage = (event) => {
             const msg = JSON.parse(event.data);
             
@@ -122,12 +124,10 @@
                 const EMIT_INTERVAL = 40; 
                 let isMoving = false;
 
-                const controller = new PlayerController('controller', {
+                controller = new PlayerController('controller', {
                     playerNumber: player_id,
                     playerName: player_name,
                     role: player_role,
-                    speedBonus: 2,
-                    dashBonus: 2,
                     onMove: (x, y) => {
                         const now = Date.now();
                         if (x === 0 && y === 0){
@@ -165,6 +165,12 @@
                         }));
                     }
                 });
+            } else if (msg.type === "bonus_obtained"){
+                if(controller){
+                    const bonusName = msg.data.bonus;
+                    
+                    controller.addBonus(bonusName);
+                }
             }
         };
     </script>

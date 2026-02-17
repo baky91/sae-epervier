@@ -171,8 +171,8 @@ class PlayerController {
     this.playerNumber = options.playerNumber;
     this.playerName = options.playerName;
     this.role = options.role;
-    this.speedBonus = options.speedBonus;
-    this.dashBonus = options.dashBonus;
+    this.speedBonus = 0;
+    this.dashBonus = 0;
     this.onMove = options.onMove;
     this.onUseSpeedBonus = options.onUseSpeedBonus;
     this.onUseDashBonus = options.onUseDashBonus;
@@ -319,6 +319,14 @@ class PlayerController {
 
     if (this.role === "infected") {
       this.joystick.setInactive(true);
+    }
+  }
+
+  addBonus(bonus_name) {
+    if (bonus_name === "speed") {
+      this.setSpeedBonus(this.speedBonus + 1);
+    } else if (bonus_name === "dash") {
+      this.setDashBonus(this.dashBonus + 1);
     }
   }
 

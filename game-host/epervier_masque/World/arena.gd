@@ -28,6 +28,7 @@ func _on_player_connected(id: int, p_name: String) -> void:
 	player.id = id
 	player.global_position = Vector2(randf_range(100, 500), randf_range(100, 500))
 	player.set_label(str(id))
+	player.get_bonus.connect(_on_player_signal_bonus)
 	
 	players_nodes[id] = player
 	
@@ -39,20 +40,11 @@ func _on_player_use_bonus(id: int, bonus: String):
 	var player = $Players.get_node(str(id))
 
 	if bonus == "speed":
-		# Appliquer un boost de vitesse de 50% durant 5 secondes
-		var initialSpeed = player.speed
-		player.speed *= 1.5
-		#player.set_color(Player.COLOR_RED)
-		# Créer un timer de 5 secondes
-		await get_tree().create_timer(5.0).timeout
-		player.speed = initialSpeed # On remet la vitesse initiale
+		player.speed_boosting = true
+		player.timer_speed_boost.start()
 	else: # Bonus Dash
-		var initialSpeed = player.speed
-		player.speed *= 2
-		
-		# Créer un timer de 1 secondes
-		await get_tree().create_timer(1.0).timeout
-		player.speed = initialSpeed # On remet la vitesse de base
+		player.dashing = true
+		player.timer_dash.start()
 
 func _on_player_left(id: int):
 	if players_nodes.has(id):
@@ -64,3 +56,14 @@ func _on_player_left(id: int):
 func _on_timer_bonus_timeout() -> void:
 	var bonus = bonus_scene.instantiate()
 	add_child(bonus)
+
+func _on_player_signal_bonus(player_id: int, bonus_name: String):
+	var data_to_send = {
+		"type": "bonus_obtained",
+		"data": {
+			"player_id": player_id,
+			"bonus": bonus_name
+		}
+	}
+	
+	ServerSocket.send_message_to_server(data_to_send)
