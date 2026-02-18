@@ -10,7 +10,6 @@ var url = "ws://localhost:3000"
 var players_inputs_buffer = {}
 
 func _ready():
-	#Bonus.player_get_bonus.connect(_on_player_get_bonus)
 	if OS.has_feature("web"):
 		var host = JavaScriptBridge.eval("window.location.hostname")
 		url = "ws://" + host + ":3000/?clientType=host"
@@ -42,13 +41,20 @@ func _handle_server_message(json):
 			
 		"move":
 			players_inputs_buffer[int(json.player_id)] = Vector2(json.data.x, json.data.y)
-			#player_move.emit(json.player_id, json.data.x, json.data.y)
 
 		"use_bonus":
 			player_use_bonus.emit(int(json.player_id), json.data.bonus)
 			
 		"player_left":
 			player_left.emit(int(json.player_id))
+
+func send_message_to_server(data: Dictionary):
+	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		# On transforme le Dictionnaire en texte JSON, puis en binaire (UTF-8)
+		var json_text = JSON.stringify(data)
+		socket.put_packet(json_text.to_utf8_buffer())
+	else:
+		print("Erreur : Le socket n'est pas connecté.")
 
 func _on_player_get_bonus():
 	pass

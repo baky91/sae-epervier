@@ -36,6 +36,7 @@ app.get("/game", (req, res) => {
   res.sendFile(join(__dirname, "game", "index.html"));
 });
 
+let clients = new Map();
 let counterPlayers = 0;
 let hostSocket = null; // Référence vers l'écran Godot
 
@@ -52,6 +53,7 @@ wss.on("connection", (ws, req) => {
   if (type === "player") {
     counterPlayers++;
     ws.playerId = counterPlayers;
+    clients.set(ws.playerId, ws);
     ws.playerName = name;
     ws.playerRole = ROLES[Math.floor(Math.random() * ROLES.length)];
 
@@ -93,6 +95,18 @@ wss.on("connection", (ws, req) => {
           JSON.stringify({
             type: parsed.type, // "move" ou "use_bonus"
             player_id: ws.playerId,
+            data: parsed.data,
+          }),
+        );
+      }
+
+      // Si c'est un message de Godot (par exemple: récupération de bonus, on le relaie au joueur concerné)
+      if (ws === hostSocket) {
+        const targetClient = clients.get(parsed.data.player_id);
+
+        targetClient.send(
+          JSON.stringify({
+            type: parsed.type,
             data: parsed.data,
           }),
         );
