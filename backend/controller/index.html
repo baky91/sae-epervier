@@ -33,79 +33,6 @@
         }, false);
     </script>
     <script src="/js/player-controller.js"></script>
-    
-    <!-- Script Socket.io -->
-    <!-- <script src="socket.io/socket.io.js"></script>
-    <script>
-        const socket = io({query: {clientType: "player", name: "AlexGamer"}});
-
-        socket.on("newplayer", (data) => {
-            const player_id = data.player_id
-            const player_name = data.player_name
-
-            let lastEmitTime = 0;
-            const EMIT_INTERVAL = 40; // Envoyer environ 25 fois par seconde (40ms)
-            let isMoving = false;
-
-            const controller = new PlayerController('controller', {
-                playerNumber: player_id,
-                playerName: player_name,
-                role: 'sparrowhawk',
-                speedBonus: 0,
-                dashBonus: 2,
-                onMove: (x, y) => {
-                    const now = Date.now()
-
-                    // CAS 1 : le joueur s'arrête (x=0, y=0)
-                    if (x === 0 && y === 0){
-                        if (isMoving){
-                            socket.emit("move", {
-                                player_id: player_id,
-                                x: 0,
-                                y: 0
-                            })
-                            isMoving = false
-                        }
-                        return
-                    }
-
-                    // CAS 2 : Le joueur bouge (Throttling)
-                    if (now - lastEmitTime >= EMIT_INTERVAL){
-                        socket.emit("move", {
-                            player_id: player_id,
-                            x: x,
-                            y: y
-                        })
-                        lastEmitTime = now
-                        isMoving = true
-                    }
-
-                },
-                onUseSpeedBonus: () => {
-                    controller.setSpeedBonus(controller.speedBonus - 1);
-                    socket.emit("use_bonus", {
-                        player_id: player_id,
-                        type: "speed"
-                    })
-                    console.log('Survivant - Bonus vitesse utilisé !');
-                },
-                onUseDashBonus: () => {
-                    controller.setDashBonus(controller.dashBonus - 1);
-                    socket.emit("use_bonus", {
-                        player_id: player_id,
-                        type: "dash"
-                    })
-                    console.log('Survivant - Bonus dash utilisé !');
-                }
-            });
-
-        })
-
-
-
-    </script> -->
-    
-    <!-- Script WebSocket -->
     <script>
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
         const socket = new WebSocket(`${protocol}://${window.location.host}/?clientType=player&name=AlexGamer`);
@@ -121,7 +48,7 @@
                 const player_role = msg.data.player_role
 
                 let lastEmitTime = 0;
-                const EMIT_INTERVAL = 40; 
+                const EMIT_INTERVAL = 40;
                 let isMoving = false;
 
                 controller = new PlayerController('controller', {
