@@ -50,6 +50,7 @@ wss.on("connection", (ws, req) => {
   const hostCode = params.get("hostCode") || "ABCD";
 
   let currentUser = null;
+  let hostSocket = null; // Stocker la socket du host si le type de client est un joueur
 
   if (type === "host") {
     currentUser = new ClientHost(ws, hostCode);
@@ -81,8 +82,8 @@ wss.on("connection", (ws, req) => {
     currentUser = new ClientPlayer(counterPlayers, ws, name, hostCode);
 
     // Ajouter le joueur à l'Host correspondant
-    const host = hosts.get(hostCode);
-    host.addPlayer(currentUser);
+    hostSocket = hosts.get(hostCode);
+    hostSocket.addPlayer(currentUser);
 
     // Confirmation au joueur
     currentUser.sendToController({
@@ -94,7 +95,7 @@ wss.on("connection", (ws, req) => {
     });
 
     // On prévient le Host (Godot) qu'un joueur est arrivé
-    host.sendToGodot({
+    hostSocket.sendToGodot({
       type: "player_joined",
       data: {
         id: currentUser.id,
@@ -114,9 +115,8 @@ wss.on("connection", (ws, req) => {
 
       // Si c'est un message d'un joueur (mouvement, bonus...), on le relaie à Godot
       if (currentUser instanceof ClientPlayer) {
-        const host = hosts.get(currentUser.hostCode);
-        if (host) {
-          host.sendToGodot({
+        if (hostSocket) {
+          hostSocket.sendToGodot({
             type: parsed.type,
             player_id: currentUser.id,
             data: parsed.data,
@@ -145,10 +145,9 @@ wss.on("connection", (ws, req) => {
   // DECONNEXION
   ws.on("close", () => {
     if (currentUser instanceof ClientPlayer) {
-      const host = hosts.get(currentUser.hostCode);
-      if (host) {
-        host.removePlayer(currentUser.id);
-        host.sendToGodot({
+      if (hostSocket) {
+        hostSocket.removePlayer(currentUser.id);
+        hostSocket.sendToGodot({
           type: "player_left",
           player_id: currentUser.id,
         });
