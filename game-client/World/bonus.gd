@@ -4,8 +4,6 @@ var BONUS_LIST = ["speed", "dash"]
 
 var bonus_name: String
 
-#signal player_get_bonus()
-
 func _ready() -> void:
 	# Random Bonus
 	bonus_name = BONUS_LIST.pick_random()

@@ -3,15 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node server",
-    "build:game": "..\\..\\Godot_v4.6-stable_win64.exe --headless ..\\game-host\\epervier_masque\\project.godot --export-release Web"
+    "start": "node index",
+    "build:game": "..\\..\\Godot_v4.6-stable_win64.exe --headless ..\\game-client\\project.godot --export-release Web"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "dotenv": "^17.2.4",
     "express": "^4.22.1",
     "ws": "^8.19.0"
   }
