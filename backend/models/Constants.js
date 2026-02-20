@@ -1,9 +1,16 @@
-const Constants = {
-  SURVIVOR: "survivor",
-  INFECTED: "infected",
-  SPARROWHAWK: "sparrowhawk",
-  BONUS_SPEED: "speed",
-  BONUS_DASH: "dash",
-};
+// Rôles
+const SURVIVOR = "survivor";
+const INFECTED = "infected";
+const SPARROWHAWK = "sparrowhawk";
 
-module.exports = Constants;
+// Bonus
+const BONUS_SPEED = "speed";
+const BONUS_DASH = "dash";
+
+module.exports = {
+  SURVIVOR,
+  INFECTED,
+  SPARROWHAWK,
+  BONUS_SPEED,
+  BONUS_DASH,
+};

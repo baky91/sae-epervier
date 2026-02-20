@@ -2,9 +2,8 @@ const express = require("express");
 const http = require("http");
 const { join } = require("node:path");
 const { WebSocketServer } = require("ws");
-const { ClientHost } = require("./models/ClientHost").default;
-const { ClientPlayer } = require("./models/ClientPlayer");
-
+const ClientHost = require("./models/ClientHost");
+const ClientPlayer = require("./models/ClientPlayer");
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server }); // On lie ws au serveur http
@@ -51,12 +50,22 @@ let counterPlayers = 0;
 wss.on("connection", (ws, req) => {
   // Extraction des paramètres de l'URL (ex: ?clientType=player&name=Alex)
   const params = new URLSearchParams(req.url.split("?")[1]);
-  const type = params.get("clientType");
-  const hostCode = params.get("hostCode");
+  const type = params.get("clientType") || "host"; // Si aucun type n'est spécifié dans l'URL avec c'est un host Godot
+  const hostCode = params.get("hostCode") || "ABCD";
 
   let currentUser = null;
 
-  if (type === "player") {
+  if (type === "host") {
+    currentUser = new ClientHost(ws, hostCode);
+    hosts.set(hostCode, currentUser);
+
+    console.log(`Écran Godot (Host) connecté avec le code : ${hostCode}`);
+
+    currentUser.sendToGodot({
+      type: "root_created",
+      code: hostCode,
+    });
+  } else if (type === "player") {
     const name = params.get("name") || "Anonyme";
 
     // Vérification que le code entré par le joueur correspond à un client Godot
@@ -98,25 +107,14 @@ wss.on("connection", (ws, req) => {
     });
 
     console.log(
-      `Joueur ${name} (ID: ${ws.playerId}) a rejoint la partie ${hostCode}`,
+      `Joueur ${name} (ID: ${currentUser.id}) a rejoint la partie ${hostCode}`,
     );
-  } else {
-    // Si aucun type n'est spécifié dans l'URL avec c'est un host Godot
-    currentUser = new ClientHost(ws, hostCode);
-    hosts.set(hostCode, currentUser);
-
-    console.log(`Écran Godot (Host) connecté avec le code : ${hostCode}`);
-
-    currentUser.sendToGodot({
-      type: "root_created",
-      code: hostCode,
-    });
   }
 
   // Gestion des messages entrants
   ws.on("message", (message) => {
     try {
-      const parsed = JSON.parse(message);
+      let parsed = JSON.parse(message);
 
       // Si c'est un message d'un joueur (mouvement, bonus...), on le relaie à Godot
       if (currentUser instanceof ClientPlayer) {
@@ -131,6 +129,8 @@ wss.on("connection", (ws, req) => {
       }
       // Si c'est un message de Godot (par exemple: récupération de bonus) on le relaie au joueur concerné
       else if (currentUser instanceof ClientHost) {
+        parsed = parsed;
+
         const targetId = parsed.player_id;
         const targetPlayer = currentUser.getPlayer(targetId);
 

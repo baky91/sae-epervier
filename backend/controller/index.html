@@ -45,7 +45,6 @@
             if (msg.type === "newplayer") {
                 const player_id = msg.data.player_id;
                 const player_name = msg.data.player_name;
-                const player_role = msg.data.player_role
 
                 let lastEmitTime = 0;
                 const EMIT_INTERVAL = 40;
@@ -54,7 +53,7 @@
                 controller = new PlayerController('controller', {
                     playerNumber: player_id,
                     playerName: player_name,
-                    role: player_role,
+                    // role: player_role,
                     onMove: (x, y) => {
                         const now = Date.now();
                         if (x === 0 && y === 0){

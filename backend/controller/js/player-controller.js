@@ -68,8 +68,6 @@ class VirtualJoystick {
     } else {
       this.touchId = null; // Souris
     }
-
-    this.updatePosition(e);
   }
 
   handleMove(e) {
@@ -210,16 +208,16 @@ class PlayerController {
 
     this.container.innerHTML = `
             <!-- Header -->
-            <div class="controller-header ${config.color}">
+            <div class="controller-header ${config ? config.color : ""}">
                 <div class="player-info">
-                    <div class="player-icon">${config.icon}</div>
+                    <div class="player-icon">${config ? config.icon : ""}</div>
                     <div class="player-details">
                         <h2>${this.playerName}</h2>
                         <p>Joueur #${this.playerNumber}</p>
                     </div>
                 </div>
-                <div class="status-badge ${config.color}">
-                    ${config.label}
+                <div class="status-badge ${config ? config.color : ""}">
+                    ${config ? config.label : ""}
                 </div>
             </div>
 
