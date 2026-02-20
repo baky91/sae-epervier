@@ -1,11 +1,30 @@
-import "./Constants.js";
-
 class ClientHost {
-  constructor(parameters) {
-    this.socket = parameters.socket;
-    this.maxRound = parameters.maxRound;
+  constructor(socket, hostCode) {
+    this.socket = socket;
+    this.hostCode = hostCode;
+    this.players = new Map();
+    this.counterPlayers = 0;
+    this.maxRound = 0;
     this.currentRound = 0;
-    this.players = null;
+  }
+
+  sendToGodot(data) {
+    if (this.socket.readyState === 1) {
+      // 1 = OPEN
+      this.socket.send(JSON.stringify(data));
+    }
+  }
+
+  addPlayer(player) {
+    this.players.set(player.id, player);
+  }
+
+  getPlayer(id) {
+    return this.players.get(id);
+  }
+
+  removePlayer(id) {
+    this.players.delete(id);
   }
 
   getSurvivors() {
@@ -26,3 +45,5 @@ class ClientHost {
     return sparrowhawks;
   }
 }
+
+module.exports = ClientHost;

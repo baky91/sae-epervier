@@ -35,7 +35,7 @@
     <script src="/js/player-controller.js"></script>
     <script>
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-        const socket = new WebSocket(`${protocol}://${window.location.host}/?clientType=player&name=AlexGamer`);
+        const socket = new WebSocket(`${protocol}://${window.location.host}/?clientType=player&name=AlexGamer&hostCode=ABCD`);
 
         let controller = null;
 
