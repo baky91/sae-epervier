@@ -15,8 +15,13 @@ class ClientHost {
     }
   }
 
+  getNextPlayerId() {
+    return this.counterPlayers + 1;
+  }
+
   addPlayer(player) {
     this.players.set(player.id, player);
+    this.counterPlayers++;
   }
 
   getPlayer(id) {

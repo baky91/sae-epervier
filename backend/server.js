@@ -77,12 +77,13 @@ wss.on("connection", (ws, req) => {
       return;
     }
 
+    hostSocket = hosts.get(hostCode);
+
     // Création du joueur si le salon existe
-    counterPlayers++;
-    currentUser = new ClientPlayer(counterPlayers, ws, name, hostCode);
+    const playerId = hostSocket.getNextPlayerId();
+    currentUser = new ClientPlayer(playerId, ws, name, hostCode);
 
     // Ajouter le joueur à l'Host correspondant
-    hostSocket = hosts.get(hostCode);
     hostSocket.addPlayer(currentUser);
 
     // Confirmation au joueur
