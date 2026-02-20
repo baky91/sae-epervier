@@ -18,18 +18,17 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.send(
-    "<h1>L'épervier masqué - Godot</h1><a href='game'>Game</a><br><a href='controller'>Controller</a>",
-  );
-});
-
 // FICHIERS STATIQUES
 
+app.use(express.static("public"));
 app.use(express.static("controller"));
 app.use(express.static("game"));
 
 // ROUTES
+
+app.get("/", (req, res) => {
+  res.sendFile(join(__dirname, "public", "index.html"));
+});
 
 app.get("/controller", (req, res) => {
   res.sendFile(join(__dirname, "controller", "index.html"));
@@ -43,9 +42,6 @@ app.get("/game", (req, res) => {
 
 const hosts = new Map();
 let counterPlayers = 0;
-
-// let clients = new Map();
-// let hostSocket = null; // Référence vers l'écran Godot
 
 wss.on("connection", (ws, req) => {
   // Extraction des paramètres de l'URL (ex: ?clientType=player&name=Alex)
