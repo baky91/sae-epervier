@@ -2,10 +2,13 @@ const express = require("express");
 const http = require("http");
 const { join } = require("node:path");
 const { WebSocketServer } = require("ws");
-
+const ClientHost = require("./models/ClientHost");
+const ClientPlayer = require("./models/ClientPlayer");
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server }); // On lie ws au serveur http
+
+const PORT = process.env.PORT || 3000;
 
 // SECURITE
 
@@ -15,18 +18,17 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.send(
-    "<h1>L'épervier masqué - Godot</h1><a href='game'>Game</a><br><a href='controller'>Controller</a>",
-  );
-});
-
 // FICHIERS STATIQUES
 
+app.use(express.static("public"));
 app.use(express.static("controller"));
 app.use(express.static("game"));
 
 // ROUTES
+
+app.get("/", (req, res) => {
+  res.sendFile(join(__dirname, "public", "index.html"));
+});
 
 app.get("/controller", (req, res) => {
   res.sendFile(join(__dirname, "controller", "index.html"));
@@ -36,104 +38,131 @@ app.get("/game", (req, res) => {
   res.sendFile(join(__dirname, "game", "index.html"));
 });
 
-let clients = new Map();
-let counterPlayers = 0;
-let hostSocket = null; // Référence vers l'écran Godot
-
-const ROLES = ["survivor", "sparrowhawk"];
-
 // COMMUNICATIONS SOCKETS
+
+const hosts = new Map();
+let counterPlayers = 0;
 
 wss.on("connection", (ws, req) => {
   // Extraction des paramètres de l'URL (ex: ?clientType=player&name=Alex)
   const params = new URLSearchParams(req.url.split("?")[1]);
-  const type = params.get("clientType");
-  const name = params.get("name") || "Anonyme";
+  const type = params.get("clientType") || "host"; // Si aucun type n'est spécifié dans l'URL avec c'est un host Godot
+  const hostCode = params.get("hostCode") || "ABCD";
 
-  if (type === "player") {
-    counterPlayers++;
-    ws.playerId = counterPlayers;
-    clients.set(ws.playerId, ws);
-    ws.playerName = name;
-    ws.playerRole = ROLES[Math.floor(Math.random() * ROLES.length)];
+  let currentUser = null;
+  let hostSocket = null; // Stocker la socket du host si le type de client est un joueur
 
-    // On confirme au joueur sa création
-    ws.send(
-      JSON.stringify({
-        type: "newplayer",
-        data: {
-          player_id: ws.playerId,
-          player_name: ws.playerName,
-          player_role: ws.playerRole,
-        },
-      }),
-    );
+  if (type === "host") {
+    currentUser = new ClientHost(ws, hostCode);
+    hosts.set(hostCode, currentUser);
 
-    // On prévient le Host (Godot) qu'un joueur est arrivé
-    if (hostSocket) {
-      hostSocket.send(
+    console.log(`Écran Godot (Host) connecté avec le code : ${hostCode}`);
+
+    currentUser.sendToGodot({
+      type: "root_created",
+      code: hostCode,
+    });
+  } else if (type === "player") {
+    const name = params.get("name") || "Anonyme";
+
+    // Vérification que le code entré par le joueur correspond à un client Godot
+    if (!hosts.has(hostCode)) {
+      ws.send(
         JSON.stringify({
-          type: "player_joined",
-          data: { id: ws.playerId, name: ws.playerName },
+          type: "error",
+          message: "Code de partie invalide",
         }),
       );
+      ws.close();
+      return;
     }
-    console.log(`Joueur ${name} connecté (ID: ${ws.playerId})`);
-  } else {
-    hostSocket = ws;
-    console.log("Écran Godot (Host) connecté");
+
+    hostSocket = hosts.get(hostCode);
+
+    // Création du joueur si le salon existe
+    const playerId = hostSocket.getNextPlayerId();
+    currentUser = new ClientPlayer(playerId, ws, name, hostCode);
+
+    // Ajouter le joueur à l'Host correspondant
+    hostSocket.addPlayer(currentUser);
+
+    // Confirmation au joueur
+    currentUser.sendToController({
+      type: "newplayer",
+      data: {
+        player_id: currentUser.id,
+        player_name: currentUser.name,
+      },
+    });
+
+    // On prévient le Host (Godot) qu'un joueur est arrivé
+    hostSocket.sendToGodot({
+      type: "player_joined",
+      data: {
+        id: currentUser.id,
+        name: currentUser.name,
+      },
+    });
+
+    console.log(
+      `Joueur ${name} (ID: ${currentUser.id}) a rejoint la partie ${hostCode}`,
+    );
   }
 
   // Gestion des messages entrants
   ws.on("message", (message) => {
     try {
-      const parsed = JSON.parse(message);
+      let parsed = JSON.parse(message);
 
-      // Si c'est un message de mouvement ou bonus, on le relaie à Godot
-      if (hostSocket && hostSocket !== ws) {
-        hostSocket.send(
-          JSON.stringify({
-            type: parsed.type, // "move" ou "use_bonus"
-            player_id: ws.playerId,
+      // Si c'est un message d'un joueur (mouvement, bonus...), on le relaie à Godot
+      if (currentUser instanceof ClientPlayer) {
+        if (hostSocket) {
+          hostSocket.sendToGodot({
+            type: parsed.type,
+            player_id: currentUser.id,
             data: parsed.data,
-          }),
-        );
+          });
+        }
       }
+      // Si c'est un message de Godot (par exemple: récupération de bonus) on le relaie au joueur concerné
+      else if (currentUser instanceof ClientHost) {
+        parsed = parsed;
 
-      // Si c'est un message de Godot (par exemple: récupération de bonus, on le relaie au joueur concerné)
-      if (ws === hostSocket) {
-        const targetClient = clients.get(parsed.data.player_id);
+        const targetId = parsed.player_id;
+        const targetPlayer = currentUser.getPlayer(targetId);
 
-        targetClient.send(
-          JSON.stringify({
+        if (targetPlayer) {
+          targetPlayer.sendToController({
             type: parsed.type,
             data: parsed.data,
-          }),
-        );
+          });
+        }
       }
     } catch (e) {
       console.error("Erreur format JSON :", e);
     }
   });
 
+  // DECONNEXION
   ws.on("close", () => {
-    if (ws !== hostSocket) {
-      console.log(`Joueur ${ws.playerId} déconnecté`);
+    if (currentUser instanceof ClientPlayer) {
       if (hostSocket) {
-        hostSocket.send(
-          JSON.stringify({
-            type: "player_left",
-            player_id: ws.playerId,
-          }),
+        hostSocket.removePlayer(currentUser.id);
+        hostSocket.sendToGodot({
+          type: "player_left",
+          player_id: currentUser.id,
+        });
+        console.log(
+          `Joueur ${currentUser.name} déconnecté de la partie ${currentUser.hostCode}`,
         );
       }
-    } else {
-      console.log("Écran Godot (Host) déconnecté");
-      hostSocket = null;
+    } else if (currentUser instanceof ClientHost) {
+      hosts.delete(currentUser.hostCode);
+      console.log(`Partie ${currentUser.hostCode} fermée`);
     }
   });
 });
 
-server.listen(3000, () => {
-  console.log("Server listening on http://localhost:3000");
+server.listen(PORT, () => {
+  console.log(`Server listening on http://localhost:${PORT}`);
 });

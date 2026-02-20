@@ -11,6 +11,7 @@ custom_solver_bias = 1.0
 radius = 16.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1143993447 groups=["joueurs"]]
+collision_mask = 7
 script = ExtResource("1_3qydi")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=52939148]

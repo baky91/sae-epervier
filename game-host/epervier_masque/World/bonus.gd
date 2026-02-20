@@ -18,8 +18,8 @@ func _ready() -> void:
 	var width = get_viewport().get_visible_rect().size[0]
 	var height = get_viewport().get_visible_rect().size[1]
 	
-	var random_x = rng.randi_range(0 + 40, width - 40) # +40, -40 Pour éviter que le bonus spawn sur une bordure, layers à ajuster par la suite
-	var random_y = rng.randi_range(40, height -40)
+	var random_x = rng.randi_range(0, width)
+	var random_y = rng.randi_range(40, height - 40)
 
 	position = Vector2(random_x, random_y)
 

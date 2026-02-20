@@ -35,17 +35,16 @@
     <script src="/js/player-controller.js"></script>
     <script>
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-        const socket = new WebSocket(`${protocol}://${window.location.host}/?clientType=player&name=AlexGamer`);
+        const socket = new WebSocket(`${protocol}://${window.location.host}/?clientType=player&name=AlexGamer&hostCode=ABCD`);
 
         let controller = null;
 
         socket.onmessage = (event) => {
-            const msg = JSON.parse(event.data);
+            const msg = JSON.parse(event.data);            
             
             if (msg.type === "newplayer") {
                 const player_id = msg.data.player_id;
                 const player_name = msg.data.player_name;
-                const player_role = msg.data.player_role
 
                 let lastEmitTime = 0;
                 const EMIT_INTERVAL = 40;
@@ -54,7 +53,7 @@
                 controller = new PlayerController('controller', {
                     playerNumber: player_id,
                     playerName: player_name,
-                    role: player_role,
+                    // role: player_role,
                     onMove: (x, y) => {
                         const now = Date.now();
                         if (x === 0 && y === 0){
@@ -98,6 +97,8 @@
                     
                     controller.addBonus(bonusName);
                 }
+            } else if (msg.type === "error"){
+                console.log("Erreur :", msg.message)
             }
         };
     </script>

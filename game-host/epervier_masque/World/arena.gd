@@ -60,8 +60,8 @@ func _on_timer_bonus_timeout() -> void:
 func _on_player_signal_bonus(player_id: int, bonus_name: String):
 	var data_to_send = {
 		"type": "bonus_obtained",
+		"player_id": player_id,
 		"data": {
-			"player_id": player_id,
 			"bonus": bonus_name
 		}
 	}
