@@ -25,30 +25,35 @@ region_rect = Rect2(0, 0, 1280, 720)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Borders" unique_id=1845441005]
 position = Vector2(640, -10)
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D" unique_id=582814976]
 shape = SubResource("RectangleShape2D_ra8g6")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="Borders" unique_id=280413216]
 position = Vector2(640, 730)
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D2" unique_id=1981285185]
 shape = SubResource("RectangleShape2D_ra8g6")
 
 [node name="StaticBody2D3" type="StaticBody2D" parent="Borders" unique_id=1435941410]
 position = Vector2(-10, 360)
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D3" unique_id=1111368052]
 shape = SubResource("RectangleShape2D_piv0h")
 
 [node name="StaticBody2D4" type="StaticBody2D" parent="Borders" unique_id=596628342]
 position = Vector2(1290, 360)
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D4" unique_id=1254123239]
 shape = SubResource("RectangleShape2D_piv0h")
 
 [node name="TimerBonus" type="Timer" parent="." unique_id=1189824554]
-wait_time = 15.0
+wait_time = 10.0
 autostart = true
 
 [connection signal="timeout" from="TimerBonus" to="." method="_on_timer_bonus_timeout"]
