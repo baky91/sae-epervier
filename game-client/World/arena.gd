@@ -5,6 +5,10 @@ var bonus_scene = preload("res://World/bonus.tscn")
 
 var players_nodes = {}
 
+var game_started = false
+var current_round = 0
+var max_round = 5
+
 func _ready() -> void:
 	ServerSocket.player_connected.connect(_on_player_connected)
 	ServerSocket.player_use_bonus.connect(_on_player_use_bonus)
@@ -12,6 +16,9 @@ func _ready() -> void:
 
 # Position update of all players
 func _physics_process(_delta):
+	if Input.is_action_just_pressed("start_game"):
+		_start_game()
+	
 	for id in ServerSocket.players_inputs_buffer:
 		if players_nodes.has(id):
 			var player_node = players_nodes[id]
@@ -19,7 +26,20 @@ func _physics_process(_delta):
 			player_node.direction = vector_move
 			
 			#player_node.direction = player_node.direction.lerp(vector_move, 0.2)
-
+			
+func _start_game():
+	# Identifiant du joueur tiré épervier
+	var random_player_id = players_nodes.keys().pick_random()
+	
+	# Tous les joueurs seront survivants, sauf celui tiré
+	for key in players_nodes:
+		var player = players_nodes[key]
+		
+		if key == random_player_id:
+			player.new_role.emit(key, Player.ROLE_SPARROWHAWK)
+		else:
+			player.new_role.emit(key, Player.ROLE_SURVIVOR)
+		
 
 func _on_player_connected(id: int, p_name: String) -> void:
 	print("New player joined : " + p_name + " (ID: " + str(id) + ")")
@@ -32,14 +52,6 @@ func _on_player_connected(id: int, p_name: String) -> void:
 	player.new_role.connect(_on_role_changed)
 	
 	players_nodes[id] = player
-	
-	# à supprimer plus tard, définition d'un rôle d'épervier pour tester les collisions
-	if id == 2:
-		player.role = Player.ROLE_SPARROWHAWK
-	else:
-		player.role = Player.ROLE_SURVIVOR
-	
-	player.new_role.emit(player.id, player.role)
 	
 	$Players.add_child(player)
 
