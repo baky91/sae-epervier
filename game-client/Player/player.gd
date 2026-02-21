@@ -13,6 +13,9 @@ const ROLES_CONFIG = {
 	ROLE_SPARROWHAWK: Color(0.937, 0.267, 0.267, 1.0)
 }
 
+signal get_bonus(player_id: int, bonus_name: String)
+signal role_changed(player_id: int, role: String)
+
 @onready var timer_dash = $TimerDash
 @onready var timer_speed_boost = $TimerSpeedBoost
 
