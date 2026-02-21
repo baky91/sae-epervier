@@ -1,4 +1,3 @@
-// Virtual Joystick Class
 class VirtualJoystick {
   constructor(container, size, onMove) {
     this.container = container;
@@ -7,7 +6,7 @@ class VirtualJoystick {
     this.isActive = false;
     this.stickPosition = { x: 0, y: 0 };
     this.maxDistance = size / 2 - 30;
-    this.touchId = null; // AJOUT : On stocke l'ID du doigt
+    this.touchId = null;
 
     this.init();
   }
@@ -64,7 +63,7 @@ class VirtualJoystick {
 
     // Gestion Tactile vs Souris
     if (e.changedTouches) {
-      this.touchId = e.changedTouches[0].identifier; // On mémorise CETTE touche
+      this.touchId = e.changedTouches[0].identifier;
     } else {
       this.touchId = null; // Souris
     }
@@ -174,7 +173,6 @@ class VirtualJoystick {
   }
 }
 
-// Player Controller Class
 class PlayerController {
   constructor(containerId, options) {
     this.container = document.getElementById(containerId);
@@ -296,7 +294,6 @@ class PlayerController {
     const speedBtn = document.getElementById(`speed-btn`);
     const dashBtn = document.getElementById(`dash-btn`);
 
-    // Fonction générique pour gérer l'action (évite de dupliquer le code)
     const handleSpeed = (e) => {
       // Empêche le clic fantôme si on utilise touchstart
       if (e.cancelable) e.preventDefault();
