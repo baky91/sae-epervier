@@ -39,7 +39,7 @@ func _on_player_connected(id: int, p_name: String) -> void:
 	else:
 		player.role = Player.ROLE_SURVIVOR
 	
-	player.new_role.emit(player.id, player.role)
+	player.role_changed.emit(player.id, player.role)
 	
 	$Players.add_child(player)
 

@@ -11,7 +11,7 @@ const ROLES_CONFIG = {
 }
 
 signal get_bonus(player_id: int, bonus_name: String)
-signal new_role(player_id: int, role: String)
+signal role_changed(player_id: int, role: String)
 
 @onready var timer_dash = $TimerDash
 @onready var timer_speed_boost = $TimerSpeedBoost
@@ -35,26 +35,27 @@ var can_dash = true
 var can_speed_boost = true
 
 func _physics_process(delta: float) -> void:
-	if dashing:
-		velocity = direction * dash_speed
-	elif speed_boosting:
-		velocity = direction * speed * 1.5
-	else:
-		velocity = direction * speed
-	
-	var collision = move_and_collide(velocity * delta)
-	
-	if collision:
-		var collider = collision.get_collider()
-		if collider is Player:
-			if role == ROLE_SURVIVOR and collider.role == ROLE_SPARROWHAWK:
-				# Le joueur actuel devient infecté
-				print("Joueur " + str(id) + " : je suis survivant et j'ai touché un épervier")
-				new_role.emit(id, ROLE_INFECTED)
-			elif role == ROLE_SPARROWHAWK and collider.role == ROLE_SURVIVOR:
-				# Le joueur cible devient infecté
-				print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
-				collider.new_role.emit(collider.id, ROLE_INFECTED)
+	if role != ROLE_INFECTED:
+		if dashing:
+			velocity = direction * dash_speed
+		elif speed_boosting:
+			velocity = direction * speed * 1.5
+		else:
+			velocity = direction * speed
+		
+		var collision = move_and_collide(velocity * delta)
+		
+		if collision:
+			var collider = collision.get_collider()
+			if collider is Player:
+				if role == ROLE_SURVIVOR and collider.role == ROLE_SPARROWHAWK:
+					# Le joueur actuel devient infecté
+					print("Joueur " + str(id) + " : je suis survivant et j'ai touché un épervier")
+					role_changed.emit(id, ROLE_INFECTED)
+				elif role == ROLE_SPARROWHAWK and collider.role == ROLE_SURVIVOR:
+					# Le joueur cible devient infecté
+					print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
+					collider.role_changed.emit(collider.id, ROLE_INFECTED)
 
 func set_role(new_role: String):
 	role = new_role
