@@ -31,7 +31,7 @@ func _on_player_connected(id: int, p_name: String) -> void:
 	player.global_position = Vector2(randf_range(100, 500), randf_range(100, 500))
 	player.set_label(str(id))
 	player.get_bonus.connect(_on_player_signal_bonus)
-	player.new_role.connect(_on_role_changed)
+	player.role_changed.connect(_on_role_changed)
 	
 	players_nodes[id] = player
 	
