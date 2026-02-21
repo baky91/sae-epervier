@@ -56,4 +56,9 @@ shape = SubResource("RectangleShape2D_piv0h")
 wait_time = 10.0
 autostart = true
 
+[node name="TimerRound" type="Timer" parent="." unique_id=1053360445]
+wait_time = 30.0
+one_shot = true
+
 [connection signal="timeout" from="TimerBonus" to="." method="_on_timer_bonus_timeout"]
+[connection signal="timeout" from="TimerRound" to="." method="_on_timer_round_timeout"]

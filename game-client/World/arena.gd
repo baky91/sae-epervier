@@ -3,11 +3,13 @@ extends Node2D
 var player_scene = preload("res://Player/player.tscn")
 var bonus_scene = preload("res://World/bonus.tscn")
 
+@onready var timer_round = $TimerRound
+
 var players_nodes = {}
 
 var game_started = false
 var current_round = 0
-var max_round = 5
+var max_round = 2
 
 func _ready() -> void:
 	ServerSocket.player_connected.connect(_on_player_connected)
@@ -18,6 +20,8 @@ func _ready() -> void:
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("start_game"):
 		_start_game()
+	if Input.is_action_just_pressed("start_round"):
+		_start_round()
 	
 	for id in ServerSocket.players_inputs_buffer:
 		if players_nodes.has(id):
@@ -37,11 +41,47 @@ func _start_game():
 			var player = players_nodes[key]
 			
 			if key == random_player_id:
-				player.new_role.emit(key, Player.ROLE_SPARROWHAWK)
+				player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
 			else:
-				player.new_role.emit(key, Player.ROLE_SURVIVOR)
+				player.role_changed.emit(key, Player.ROLE_SURVIVOR)
 		
 		game_started = true
+
+func _start_round():
+	if current_round < max_round:
+		current_round += 1
+		print("Commencement de la manche ", str(current_round))
+		
+		# Liste contenant les éperviers de la prochaine manche
+		var next_sparrowhawk = []
+		
+		# On parcourt la liste des joueurs, tous les infectés de viennent éperviers
+		for key in players_nodes:
+			var player = players_nodes[key]
+			
+			if player.role == Player.ROLE_INFECTED:
+				player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
+				next_sparrowhawk.append(player)
+			elif player.role == Player.ROLE_SPARROWHAWK:
+				next_sparrowhawk.append(player)
+		
+		# On met tous les éperviers au centre
+		var counter_sparrowhawk = next_sparrowhawk.size()
+		
+		var width = get_viewport().get_visible_rect().size[0]
+		var height = get_viewport().get_visible_rect().size[1]
+		
+		var y = height / 2 # Les éperviers seront téléportés à mi-hauteur
+		
+		var x_gap = int(width / (counter_sparrowhawk + 1))
+		var counter = 0
+		for player in next_sparrowhawk:
+			counter += 1
+			var x = int(x_gap * counter)
+		
+			player.position = Vector2(x, y)
+		
+		timer_round.start()
 		
 
 func _on_player_connected(id: int, p_name: String) -> void:
@@ -52,7 +92,7 @@ func _on_player_connected(id: int, p_name: String) -> void:
 	player.global_position = Vector2(randf_range(100, 500), randf_range(100, 500))
 	player.set_label(str(id))
 	player.get_bonus.connect(_on_player_signal_bonus)
-	player.new_role.connect(_on_role_changed)
+	player.role_changed.connect(_on_role_changed)
 	
 	players_nodes[id] = player
 	
@@ -94,7 +134,7 @@ func _on_player_signal_bonus(player_id: int, bonus_name: String):
 
 func _on_role_changed(player_id: int, role: String) -> void:
 	var player = players_nodes[player_id]
-	player.set_color(Player.ROLES_CONFIG[role])
+	player.set_role(role)
 	var data_to_send = {
 		"type": "new_role",
 		"player_id": player_id,
@@ -104,3 +144,7 @@ func _on_role_changed(player_id: int, role: String) -> void:
 	}
 	
 	ServerSocket.send_message_to_server(data_to_send)
+
+
+func _on_timer_round_timeout() -> void:
+	print("Fin de la manche ", str(current_round))
