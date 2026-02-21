@@ -1,4 +1,3 @@
-// Virtual Joystick Class
 class VirtualJoystick {
   constructor(container, size, onMove) {
     this.container = container;
@@ -7,7 +6,7 @@ class VirtualJoystick {
     this.isActive = false;
     this.stickPosition = { x: 0, y: 0 };
     this.maxDistance = size / 2 - 30;
-    this.touchId = null; // AJOUT : On stocke l'ID du doigt
+    this.touchId = null;
 
     this.init();
   }
@@ -64,7 +63,7 @@ class VirtualJoystick {
 
     // Gestion Tactile vs Souris
     if (e.changedTouches) {
-      this.touchId = e.changedTouches[0].identifier; // On mémorise CETTE touche
+      this.touchId = e.changedTouches[0].identifier;
     } else {
       this.touchId = null; // Souris
     }
@@ -127,13 +126,13 @@ class VirtualJoystick {
     this.onMove(0, 0);
   }
 
-  updateStick(clientX, clientY) {
+  updateStick(x, y) {
     const rect = this.container.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    let deltaX = clientX - centerX;
-    let deltaY = clientY - centerY;
+    let deltaX = x - centerX;
+    let deltaY = y - centerY;
 
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
@@ -153,6 +152,18 @@ class VirtualJoystick {
     this.onMove(normalizedX, normalizedY);
   }
 
+  updateStickFromKeyboard(x, y) {
+    if (this.isActive) return;
+
+    this.stick.style.transition = "0.1s";
+    this.stick.style.left = `${(this.size - this.stickSize) / 2 + x * this.maxDistance}px`;
+    this.stick.style.top = `${(this.size - this.stickSize) / 2 + y * this.maxDistance}px`;
+
+    setTimeout(() => {
+      this.stick.style.transition = "none";
+    }, 100);
+  }
+
   setInactive(inactive) {
     if (inactive) {
       this.stick.classList.add("inactive");
@@ -162,7 +173,6 @@ class VirtualJoystick {
   }
 }
 
-// Player Controller Class
 class PlayerController {
   constructor(containerId, options) {
     this.container = document.getElementById(containerId);
@@ -174,9 +184,16 @@ class PlayerController {
     this.onMove = options.onMove;
     this.onUseSpeedBonus = options.onUseSpeedBonus;
     this.onUseDashBonus = options.onUseDashBonus;
+    this.keys = {
+      up: false,
+      down: false,
+      left: false,
+      right: false,
+    };
 
     this.render();
     this.initJoystick();
+    this.setupKeyboard();
   }
 
   getRoleConfig() {
@@ -277,7 +294,6 @@ class PlayerController {
     const speedBtn = document.getElementById(`speed-btn`);
     const dashBtn = document.getElementById(`dash-btn`);
 
-    // Fonction générique pour gérer l'action (évite de dupliquer le code)
     const handleSpeed = (e) => {
       // Empêche le clic fantôme si on utilise touchstart
       if (e.cancelable) e.preventDefault();
@@ -322,6 +338,82 @@ class PlayerController {
 
     if (this.role === "infected") {
       this.joystick.setInactive(true);
+    }
+  }
+
+  setupKeyboard() {
+    // Gestion de l'appui sur une touche
+    document.addEventListener("keydown", (e) => {
+      if (this.role === "infected") return;
+
+      let changed = false;
+      const keyCode = e.code;
+      if (keyCode === "ArrowUp" || keyCode === "KeyW") {
+        // Même en azerty, le touche Z aura le code "KeyW"
+        this.keys.up = true;
+        changed = true;
+      } else if (keyCode === "ArrowDown" || keyCode === "KeyS") {
+        this.keys.down = true;
+        changed = true;
+      } else if (keyCode === "ArrowLeft" || keyCode === "KeyA") {
+        // Même en azerty, le touche Q aura le code "KeyA"
+        this.keys.left = true;
+        changed = true;
+      } else if (keyCode === "ArrowRight" || keyCode === "KeyD") {
+        this.keys.right = true;
+        changed = true;
+      }
+
+      if (changed) {
+        this.updateMovementFromKeyboard();
+      }
+    });
+
+    // Gestion du relachement d'une touche
+    document.addEventListener("keyup", (e) => {
+      if (this.role === "infected") return;
+
+      let changed = false;
+      const keyCode = e.code;
+      if (keyCode === "ArrowUp" || keyCode === "KeyW") {
+        this.keys.up = false;
+        changed = true;
+      } else if (keyCode === "ArrowDown" || keyCode === "KeyS") {
+        this.keys.down = false;
+        changed = true;
+      } else if (keyCode === "ArrowLeft" || keyCode === "KeyA") {
+        this.keys.left = false;
+        changed = true;
+      } else if (keyCode === "ArrowRight" || keyCode === "KeyD") {
+        this.keys.right = false;
+        changed = true;
+      }
+
+      if (changed) {
+        this.updateMovementFromKeyboard();
+      }
+    });
+  }
+
+  updateMovementFromKeyboard() {
+    let x = 0;
+    let y = 0;
+
+    if (this.keys.up) y -= 1;
+    if (this.keys.down) y += 1;
+    if (this.keys.left) x -= 1;
+    if (this.keys.right) x += 1;
+
+    if (x !== 0 && y !== 0) {
+      const length = Math.sqrt(x * x + y * y);
+      y = y / length;
+      x = x / length;
+    }
+
+    this.onMove(x, y);
+
+    if (this.joystick) {
+      this.joystick.updateStickFromKeyboard(x, y);
     }
   }
 
