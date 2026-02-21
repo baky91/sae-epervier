@@ -5,6 +5,8 @@ var bonus_scene = preload("res://World/bonus.tscn")
 
 var players_nodes = {}
 
+@onready var players_container = $Players
+
 func _ready() -> void:
 	ServerSocket.player_connected.connect(_on_player_connected)
 	ServerSocket.player_use_bonus.connect(_on_player_use_bonus)
@@ -41,12 +43,12 @@ func _on_player_connected(id: int, p_name: String) -> void:
 	
 	player.role_changed.emit(player.id, player.role)
 	
-	$Players.add_child(player)
+	players_container.add_child(player)
 
 func _on_player_use_bonus(id: int, bonus: String):
 	print("Le joueur " + str(id) + " a utilisé le bonus " + bonus)
 
-	var player = $Players.get_node(str(id))
+	var player = players_container.get_node(str(id))
 
 	if bonus == "speed":
 		player.speed_boosting = true
