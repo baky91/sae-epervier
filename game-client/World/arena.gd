@@ -101,7 +101,7 @@ func _on_player_connected(id: int, p_name: String) -> void:
 func _on_player_use_bonus(id: int, bonus: String):
 	print("Le joueur " + str(id) + " a utilisé le bonus " + bonus)
 
-	var player = players_container.get_node(str(id))
+	var player = players_nodes[id]
 
 	if bonus == "speed":
 		player.speed_boosting = true
