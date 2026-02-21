@@ -29,8 +29,17 @@ func _on_player_connected(id: int, p_name: String) -> void:
 	player.global_position = Vector2(randf_range(100, 500), randf_range(100, 500))
 	player.set_label(str(id))
 	player.get_bonus.connect(_on_player_signal_bonus)
+	player.new_role.connect(_on_role_changed)
 	
 	players_nodes[id] = player
+	
+	# à supprimer plus tard, définition d'un rôle d'épervier pour tester les collisions
+	if id == 2:
+		player.role = Player.ROLE_SPARROWHAWK
+	else:
+		player.role = Player.ROLE_SURVIVOR
+	
+	player.new_role.emit(player.id, player.role)
 	
 	$Players.add_child(player)
 
@@ -63,6 +72,19 @@ func _on_player_signal_bonus(player_id: int, bonus_name: String):
 		"player_id": player_id,
 		"data": {
 			"bonus": bonus_name
+		}
+	}
+	
+	ServerSocket.send_message_to_server(data_to_send)
+
+func _on_role_changed(player_id: int, role: String) -> void:
+	var player = players_nodes[player_id]
+	player.set_color(Player.ROLES_CONFIG[role])
+	var data_to_send = {
+		"type": "new_role",
+		"player_id": player_id,
+		"data": {
+			"role": role
 		}
 	}
 	

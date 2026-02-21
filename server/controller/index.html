@@ -92,10 +92,16 @@
                     }
                 });
             } else if (msg.type === "bonus_obtained"){
-                if(controller){
+                if(controller) {
                     const bonusName = msg.data.bonus;
                     
                     controller.addBonus(bonusName);
+                }
+            } else if (msg.type === "new_role") {
+                if (controller) {
+                    const newRole = msg.data.role;
+
+                    controller.updateRole(newRole);
                 }
             } else if (msg.type === "error"){
                 console.log("Erreur :", msg.message)

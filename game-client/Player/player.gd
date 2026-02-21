@@ -1,25 +1,26 @@
-extends CharacterBody2D
+class_name Player extends CharacterBody2D
 
 signal get_bonus(player_id: int, bonus_name: String)
+signal new_role(player_id: int, role: String)
 
-const COLOR_BLUE = Color(0.231, 0.51, 0.965, 1.0)  # Survivant
-const COLOR_GRAY = Color(0.612, 0.639, 0.686, 1.0) # Infecté
-const COLOR_RED = Color(0.937, 0.267, 0.267, 1.0)  # Epervier
+const ROLE_SURVIVOR = "survivor"
+const ROLE_INFECTED = "infected"
+const ROLE_SPARROWHAWK = "sparrowhawk"
 
-var timer_dash: Timer
-var timer_speed_boost: Timer
-
-enum Role {
-	SURVIVOR,
-	INFECTED,
-	SPARROWHAWK
+const ROLES_CONFIG = {
+	ROLE_SURVIVOR: Color(0.231, 0.51, 0.965, 1.0),
+	ROLE_INFECTED: Color(0.612, 0.639, 0.686, 1.0),
+	ROLE_SPARROWHAWK: Color(0.937, 0.267, 0.267, 1.0)
 }
+
+@onready var timer_dash = $TimerDash
+@onready var timer_speed_boost = $TimerSpeedBoost
 
 var id: int
 var speed: int = 300
 var dash_speed: int = 600
 var direction: Vector2 = Vector2.ZERO
-var role: Role
+var role: String
 var bonus: Dictionary = {
 	"speed": 0,
 	"dash": 0
@@ -33,23 +34,29 @@ var speed_boosting = false
 var can_dash = true
 var can_speed_boost = true
 
-func _ready():
-	timer_dash = $TimerDash
-	timer_speed_boost = $TimerSpeedBoost
-
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if dashing:
 		velocity = direction * dash_speed
 	elif speed_boosting:
 		velocity = direction * speed * 1.5
 	else:
 		velocity = direction * speed
-		
-	move_and_slide()
+	
+	var collision = move_and_collide(velocity * delta)
+	
+	if collision:
+		var collider = collision.get_collider()
+		if collider is Player:
+			if role == ROLE_SURVIVOR and collider.role == ROLE_SPARROWHAWK:
+				# Le joueur actuel devient infecté
+				print("Joueur " + str(id) + " : je suis survivant et j'ai touché un épervier")
+			elif role == ROLE_SPARROWHAWK and collider.role == ROLE_SURVIVOR:
+				# Le joueur cible devient infecté
+				print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
 
 func set_color(color: Color):
-	MeshInstance2D.mesh.material.albedo_color = color
-
+	$MeshInstance2D.modulate = color
+	
 func set_label(text: String):
 	$LabelNumber.text = text
 	

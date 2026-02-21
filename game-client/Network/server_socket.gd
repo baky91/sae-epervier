@@ -12,7 +12,7 @@ var players_inputs_buffer = {}
 func _ready():
 	if OS.has_feature("web"):
 		var host = JavaScriptBridge.eval("window.location.hostname")
-		url = "ws://" + host + ":3000/?clientType=host"
+		url = "ws://" + host + ":3000"
 	
 	socket.connect_to_url(url)
 	print("Tentative de connexion au serveur...")
