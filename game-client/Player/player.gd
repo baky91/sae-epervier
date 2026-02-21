@@ -1,8 +1,5 @@
 class_name Player extends CharacterBody2D
 
-signal get_bonus(player_id: int, bonus_name: String)
-signal new_role(player_id: int, role: String)
-
 const ROLE_SURVIVOR = "survivor"
 const ROLE_INFECTED = "infected"
 const ROLE_SPARROWHAWK = "sparrowhawk"
@@ -12,6 +9,9 @@ const ROLES_CONFIG = {
 	ROLE_INFECTED: Color(0.612, 0.639, 0.686, 1.0),
 	ROLE_SPARROWHAWK: Color(0.937, 0.267, 0.267, 1.0)
 }
+
+signal get_bonus(player_id: int, bonus_name: String)
+signal new_role(player_id: int, role: String)
 
 @onready var timer_dash = $TimerDash
 @onready var timer_speed_boost = $TimerSpeedBoost
@@ -50,9 +50,15 @@ func _physics_process(delta: float) -> void:
 			if role == ROLE_SURVIVOR and collider.role == ROLE_SPARROWHAWK:
 				# Le joueur actuel devient infecté
 				print("Joueur " + str(id) + " : je suis survivant et j'ai touché un épervier")
+				new_role.emit(id, ROLE_INFECTED)
 			elif role == ROLE_SPARROWHAWK and collider.role == ROLE_SURVIVOR:
 				# Le joueur cible devient infecté
 				print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
+				collider.new_role.emit(collider.id, ROLE_INFECTED)
+
+func set_role(new_role: String):
+	role = new_role
+	set_color(ROLES_CONFIG[role])
 
 func set_color(color: Color):
 	$MeshInstance2D.modulate = color

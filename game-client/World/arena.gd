@@ -79,7 +79,7 @@ func _on_player_signal_bonus(player_id: int, bonus_name: String):
 
 func _on_role_changed(player_id: int, role: String) -> void:
 	var player = players_nodes[player_id]
-	player.set_color(Player.ROLES_CONFIG[role])
+	player.set_role(role)
 	var data_to_send = {
 		"type": "new_role",
 		"player_id": player_id,
