@@ -28,17 +28,20 @@ func _physics_process(_delta):
 			#player_node.direction = player_node.direction.lerp(vector_move, 0.2)
 			
 func _start_game():
-	# Identifiant du joueur tiré épervier
-	var random_player_id = players_nodes.keys().pick_random()
-	
-	# Tous les joueurs seront survivants, sauf celui tiré
-	for key in players_nodes:
-		var player = players_nodes[key]
+	if !game_started:
+		# Identifiant du joueur tiré épervier
+		var random_player_id = players_nodes.keys().pick_random()
 		
-		if key == random_player_id:
-			player.new_role.emit(key, Player.ROLE_SPARROWHAWK)
-		else:
-			player.new_role.emit(key, Player.ROLE_SURVIVOR)
+		# Tous les joueurs seront survivants, sauf celui tiré
+		for key in players_nodes:
+			var player = players_nodes[key]
+			
+			if key == random_player_id:
+				player.new_role.emit(key, Player.ROLE_SPARROWHAWK)
+			else:
+				player.new_role.emit(key, Player.ROLE_SURVIVOR)
+		
+		game_started = true
 		
 
 func _on_player_connected(id: int, p_name: String) -> void:
