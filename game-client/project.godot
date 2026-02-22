@@ -22,7 +22,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 ServerSocket="*uid://cjyxjtufkasja"
-Global="*uid://uj27lir1tbvs"
 
 [display]
 

@@ -36,6 +36,8 @@ func _process(_delta):
 
 func _handle_server_message(json):
 	match json.type:
+		"root_created":
+			print("Code de la partie : ", json.data.code)
 		"player_joined":
 			player_connected.emit(int(json.data.id), json.data.name)
 			

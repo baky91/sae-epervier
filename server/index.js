@@ -55,7 +55,7 @@ wss.on("connection", (ws, req) => {
 
   if (type === "host") {
     const code = generate_random_code();
-    console.log("Code généré : ", code);
+    console.log("Code généré :", code);
 
     currentUser = new ClientHost(ws, hostCode);
     hosts.set(hostCode, currentUser);
@@ -64,7 +64,9 @@ wss.on("connection", (ws, req) => {
 
     currentUser.sendToGodot({
       type: "root_created",
-      code: hostCode,
+      data: {
+        code: code,
+      },
     });
   } else if (type === "player") {
     const name = params.get("name") || "Anonyme";
