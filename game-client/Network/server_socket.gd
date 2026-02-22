@@ -55,6 +55,5 @@ func send_message_to_server(data: Dictionary):
 		socket.put_packet(json_text.to_utf8_buffer())
 	else:
 		print("Erreur : Le socket n'est pas connecté.")
-
-func _on_player_get_bonus():
-	pass
+	
+	
