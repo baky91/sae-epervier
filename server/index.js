@@ -4,6 +4,7 @@ const { join } = require("node:path");
 const { WebSocketServer } = require("ws");
 const ClientHost = require("./models/ClientHost");
 const ClientPlayer = require("./models/ClientPlayer");
+const { generate_random_code } = require("./utils");
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server }); // On lie ws au serveur http
@@ -53,6 +54,9 @@ wss.on("connection", (ws, req) => {
   let hostSocket = null; // Stocker la socket du host si le type de client est un joueur
 
   if (type === "host") {
+    const code = generate_random_code();
+    console.log("Code généré : ", code);
+
     currentUser = new ClientHost(ws, hostCode);
     hosts.set(hostCode, currentUser);
 
