@@ -1,14 +1,21 @@
-function generate_random_code() {
-  let code = "";
-  const codeLength = 4;
+function generateUniqueCode(hosts) {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const charactersLength = characters.length;
+  const codeLength = 4;
+  let code;
+  let isUnique = false;
 
-  for (let i = 0; i < codeLength; i++) {
-    code += characters.charAt(Math.floor(Math.random() * charactersLength));
+  while (!isUnique) {
+    code = "";
+    for (let i = 0; i < codeLength; i++) {
+      code += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    if (!hosts.has(code)) {
+      isUnique = true;
+    }
   }
 
   return code;
 }
 
-module.exports = { generate_random_code };
+module.exports = { generateUniqueCode };

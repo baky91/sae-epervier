@@ -4,7 +4,7 @@ const { join } = require("node:path");
 const { WebSocketServer } = require("ws");
 const ClientHost = require("./models/ClientHost");
 const ClientPlayer = require("./models/ClientPlayer");
-const { generate_random_code } = require("./utils");
+const { generateUniqueCode } = require("./utils");
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server }); // On lie ws au serveur http
@@ -49,7 +49,6 @@ app.get("/:hostCode", (req, res) => {
 // COMMUNICATIONS SOCKETS
 
 const hosts = new Map();
-let counterPlayers = 0;
 
 wss.on("connection", (ws, req) => {
   // Extraction des paramètres de l'URL (ex: ?clientType=player&name=Alex)
@@ -61,7 +60,7 @@ wss.on("connection", (ws, req) => {
   let hostSocket = null; // Stocker la socket du host si le type de client est un joueur
 
   if (type === "host") {
-    const code = generate_random_code();
+    const code = generateUniqueCode(hosts);
     console.log("Code généré :", code);
 
     currentUser = new ClientHost(ws, hostCode);
