@@ -16,6 +16,20 @@ func _ready() -> void:
 	ServerSocket.player_use_bonus.connect(_on_player_use_bonus)
 	ServerSocket.player_left.connect(_on_player_left)
 
+# draw function is only called once (on ready) by the godot engine
+func _draw():
+	print("drawing")
+	var width = get_viewport().get_visible_rect().size[0]
+	var height = get_viewport().get_visible_rect().size[1]
+	
+	var start_point = Vector2(0, 0)
+	var end_point = Vector2(width, 5)
+	var line_color = Color(0, 0, 0)
+	var line_width = 10.0
+	
+	draw_line(start_point, end_point, line_color, line_width, true)
+
+
 # Position update of all players
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("start_game"):
