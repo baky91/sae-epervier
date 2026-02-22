@@ -27,6 +27,7 @@ ServerSocket="*uid://cjyxjtufkasja"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/stretch/mode="canvas_items"
 
 [dotnet]
 
@@ -53,4 +54,5 @@ start_round={
 
 [rendering]
 
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
