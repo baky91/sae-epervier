@@ -1,3 +1,10 @@
+const hostCode = window.location.pathname.split("/")[1];
+
+const urlParams = new URLSearchParams(window.location.search);
+const pseudo = urlParams.get("pseudo") || "Anonyme";
+
+console.log("Host code:", hostCode, "; Pseudo:", pseudo);
+
 const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 const socket = new WebSocket(
   `${protocol}://${window.location.host}/?clientType=player&name=AlexGamer&hostCode=ABCD`,

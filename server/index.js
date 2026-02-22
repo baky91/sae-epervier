@@ -39,6 +39,13 @@ app.get("/game", (req, res) => {
   res.sendFile(join(__dirname, "game", "index.html"));
 });
 
+app.get("/:hostCode", (req, res) => {
+  // const { hostCode } = req.params;
+  // const { pseudo } = req.query || "Anonyme";
+
+  res.sendFile(join(__dirname, "controller", "index.html"));
+});
+
 // COMMUNICATIONS SOCKETS
 
 const hosts = new Map();
