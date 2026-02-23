@@ -7,7 +7,7 @@ function generateUniqueCode(hosts) {
   while (!isUnique) {
     code = "";
     for (let i = 0; i < codeLength; i++) {
-      code += characters.charAt(Math.floor(Math.random() * charactersLength));
+      code += characters.charAt(Math.floor(Math.random() * characters.length));
     }
 
     if (!hosts.has(code)) {
