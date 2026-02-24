@@ -7,7 +7,7 @@ console.log("Host code:", hostCode, "; Pseudo:", pseudo);
 
 const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 const socket = new WebSocket(
-  `${protocol}://${window.location.host}/?clientType=player&name=AlexGamer&hostCode=ABCD`,
+  `${protocol}://${window.location.host}/?clientType=player&hostCode=${hostCode}&name=${pseudo}`,
 );
 
 let controller = null;

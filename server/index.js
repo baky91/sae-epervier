@@ -31,10 +31,6 @@ app.get("/", (req, res) => {
   res.sendFile(join(__dirname, "public", "index.html"));
 });
 
-app.get("/controller", (req, res) => {
-  res.sendFile(join(__dirname, "controller", "index.html"));
-});
-
 app.get("/game", (req, res) => {
   res.sendFile(join(__dirname, "game", "index.html"));
 });
@@ -49,24 +45,24 @@ app.get("/:hostCode", (req, res) => {
 // COMMUNICATIONS SOCKETS
 
 const hosts = new Map();
+let counterPlayers = 0;
 
 wss.on("connection", (ws, req) => {
   // Extraction des paramètres de l'URL (ex: ?clientType=player&name=Alex)
   const params = new URLSearchParams(req.url.split("?")[1]);
   const type = params.get("clientType") || "host"; // Si aucun type n'est spécifié dans l'URL avec c'est un host Godot
-  const hostCode = params.get("hostCode") || "ABCD";
 
   let currentUser = null;
   let hostSocket = null; // Stocker la socket du host si le type de client est un joueur
 
   if (type === "host") {
-    const code = generateUniqueCode(hosts);
-    console.log("Code généré :", code);
+    let code = generateUniqueCode(hosts);
+    code = "ABCD"; // Utilisation d'un code défini pour faciliter le développement
 
-    currentUser = new ClientHost(ws, hostCode);
-    hosts.set(hostCode, currentUser);
+    currentUser = new ClientHost(ws, code);
+    hosts.set(code, currentUser);
 
-    console.log(`Écran Godot (Host) connecté avec le code : ${hostCode}`);
+    console.log(`Écran Godot (Host) connecté avec le code : ${code}`);
 
     currentUser.sendToGodot({
       type: "root_created",
@@ -75,7 +71,8 @@ wss.on("connection", (ws, req) => {
       },
     });
   } else if (type === "player") {
-    const name = params.get("name") || "Anonyme";
+    const hostCode = params.get("hostCode");
+    let name = params.get("name") || "Anonyme";
 
     // Vérification que le code entré par le joueur correspond à un client Godot
     if (!hosts.has(hostCode)) {
@@ -88,6 +85,9 @@ wss.on("connection", (ws, req) => {
       ws.close();
       return;
     }
+
+    counterPlayers++;
+    if (name === "Anonyme") name += counterPlayers;
 
     hostSocket = hosts.get(hostCode);
 
