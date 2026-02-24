@@ -3,6 +3,8 @@ extends Node2D
 var player_scene = preload("res://Player/player.tscn")
 var bonus_scene = preload("res://World/bonus.tscn")
 
+@export var qr_code: QRCodeRect
+
 @onready var timer_round = $TimerRound
 
 var players_nodes = {}
@@ -12,6 +14,7 @@ var current_round = 0
 var max_round = 2
 
 func _ready() -> void:
+	ServerSocket.room_created.connect(_on_room_created)
 	ServerSocket.player_connected.connect(_on_player_connected)
 	ServerSocket.player_use_bonus.connect(_on_player_use_bonus)
 	ServerSocket.player_left.connect(_on_player_left)
@@ -84,6 +87,9 @@ func _start_round():
 		
 		timer_round.start()
 		
+func _on_room_created(code: String, url_to_join: String):
+	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
+
 
 func _on_player_connected(id: int, p_name: String) -> void:
 	print("New player joined : " + p_name + " (ID: " + str(id) + ")")

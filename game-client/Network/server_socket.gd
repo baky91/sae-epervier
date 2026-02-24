@@ -1,11 +1,13 @@
 extends Node2D
 
+signal room_created(code: String, url_to_join: String)
 signal player_connected(id: int, name: String)
 signal player_use_bonus(id: int, bonus_name: String)
 signal player_left(id: int)
 
 var socket = WebSocketPeer.new()
 var url = "ws://localhost:3000"
+var url_to_join: String
 
 var players_inputs_buffer = {}
 
@@ -13,6 +15,8 @@ func _ready():
 	if OS.has_feature("web"):
 		var host = JavaScriptBridge.eval("window.location.hostname")
 		url = "ws://" + host + ":3000"
+	
+	url_to_join = url.replace("ws", "http")
 	
 	socket.connect_to_url(url)
 	print("Tentative de connexion au serveur...")
@@ -37,7 +41,10 @@ func _process(_delta):
 func _handle_server_message(json):
 	match json.type:
 		"root_created":
-			print("Code de la partie : ", json.data.code)
+			#print("Code de la partie : ", json.data.code)
+			url_to_join += "/" + json.data.code
+			#print("URL: ", url_to_join)
+			room_created.emit(json.data.code, url_to_join)
 		"player_joined":
 			player_connected.emit(int(json.data.id), json.data.name)
 			
