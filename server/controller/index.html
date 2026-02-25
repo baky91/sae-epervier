@@ -7,12 +7,20 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Conteneur principal -->
+    <div class="modal hidden">
+        <form id="form-pseudo">
+            <h1>Veuillez entrer votre pseudo</h1>
+            <input type="text" name="pseudo" id="pseudo" placeholder="Entrez votre pseudo" autocomplete="off" required>
+            <button type="submit">Valider</button>
+        </form>
+    </div>
+
+    <div class="overlay hidden"></div>
+
     <div id="app" class="controller-container">
         <div class="controller-wrapper">
             <div id="controller" class="controller"></div>
         </div>
-
     </div>
 
     <script>

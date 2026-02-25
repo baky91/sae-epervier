@@ -25,7 +25,11 @@ class ClientHost {
   }
 
   getPlayer(id) {
-    return this.players.get(id);
+    return this.players.get(Math.floor(id));
+  }
+
+  getAllPlayers() {
+    return this.players;
   }
 
   removePlayer(id) {

@@ -72,7 +72,6 @@ wss.on("connection", (ws, req) => {
     });
   } else if (type === "player") {
     const hostCode = params.get("hostCode");
-    let name = params.get("name") || "Anonyme";
 
     // Vérification que le code entré par le joueur correspond à un client Godot
     if (!hosts.has(hostCode)) {
@@ -86,39 +85,62 @@ wss.on("connection", (ws, req) => {
       return;
     }
 
-    counterPlayers++;
-    if (name === "Anonyme") name += counterPlayers;
-
     hostSocket = hosts.get(hostCode);
+    let name = params.get("name") || "Anonyme";
 
-    // Création du joueur si le salon existe
-    const playerId = hostSocket.getNextPlayerId();
-    currentUser = new ClientPlayer(playerId, ws, name, hostCode);
+    const savedPlayerId = params.get("playerId");
 
-    // Ajouter le joueur à l'Host correspondant
-    hostSocket.addPlayer(currentUser);
+    if (savedPlayerId) {
+      const savedPlayer = hostSocket.getPlayer(savedPlayerId);
 
-    // Confirmation au joueur
-    currentUser.sendToController({
-      type: "newplayer",
-      data: {
-        player_id: currentUser.id,
-        player_name: currentUser.name,
-      },
-    });
+      currentUser = savedPlayer;
+      // Mise à jour de la socket
+      currentUser.socket = ws;
 
-    // On prévient le Host (Godot) qu'un joueur est arrivé
-    hostSocket.sendToGodot({
-      type: "player_joined",
-      data: {
-        id: currentUser.id,
-        name: currentUser.name,
-      },
-    });
+      currentUser.sendToController({
+        type: "reconnection",
+        data: {
+          player_id: currentUser.id,
+          player_name: currentUser.name,
+        },
+      });
 
-    console.log(
-      `Joueur ${name} (ID: ${currentUser.id}) a rejoint la partie ${hostCode}`,
-    );
+      console.log(
+        `Joueur ${name} (ID: ${currentUser.id}) s'est reconnecté dans la partie ${hostCode}`,
+      );
+    } else {
+      counterPlayers++;
+      if (name === "Anonyme") name += counterPlayers;
+
+      // Création du joueur si le salon existe
+      const playerId = hostSocket.getNextPlayerId();
+      currentUser = new ClientPlayer(playerId, ws, name, hostCode);
+
+      // Ajouter le joueur à l'Host correspondant
+      hostSocket.addPlayer(currentUser);
+
+      // Confirmation au joueur
+      currentUser.sendToController({
+        type: "newplayer",
+        data: {
+          player_id: currentUser.id,
+          player_name: currentUser.name,
+        },
+      });
+
+      // On prévient le Host (Godot) qu'un joueur est arrivé
+      hostSocket.sendToGodot({
+        type: "player_joined",
+        data: {
+          id: currentUser.id,
+          name: currentUser.name,
+        },
+      });
+
+      console.log(
+        `Joueur ${name} (ID: ${currentUser.id}) a rejoint la partie ${hostCode}`,
+      );
+    }
   }
 
   // Gestion des messages entrants
@@ -138,8 +160,6 @@ wss.on("connection", (ws, req) => {
       }
       // Si c'est un message de Godot (par exemple: récupération de bonus) on le relaie au joueur concerné
       else if (currentUser instanceof ClientHost) {
-        parsed = parsed;
-
         const targetId = parsed.player_id;
         const targetPlayer = currentUser.getPlayer(targetId);
 
@@ -159,7 +179,7 @@ wss.on("connection", (ws, req) => {
   ws.on("close", () => {
     if (currentUser instanceof ClientPlayer) {
       if (hostSocket) {
-        hostSocket.removePlayer(currentUser.id);
+        // hostSocket.removePlayer(currentUser.id);
         hostSocket.sendToGodot({
           type: "player_left",
           player_id: currentUser.id,
