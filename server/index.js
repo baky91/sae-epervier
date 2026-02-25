@@ -91,11 +91,17 @@ wss.on("connection", (ws, req) => {
     const savedPlayerId = params.get("playerId");
 
     if (savedPlayerId) {
-      const savedPlayer = hostSocket.getPlayer(savedPlayerId);
+      const savedPlayer = hostSocket.getPlayer(Number(savedPlayerId));
 
       currentUser = savedPlayer;
       // Mise à jour de la socket
       currentUser.socket = ws;
+
+      // On arrête le timer de déconnexion
+      if (currentUser.disconnectTimeout) {
+        clearTimeout(currentUser.disconnectTimeout);
+        currentUser.disconnectTimeout = null;
+      }
 
       currentUser.sendToController({
         type: "reconnection",
@@ -179,14 +185,16 @@ wss.on("connection", (ws, req) => {
   ws.on("close", () => {
     if (currentUser instanceof ClientPlayer) {
       if (hostSocket) {
-        // hostSocket.removePlayer(currentUser.id);
-        hostSocket.sendToGodot({
-          type: "player_left",
-          player_id: currentUser.id,
-        });
-        console.log(
-          `Joueur ${currentUser.name} déconnecté de la partie ${currentUser.hostCode}`,
-        );
+        currentUser.disconnectTimeout = setTimeout(() => {
+          hostSocket.removePlayer(currentUser.id);
+          hostSocket.sendToGodot({
+            type: "player_left",
+            player_id: currentUser.id,
+          });
+          console.log(
+            `Joueur ${currentUser.name} déconnecté de la partie ${currentUser.hostCode}`,
+          );
+        }, 10000); // On laisse 10 secondes au joueur pour se reconnecter avant de le supprimer
       }
     } else if (currentUser instanceof ClientHost) {
       hosts.delete(currentUser.hostCode);

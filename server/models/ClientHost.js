@@ -25,7 +25,7 @@ class ClientHost {
   }
 
   getPlayer(id) {
-    return this.players.get(Math.floor(id));
+    return this.players.get(id);
   }
 
   getAllPlayers() {
