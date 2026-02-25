@@ -6,7 +6,11 @@ class ClientPlayer {
     this.socket = socket;
     this.name = name;
     this.hostCode = hostCode;
-    this.role = SURVIVOR; // Rôle par défaut
+    this.role = SURVIVOR;
+    this.bonus = {
+      speed: 0,
+      dash: 0,
+    };
   }
 
   sendToController(data) {

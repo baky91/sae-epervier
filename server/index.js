@@ -108,6 +108,8 @@ wss.on("connection", (ws, req) => {
         data: {
           player_id: currentUser.id,
           player_name: currentUser.name,
+          player_bonus: currentUser.bonus,
+          player_role: currentUser.role,
         },
       });
 
@@ -174,6 +176,12 @@ wss.on("connection", (ws, req) => {
             type: parsed.type,
             data: parsed.data,
           });
+          // Enregistrement de quelques informations utiles
+          if (parsed.type === "bonus_obtained") {
+            targetPlayer.bonus[parsed.data.bonus]++;
+          } else if (parsed.type === "new_role") {
+            targetPlayer.role = parsed.data.role;
+          }
         }
       }
     } catch (e) {

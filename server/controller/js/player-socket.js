@@ -72,6 +72,13 @@ const start = (hostCode, pseudo, playerId = null) => {
           );
         },
       });
+
+      // Si c'est une reconnexion, on reassigne le rôle et les bonus au joueur
+      if (msg.type === "reconnection") {
+        controller.updateRole(msg.data.player_role);
+        controller.setSpeedBonus(msg.data.player_bonus.speed);
+        controller.setDashBonus(msg.data.player_bonus.dash);
+      }
     } else if (msg.type === "bonus_obtained") {
       if (controller) {
         const bonusName = msg.data.bonus;
