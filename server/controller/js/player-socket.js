@@ -26,7 +26,6 @@ const start = (hostCode, pseudo, playerId = null) => {
       controller = new PlayerController("controller", {
         playerNumber: player_id,
         playerName: player_name,
-        // role: player_role,
         onMove: (x, y) => {
           const now = Date.now();
           if (x === 0 && y === 0) {

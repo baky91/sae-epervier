@@ -1,12 +1,10 @@
-const { SURVIVOR } = require("./Constants");
-
 class ClientPlayer {
   constructor(id, socket, name, hostCode) {
     this.id = id;
     this.socket = socket;
     this.name = name;
     this.hostCode = hostCode;
-    this.role = SURVIVOR;
+    this.role = null;
     this.bonus = {
       speed: 0,
       dash: 0,

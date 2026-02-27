@@ -178,7 +178,7 @@ class PlayerController {
     this.container = document.getElementById(containerId);
     this.playerNumber = options.playerNumber;
     this.playerName = options.playerName;
-    this.role = options.role;
+    this.role = null;
     this.speedBonus = 0;
     this.dashBonus = 0;
     this.onMove = options.onMove;

@@ -4,12 +4,13 @@ const { join } = require("node:path");
 const { WebSocketServer } = require("ws");
 const ClientHost = require("./models/ClientHost");
 const ClientPlayer = require("./models/ClientPlayer");
-const { generateUniqueCode } = require("./utils");
+const { generateUniqueCode } = require("./models/utils");
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server }); // On lie ws au serveur http
 
 const PORT = process.env.PORT || 3000;
+const hosts = new Map();
 
 // SECURITE
 
@@ -36,15 +37,19 @@ app.get("/game", (req, res) => {
 });
 
 app.get("/:hostCode", (req, res) => {
-  // const { hostCode } = req.params;
-  // const { pseudo } = req.query || "Anonyme";
+  const { hostCode } = req.params;
 
-  res.sendFile(join(__dirname, "controller", "index.html"));
+  if (hosts.has(hostCode)) {
+    res.sendFile(join(__dirname, "controller", "index.html"));
+  } else {
+    res.send(
+      `<h1>Erreur</h1><p>La partie avec le code ${hostCode} n'existe pas!</p>`,
+    );
+  }
 });
 
 // COMMUNICATIONS SOCKETS
 
-const hosts = new Map();
 let counterPlayers = 0;
 
 wss.on("connection", (ws, req) => {
@@ -90,7 +95,7 @@ wss.on("connection", (ws, req) => {
 
     const savedPlayerId = params.get("playerId");
 
-    if (savedPlayerId) {
+    if (savedPlayerId && currentUser) {
       const savedPlayer = hostSocket.getPlayer(Number(savedPlayerId));
 
       currentUser = savedPlayer;
