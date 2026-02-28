@@ -213,6 +213,7 @@ wss.on("connection", (ws, req) => {
         }, 10000); // On laisse 10 secondes au joueur pour se reconnecter avant de le supprimer
       }
     } else if (currentUser instanceof ClientHost) {
+      currentUser.closeGame();
       hosts.delete(currentUser.hostCode);
       console.log(`Partie ${currentUser.hostCode} fermée`);
     }

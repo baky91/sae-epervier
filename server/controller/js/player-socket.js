@@ -94,16 +94,19 @@ const start = (hostCode, pseudo, playerId = null) => {
       console.log("Erreur :", msg.message);
     }
   };
+
+  socket.onclose = (event) => {
+    console.log(event);
+  };
 };
 
 const hostCode = window.location.pathname.split("/")[1];
 
 let pseudo = sessionStorage.getItem("pseudo");
+const savedHostCode = sessionStorage.getItem("hostCode");
 
 // Lors de la première connexion, il n'y aura pas de pseudo enregistré
 if (!pseudo) {
-  console.log("Aucun pseudo enregistré");
-
   const modal = document.querySelector(".modal");
   const overlay = document.querySelector(".overlay");
   const formPseudo = document.getElementById("form-pseudo");
@@ -118,6 +121,7 @@ if (!pseudo) {
     pseudo = inputPseudo.value;
     // On enregistre le pseudo en cas de reconnexion
     sessionStorage.setItem("pseudo", pseudo);
+    sessionStorage.setItem("hostCode", hostCode);
 
     // Fermer la modal
     modal.classList.add("hidden");
@@ -125,13 +129,14 @@ if (!pseudo) {
 
     start(hostCode, pseudo);
   });
+} else if (pseudo && savedHostCode !== hostCode) {
+  // si un pseudo est enregistré mais que le code de la partie est différente, on relance mais en prenant en compte le pseudo
+  start(hostCode, pseudo);
 } else {
-  // Si il y'a un pseudo on lance directement
-  console.log("Un pseudo est enregistré:", pseudo);
+  // Si il y'a un pseudo et que c'est la même partie on lance directement
 
   // Si un pseudo est enregistré, alors un id est aussi enregistré
   const playerId = localStorage.getItem("playerId");
-  console.log("ID:", playerId);
 
   start(hostCode, pseudo, playerId);
 }
