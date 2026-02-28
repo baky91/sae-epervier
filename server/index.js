@@ -43,7 +43,9 @@ app.get("/:hostCode", (req, res) => {
     res.sendFile(join(__dirname, "controller", "index.html"));
   } else {
     res.send(
-      `<h1>Erreur</h1><p>La partie avec le code ${hostCode} n'existe pas!</p>`,
+      `<h1>Erreur</h1>
+      <p>La partie avec le code '<strong>${hostCode}</strong>' n'existe pas!</p>
+      <a href="/">Retour à l'accueil</a>`,
     );
   }
 });
