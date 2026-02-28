@@ -30,7 +30,9 @@ document.getElementById("error-message").innerHTML = `
 `;
 document.getElementById("form-code").addEventListener("submit", (event) => {
     event.preventDefault();
-    console.log(event)
+    
+    const hostCode = document.getElementById("code").value;
+    window.location.href = hostCode;
 })
     </script>
 </body>
