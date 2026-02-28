@@ -36,19 +36,20 @@ body {
     text-align: center;
 }
 
-#form-pseudo {
+#form-pseudo,
+#form-code {
     background: white;
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    width: 90%;
     max-width: 400px;
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-#pseudo {
+#pseudo,
+#code {
     padding: 12px 15px;
     border: 2px solid #eee;
     border-radius: 8px;
@@ -57,11 +58,13 @@ body {
     transition: border-color 0.3s;
 }
 
-#pseudo:focus {
-    border-color: #6c63ff; /* Une couleur violette moderne */
+#pseudo:focus,
+#code:focus {
+    border-color: #6c63ff;
 }
 
-button[type="submit"] {
+button[type="submit"],
+.error-options a {
     padding: 12px;
     background-color: #6c63ff;
     color: white;
@@ -72,11 +75,13 @@ button[type="submit"] {
     transition: transform 0.1s, background-color 0.3s;
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:hover,
+.error-options a:hover {
     background-color: #5a52e0;
 }
 
-button[type="submit"]:active {
+button[type="submit"]:active,
+.error-options a:hover {
     transform: scale(0.98);
 }
 
@@ -93,6 +98,53 @@ button[type="submit"]:active {
 
 .hidden {
     display: none;
+}
+
+/* Error page */
+
+.error {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.error h1 {
+    font-size: 3rem;
+}
+
+.error p {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.error-options {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 2rem;
+    margin: 1rem auto;
+    max-width: 655px;
+    width: 100%;
+}
+
+.error-options a {
+    text-decoration: none;
+    text-align: center;
+}
+
+.error-options .error-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.separator {
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 2px; 
 }
 
 /* Controller */
@@ -408,4 +460,19 @@ button[type="submit"]:active {
         width: 32px;
         height: 32px;
     }
+}
+
+@media (max-width: 550px) {
+    .error-options {
+        flex-direction: column;
+    }
+
+    .separator {
+        display: none;
+    }
+
+    .error-option {
+        justify-content: center;
+    }
+
 }
