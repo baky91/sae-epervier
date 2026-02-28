@@ -53,6 +53,12 @@ class ClientHost {
 
     return sparrowhawks;
   }
+
+  closeGame() {
+    this.players.forEach((p) => {
+      p.socket.close();
+    });
+  }
 }
 
 module.exports = ClientHost;
