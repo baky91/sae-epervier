@@ -64,7 +64,7 @@ wss.on("connection", (ws, req) => {
 
   if (type === "host") {
     let code = generateUniqueCode(hosts);
-    code = "ABCD"; // Utilisation d'un code défini pour faciliter le développement
+    // code = "ABCD"; // Utilisation d'un code défini pour faciliter le développement
 
     currentUser = new ClientHost(ws, code);
     hosts.set(code, currentUser);
@@ -96,11 +96,12 @@ wss.on("connection", (ws, req) => {
     let name = params.get("name") || "Anonyme";
 
     const savedPlayerId = params.get("playerId");
-
-    if (savedPlayerId && currentUser) {
+    if (savedPlayerId) {
       const savedPlayer = hostSocket.getPlayer(Number(savedPlayerId));
-
       currentUser = savedPlayer;
+    }
+
+    if (currentUser) {
       // Mise à jour de la socket
       currentUser.socket = ws;
 
