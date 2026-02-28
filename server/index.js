@@ -23,7 +23,6 @@ app.use((req, res, next) => {
 // FICHIERS STATIQUES
 
 app.use(express.static("public"));
-app.use(express.static("controller"));
 app.use(express.static("game"));
 
 // ROUTES
@@ -40,7 +39,7 @@ app.get("/:hostCode", (req, res) => {
   const { hostCode } = req.params;
 
   if (hosts.has(hostCode)) {
-    res.sendFile(join(__dirname, "controller", "index.html"));
+    res.sendFile(join(__dirname, "public", "controller.html"));
   } else {
     res.send(
       `<h1>Erreur</h1>
