@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
+    "dev": "nodemon index",
     "build:game": "..\\..\\Godot_v4.6-stable_win64.exe --headless ..\\game-client\\project.godot --export-release Web"
   },
   "keywords": [],
@@ -13,5 +14,8 @@
   "dependencies": {
     "express": "^4.22.1",
     "ws": "^8.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
