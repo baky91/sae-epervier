@@ -1,8 +1,10 @@
 const { randomIntFromInterval, toSquare } = require("../models/utils");
 
+// Usage : node tests/tests-bots.js {hostCode} {numBots}
+
 const SERVER_URL = "ws://localhost:3000";
-const HOST_CODE = "ABCD";
-const NUM_BOTS = 25;
+const HOST_CODE = process.argv[2] || "ABCD";
+const NUM_BOTS = parseInt(process.argv[3]) || 25;
 const EMIT_INTERVAL = 40;
 
 function createBot(id) {
