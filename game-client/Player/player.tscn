@@ -20,7 +20,6 @@ mesh = SubResource("SphereMesh_r0tex")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1007058073]
 shape = SubResource("CircleShape2D_r0tex")
-disabled = true
 
 [node name="LabelNumber" type="Label" parent="." unique_id=1029009064]
 offset_left = -14.0

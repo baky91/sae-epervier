@@ -12,6 +12,9 @@ function createBot(id) {
     `${SERVER_URL}/?clientType=player&hostCode=${HOST_CODE}&name=Bot_${id}`,
   );
 
+  let moveX = 0;
+  let moveY = 0;
+
   socket.onmessage = (event) => {
     const msg = JSON.parse(event.data);
 
@@ -19,20 +22,20 @@ function createBot(id) {
       console.log(`Nouveau bot ajouté: Bot_${id}`);
 
       setInterval(() => {
-        let x = randomIntFromInterval(-1, 1);
-        let y = randomIntFromInterval(-1, 1);
-        const length = Math.sqrt(toSquare(x) + toSquare(y));
+        moveX = randomIntFromInterval(-1, 1);
+        moveY = randomIntFromInterval(-1, 1);
+        const length = Math.sqrt(toSquare(moveX) + toSquare(moveY));
 
-        x = (x / length) | x;
-        y = (y / length) | x;
+        moveX = (moveX / length) | moveX;
+        moveY = (moveY / length) | moveY;
 
         socket.send(
           JSON.stringify({
             type: "move",
             player_id: id,
             data: {
-              x: x,
-              y: y,
+              x: moveX,
+              y: moveY,
             },
           }),
         );
