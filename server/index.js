@@ -67,7 +67,7 @@ wss.on("connection", (ws, req) => {
     console.log(`Écran Godot (Host) connecté avec le code : ${code}`);
 
     currentUser.sendToGodot({
-      type: "root_created",
+      type: "room_created",
       data: {
         code: code,
       },

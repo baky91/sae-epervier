@@ -40,7 +40,7 @@ func _process(_delta):
 
 func _handle_server_message(json):
 	match json.type:
-		"root_created":
+		"room_created":
 			#print("Code de la partie : ", json.data.code)
 			url_to_join += "/" + json.data.code
 			#print("URL: ", url_to_join)
