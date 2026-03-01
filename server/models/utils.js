@@ -18,4 +18,13 @@ function generateUniqueCode(hosts) {
   return code;
 }
 
-module.exports = { generateUniqueCode };
+function randomIntFromInterval(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function toSquare(val) {
+  if (val == 0) return 0;
+  return val * val;
+}
+
+module.exports = { generateUniqueCode, randomIntFromInterval, toSquare };

@@ -59,7 +59,7 @@ wss.on("connection", (ws, req) => {
 
   if (type === "host") {
     let code = generateUniqueCode(hosts);
-    // code = "ABCD"; // Utilisation d'un code défini pour faciliter le développement
+    code = "ABCD"; // Utilisation d'un code défini pour faciliter le développement
 
     currentUser = new ClientHost(ws, code);
     hosts.set(code, currentUser);
