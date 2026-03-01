@@ -27,6 +27,7 @@ script = ExtResource("1_24pi4")
 qr_code = NodePath("TextureRect")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1942510949]
+texture_filter = 1
 texture_repeat = 2
 position = Vector2(640, 360)
 texture = ExtResource("2_ktx4i")
@@ -94,6 +95,16 @@ light_module_color = Color(1, 1, 1, 1)
 dark_module_color = Color(0, 0, 0, 1)
 auto_module_px_size = true
 quiet_zone_size = 4
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1067244503]
+points = PackedVector2Array(0, 640, 1280, 640)
+width = 3.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="Line2D2" type="Line2D" parent="." unique_id=1249393066]
+points = PackedVector2Array(0, 80, 1280, 80)
+width = 3.0
+default_color = Color(1, 0, 0, 1)
 
 [connection signal="timeout" from="TimerBonus" to="." method="_on_timer_bonus_timeout"]
 [connection signal="timeout" from="TimerRound" to="." method="_on_timer_round_timeout"]

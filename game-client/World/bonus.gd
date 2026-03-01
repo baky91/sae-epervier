@@ -17,7 +17,7 @@ func _ready() -> void:
 	var height = get_viewport().get_visible_rect().size[1]
 	
 	var random_x = rng.randi_range(0, width)
-	var random_y = rng.randi_range(40, height - 40)
+	var random_y = rng.randi_range(80, height - 80)
 
 	position = Vector2(random_x, random_y)
 
