@@ -60,7 +60,11 @@ func _physics_process(delta: float) -> void:
 func set_role(new_role: String):
 	role = new_role
 	set_color(ROLES_CONFIG[role])
-
+	if role == ROLE_INFECTED:
+		$CollisionShape2D.disabled = true
+	else:
+		$CollisionShape2D.disabled = false
+		
 func set_color(color: Color):
 	$MeshInstance2D.modulate = color
 	
