@@ -30,6 +30,7 @@ sae-epervier
    ├─ game              # Jeu Godot exporté en HTML
    ├─ models            
    ├─ public            # Page d'accueil + Contrôleur web
+   ├─ tests             
    └─ index.js          # Point d'entrée du serveur
 ```
 
@@ -59,7 +60,16 @@ Pour exporter le jeu en format Web:
 
 *N'oubliez pas de relancer le serveur*
 
-5. Accéder aux pages
+5. Lancer les bots
+
+S'assurer que le serveur et qu'une partie sont lancées.\
+Lancer le script de test: **node tests/tests-bots.js {code} {nbBots}**
+
+Par exemple, pour lancer 20 bots dans la partie ABCD:
+- **node tests/tests-bots.js ABCD 20**
+
+
+6. Accéder aux pages
 - **Jeu** : /game
 - **Contrôleur** : /{code}
 
