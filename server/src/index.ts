@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { createServer } from "http";
 import { join } from "node:path";
 import { WebSocketServer, WebSocket } from "ws";
@@ -16,7 +16,7 @@ const hosts = new Map<string, ClientHost>();
 
 // SECURITE
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
   res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
   next();
@@ -29,18 +29,18 @@ app.use(express.static(join(import.meta.dirname, "../game")));
 
 // ROUTES
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.sendFile(join(import.meta.dirname, "../public/index.html"));
 });
 
-app.get("/game", (req, res) => {
+app.get("/game", (req: Request, res: Response) => {
   res.sendFile(join(import.meta.dirname, "../game/index.html"));
 });
 
-app.get("/:hostCode", (req, res) => {
+app.get("/:hostCode", (req: Request, res: Response) => {
   const { hostCode } = req.params;
 
-  if (hosts.has(hostCode)) {
+  if (!Array.isArray(hostCode) && hosts.has(hostCode)) {
     res.sendFile(join(import.meta.dirname, "../public/controller.html"));
   } else {
     res.sendFile(join(import.meta.dirname, "../public/error-page.html"));
