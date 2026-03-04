@@ -1,7 +1,9 @@
-export function generateUniqueCode(hosts) {
+import ClientHost from "./ClientHost.js";
+
+export function generateUniqueCode(hosts: Map<string, ClientHost>): string {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const codeLength = 4;
-  let code;
+  let code = "";
   let isUnique = false;
 
   while (!isUnique) {
@@ -18,11 +20,11 @@ export function generateUniqueCode(hosts) {
   return code;
 }
 
-export function randomIntFromInterval(min, max) {
+export function randomIntFromInterval(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-export function toSquare(val) {
+export function toSquare(val: number): number {
   if (val == 0) return 0;
   return val * val;
 }

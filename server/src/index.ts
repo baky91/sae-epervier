@@ -1,17 +1,18 @@
 import express from "express";
 import { createServer } from "http";
 import { join } from "node:path";
-import { WebSocketServer } from "ws";
+import { WebSocketServer, WebSocket } from "ws";
 import ClientHost from "./models/ClientHost.js";
 import ClientPlayer from "./models/ClientPlayer.js";
 import { generateUniqueCode } from "./models/utils.js";
+import { SocketMessage } from "./types/types.js";
 
 const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server }); // On lie ws au serveur http
 
 const PORT = process.env.PORT || 3000;
-const hosts = new Map();
+const hosts = new Map<string, ClientHost>();
 
 // SECURITE
 
@@ -48,15 +49,15 @@ app.get("/:hostCode", (req, res) => {
 
 // COMMUNICATIONS SOCKETS
 
-let counterPlayers = 0;
+let counterPlayers: number = 0;
 
-wss.on("connection", (ws, req) => {
+wss.on("connection", (ws: WebSocket, req: Request) => {
   // Extraction des paramètres de l'URL (ex: ?clientType=player&name=Alex)
   const params = new URLSearchParams(req.url.split("?")[1]);
   const type = params.get("clientType") || "host"; // Si aucun type n'est spécifié dans l'URL avec c'est un host Godot
 
-  let currentUser = null;
-  let hostSocket = null; // Stocker la socket du host si le type de client est un joueur
+  let currentUser: ClientHost | ClientPlayer | undefined;
+  let hostSocket: ClientHost | undefined; // Stocker la socket du host si le type de client est un joueur
 
   if (type === "host") {
     let code = generateUniqueCode(hosts);
@@ -76,6 +77,10 @@ wss.on("connection", (ws, req) => {
   } else if (type === "player") {
     const hostCode = params.get("hostCode");
 
+    if (!hosts || !hostCode) {
+      return;
+    }
+
     // Vérification que le code entré par le joueur correspond à un client Godot
     if (!hosts.has(hostCode)) {
       ws.send(
@@ -89,15 +94,20 @@ wss.on("connection", (ws, req) => {
     }
 
     hostSocket = hosts.get(hostCode);
+
+    if (!hostSocket) {
+      return;
+    }
+
     let name = params.get("name") || "Anonyme";
 
     const savedPlayerId = params.get("playerId");
-    if (savedPlayerId) {
+    if (hostSocket && savedPlayerId) {
       const savedPlayer = hostSocket.getPlayer(Number(savedPlayerId));
       currentUser = savedPlayer;
     }
 
-    if (currentUser) {
+    if (currentUser instanceof ClientPlayer) {
       // Mise à jour de la socket
       currentUser.socket = ws;
 
@@ -156,9 +166,9 @@ wss.on("connection", (ws, req) => {
   }
 
   // Gestion des messages entrants
-  ws.on("message", (message) => {
+  ws.on("message", (message: any) => {
     try {
-      let parsed = JSON.parse(message);
+      let parsed: SocketMessage = JSON.parse(message);
 
       // Si c'est un message d'un joueur (mouvement, bonus...), on le relaie à Godot
       if (currentUser instanceof ClientPlayer) {
