@@ -14,34 +14,34 @@ const hosts = new Map();
 
 // SECURITE
 
-app.use((req, res, next) => {
-  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+//   res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+//   next();
+// });
 
 // FICHIERS STATIQUES
 
-app.use(express.static("public"));
-app.use(express.static("game"));
+app.use(express.static(join(__dirname, "../public")));
+app.use(express.static(join(__dirname, "../game")));
 
 // ROUTES
 
 app.get("/", (req, res) => {
-  res.sendFile(join(__dirname, "public", "index.html"));
+  res.sendFile(join(__dirname, "../public/index.html"));
 });
 
 app.get("/game", (req, res) => {
-  res.sendFile(join(__dirname, "game", "index.html"));
+  res.sendFile(join(__dirname, "../game/index.html"));
 });
 
 app.get("/:hostCode", (req, res) => {
   const { hostCode } = req.params;
 
   if (hosts.has(hostCode)) {
-    res.sendFile(join(__dirname, "public", "controller.html"));
+    res.sendFile(join(__dirname, "../public/controller.html"));
   } else {
-    res.sendFile(join(__dirname, "public", "error-page.html"));
+    res.sendFile(join(__dirname, "../public/error-page.html"));
   }
 });
 
