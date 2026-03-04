@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index",
+    "start": "tsc && node dist/index",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-    "build:game": "..\\..\\Godot_v4.6-stable_win64.exe --headless ..\\game-client\\project.godot --export-release Web"
+    "build:game": "..\\..\\Godot_v4.6-stable_win64.exe --headless ..\\game-client\\project.godot --export-release Web",
+    "test": "node tests/tests-bots.js"
   },
   "keywords": [],
   "author": "",

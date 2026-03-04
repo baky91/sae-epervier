@@ -27,6 +27,12 @@ export default class ClientHost {
     }
   }
 
+  sendToAllPlayers(data: any): void {
+    this.players.forEach((player) => {
+      player.sendToController(data);
+    });
+  }
+
   getNextPlayerId(): number {
     return this.counterPlayers + 1;
   }
