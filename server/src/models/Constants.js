@@ -1,16 +1,8 @@
 // Rôles
-const SURVIVOR = "survivor";
-const INFECTED = "infected";
-const SPARROWHAWK = "sparrowhawk";
+export const SURVIVOR = "survivor";
+export const INFECTED = "infected";
+export const SPARROWHAWK = "sparrowhawk";
 
 // Bonus
-const BONUS_SPEED = "speed";
-const BONUS_DASH = "dash";
-
-module.exports = {
-  SURVIVOR,
-  INFECTED,
-  SPARROWHAWK,
-  BONUS_SPEED,
-  BONUS_DASH,
-};
+export const BONUS_SPEED = "speed";
+export const BONUS_DASH = "dash";

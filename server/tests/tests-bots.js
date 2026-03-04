@@ -1,4 +1,4 @@
-const { randomIntFromInterval, toSquare } = require("../models/utils");
+import { randomIntFromInterval, toSquare } from "../models/utils";
 
 // Usage : node tests/tests-bots.js {hostCode} {numBots}
 

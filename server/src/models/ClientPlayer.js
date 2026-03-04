@@ -1,4 +1,4 @@
-class ClientPlayer {
+export default class ClientPlayer {
   constructor(id, socket, name, hostCode) {
     this.id = id;
     this.socket = socket;
@@ -18,5 +18,3 @@ class ClientPlayer {
     }
   }
 }
-
-module.exports = ClientPlayer;

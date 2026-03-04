@@ -2,6 +2,7 @@
   "name": "epervier-server",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node src/index",
     "dev": "nodemon src/index",

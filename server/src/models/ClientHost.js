@@ -1,4 +1,4 @@
-class ClientHost {
+export default class ClientHost {
   constructor(socket, hostCode) {
     this.socket = socket;
     this.hostCode = hostCode;
@@ -60,5 +60,3 @@ class ClientHost {
     });
   }
 }
-
-module.exports = ClientHost;

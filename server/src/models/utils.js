@@ -1,4 +1,4 @@
-function generateUniqueCode(hosts) {
+export function generateUniqueCode(hosts) {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const codeLength = 4;
   let code;
@@ -18,13 +18,11 @@ function generateUniqueCode(hosts) {
   return code;
 }
 
-function randomIntFromInterval(min, max) {
+export function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function toSquare(val) {
+export function toSquare(val) {
   if (val == 0) return 0;
   return val * val;
 }
-
-module.exports = { generateUniqueCode, randomIntFromInterval, toSquare };
