@@ -72,8 +72,9 @@ func _start_round():
 		# On met tous les éperviers au centre
 		var counter_sparrowhawk = next_sparrowhawk.size()
 		
-		var width = get_viewport().get_visible_rect().size[0]
-		var height = get_viewport().get_visible_rect().size[1]
+		var viewport_size = get_viewport().get_visible_rect().size
+		var width = viewport_size[0]
+		var height = viewport_size[1]
 		
 		var y = height / 2 # Les éperviers seront téléportés à mi-hauteur
 		
@@ -96,8 +97,10 @@ func _on_player_connected(id: int, p_name: String) -> void:
 	var player = player_scene.instantiate()
 	player.name = str(id)
 	player.id = id
-	var width = get_viewport().get_visible_rect().size[0]
-	player.global_position = Vector2(randf_range(0, width), randf_range(100, 500))
+	var viewport_size = get_viewport().get_visible_rect().size
+	var width = viewport_size[0]
+	var height = viewport_size[1]
+	player.global_position = Vector2(randf_range(0, width), randf_range(80, height - 80)) # 80: Height of a safe zone
 	player.set_label(str(id))
 	player.get_bonus.connect(_on_player_signal_bonus)
 	player.role_changed.connect(_on_role_changed)

@@ -1,4 +1,4 @@
-import { randomIntFromInterval, toSquare } from "../models/utils";
+import { randomIntFromInterval, toSquare } from "../dist/models/utils.js";
 
 // Usage : node tests/tests-bots.js {hostCode} {numBots}
 
