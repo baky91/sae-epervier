@@ -56,6 +56,12 @@ body {
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s;
+    text-transform: uppercase;
+}
+
+#pseudo::placeholder,
+#code::placeholder {
+    text-transform: none;
 }
 
 #pseudo:focus,
