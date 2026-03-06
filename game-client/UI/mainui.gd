@@ -12,7 +12,6 @@ const PLAYER_CARD = preload("res://UI/player_card.tscn")
 @export var _qr_rect: QRCodeRect
 var hostCode: String
 var counter_players = 0
-var players_ids = []
 
 func _ready():
 	ServerSocket.room_created.connect(_on_room_created)
@@ -34,17 +33,19 @@ func _on_room_created(code: String, url_to_join: String):
 	hostCode = code
 	label_code.text = hostCode
 	label_url.text += hostCode
+	print(url_to_join)
 	
-func _on_player_connected(id: int, name: String):
-	players_ids.append(id)
+func _on_player_connected(id: int, p_name: String):
 	var new_card = PLAYER_CARD.instantiate()
 	new_card.name = str(id)
-	new_card.set_text(id, name)
+	new_card.set_text(id, p_name)
 	add_player_counter()
 	grid_players.add_child(new_card)
 	
 func _on_player_left(id: int):
-	pass
+	var player_line = grid_players.get_node(str(id))
+	player_line.queue_free()
+	remove_player_counter()
 
 func _button_start_pressed():
 	var data_to_send = {

@@ -9,6 +9,7 @@ var socket = WebSocketPeer.new()
 var url = "ws://localhost:3000"
 var url_to_join: String
 
+var players_ids = []
 var players_inputs_buffer = {}
 
 func _ready():
@@ -46,6 +47,7 @@ func _handle_server_message(json):
 			#print("URL: ", url_to_join)
 			room_created.emit(json.data.code, url_to_join)
 		"player_joined":
+			players_ids.append(int(json.data.id))
 			player_connected.emit(int(json.data.id), json.data.name)
 			
 		"move":
@@ -55,6 +57,7 @@ func _handle_server_message(json):
 			player_use_bonus.emit(int(json.player_id), json.data.bonus)
 			
 		"player_left":
+			players_ids.erase(int(json.player_id))
 			player_left.emit(int(json.player_id))
 
 func send_message_to_server(data: Dictionary):

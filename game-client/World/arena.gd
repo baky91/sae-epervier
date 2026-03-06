@@ -55,7 +55,7 @@ func _start_game():
 		
 	# Génération des joueurs après avoir cliqué sur le bouton pour lancer (UI scène par défaut)
 	if !game_started:
-		var players_ids = ServerSocket.players_inputs_buffer.keys()
+		var players_ids = ServerSocket.players_ids
 		var random_sparrowhawk_id = players_ids.pick_random()
 		print("Id de l'épervier: ", str(random_sparrowhawk_id))
 		
