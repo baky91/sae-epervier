@@ -19,6 +19,7 @@ func _ready() -> void:
 	ServerSocket.player_use_bonus.connect(_on_player_use_bonus)
 	ServerSocket.player_left.connect(_on_player_left)
 
+	_start_game()
 
 # Position update of all players
 func _physics_process(_delta):
@@ -36,21 +37,59 @@ func _physics_process(_delta):
 			#player_node.direction = player_node.direction.lerp(vector_move, 0.2)
 			
 func _start_game():
+	# Création des joueurs directement lors de la connexion (si scène par défaut)
+	#if !game_started:
+		## Identifiant du joueur tiré épervier
+		#var random_player_id = players_nodes.keys().pick_random()
+		#
+		## Tous les joueurs seront survivants, sauf celui tiré
+		#for key in players_nodes:
+			#var player = players_nodes[key]
+			#
+			#if key == random_player_id:
+				#player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
+			#else:
+				#player.role_changed.emit(key, Player.ROLE_SURVIVOR)
+		#
+		#game_started = true
+		
+	# Génération des joueurs après avoir cliqué sur le bouton pour lancer (UI scène par défaut)
 	if !game_started:
-		# Identifiant du joueur tiré épervier
-		var random_player_id = players_nodes.keys().pick_random()
+		var players_ids = ServerSocket.players_inputs_buffer.keys()
+		var random_sparrowhawk_id = players_ids.pick_random()
+		print("Id de l'épervier: ", str(random_sparrowhawk_id))
 		
-		# Tous les joueurs seront survivants, sauf celui tiré
-		for key in players_nodes:
-			var player = players_nodes[key]
-			
-			if key == random_player_id:
-				player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
-			else:
-				player.role_changed.emit(key, Player.ROLE_SURVIVOR)
+		var safe_zone_height = 80
+		var player_radius = 16
+		var viewport_size = get_viewport().get_visible_rect().size
+		var width = viewport_size[0]
+		var height = viewport_size[1]
 		
-		game_started = true
+		for id in players_ids:
+			print("Création du joueur ", id)
+			var player = player_scene.instantiate()
+			player.name = str(id)
+			player.id = id
+			players_nodes[id] = player
 
+			# Connexion des signaux
+			player.get_bonus.connect(_on_player_signal_bonus)
+			player.role_changed.connect(_on_role_changed)
+			
+			# Ajout du numéro sur le pion du joueur
+			player.set_label(str(id))
+
+			# Positionnement du joueur
+			if id == random_sparrowhawk_id: # si épervier, on le place au milieu
+				player.role_changed.emit(id, Player.ROLE_SPARROWHAWK)
+				player.global_position = Vector2(width / 2, height / 2)
+			else: # sinon, on le place dans la zone de sécurité inférieure
+				player.role_changed.emit(id, Player.ROLE_SURVIVOR)
+				player.global_position = Vector2(randf_range(player_radius, width - player_radius), randf_range(height - safe_zone_height - player_radius, height - player_radius))
+			
+			# Ajout dans la scène
+			$Players.add_child(player)
+			
 func _start_round():
 	if current_round < max_round:
 		current_round += 1
@@ -90,7 +129,6 @@ func _start_round():
 		
 func _on_room_created(code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
-
 
 func _on_player_connected(id: int, p_name: String) -> void:
 	print("New player joined : " + p_name + " (ID: " + str(id) + ")")

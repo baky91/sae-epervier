@@ -182,6 +182,13 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
       }
       // Si c'est un message de Godot (par exemple: récupération de bonus) on le relaie au joueur concerné
       else if (currentUser instanceof ClientHost) {
+        // Envoi à tous les joueurs
+        if (!parsed.player_id) {
+          currentUser.sendToAllPlayers(parsed);
+
+          return;
+        }
+
         const targetId = parsed.player_id;
         const targetPlayer = currentUser.getPlayer(targetId);
 
