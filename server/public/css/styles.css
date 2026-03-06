@@ -369,10 +369,6 @@ button[type="submit"]:active,
     color: white;
 }
 
-.bonus-button:not(:disabled):hover {
-    transform: scale(1.05);
-}
-
 .bonus-button.speed {
     background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
     border-color: #facc15;
