@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://choi8r2imfc22"]
+
+[ext_resource type="Script" uid="uid://peq4xe8jnxy1" path="res://UI/player_card.gd" id="1_73ol5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_katih"]
+bg_color = Color(0.23137255, 0.50980395, 0.9647059, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6174547, 0.61745477, 0.6174545, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="LabelSettings" id="LabelSettings_73ol5"]
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="PlayerCard" type="PanelContainer" unique_id=336815174 node_paths=PackedStringArray("label_num", "label_name")]
+size_flags_horizontal = 3
+script = ExtResource("1_73ol5")
+label_num = NodePath("MarginContainer/HBoxContainer/PanelContainer/LabelNum")
+label_name = NodePath("MarginContainer/HBoxContainer/LabelName")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=739708648]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=417317940]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=1131117602]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_katih")
+
+[node name="LabelNum" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer" unique_id=1917134836]
+layout_mode = 2
+text = "#"
+label_settings = SubResource("LabelSettings_73ol5")
+horizontal_alignment = 1
+
+[node name="LabelName" type="Label" parent="MarginContainer/HBoxContainer" unique_id=1680854153]
+layout_mode = 2
+text = "Joueur 1"
