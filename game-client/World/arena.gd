@@ -65,6 +65,12 @@ func _start_game():
 		var width = viewport_size[0]
 		var height = viewport_size[1]
 		
+		var min_x = player_radius
+		var max_x = width - player_radius
+		
+		var min_y = height - safe_zone_height + player_radius
+		var max_y = height - player_radius
+		
 		for id in players_ids:
 			print("Création du joueur ", id)
 			var player = player_scene.instantiate()
@@ -85,7 +91,7 @@ func _start_game():
 				player.global_position = Vector2(width / 2, height / 2)
 			else: # sinon, on le place dans la zone de sécurité inférieure
 				player.role_changed.emit(id, Player.ROLE_SURVIVOR)
-				player.global_position = Vector2(randf_range(player_radius, width - player_radius), randf_range(height - safe_zone_height + player_radius, height - player_radius))
+				player.global_position = Vector2(randf_range(min_x, max_x), randf_range(min_y, max_y))
 			
 			# Ajout dans la scène
 			$Players.add_child(player)
