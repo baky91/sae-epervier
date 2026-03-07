@@ -7,6 +7,10 @@ const ROLE_SURVIVOR = "survivor"
 const ROLE_INFECTED = "infected"
 const ROLE_SPARROWHAWK = "sparrowhawk"
 
+#const GROUP_SURVIVORS = "survivors"
+#const GROUP_INFECTED = "infected"
+#const GROUP_SPARROWHAWKS = "sparrowhawks"
+
 const ROLES_CONFIG = {
 	ROLE_SURVIVOR: Color(0.231, 0.51, 0.965, 1.0),
 	ROLE_INFECTED: Color(0.612, 0.639, 0.686, 1.0),
@@ -15,6 +19,7 @@ const ROLES_CONFIG = {
 
 @onready var timer_dash = $TimerDash
 @onready var timer_speed_boost = $TimerSpeedBoost
+@export var players_collisions: Area2D
 
 var id: int
 var speed: int = 300
@@ -48,10 +53,26 @@ func _physics_process(_delta: float) -> void:
 func set_role(new_role: String):
 	role = new_role
 	set_color(ROLES_CONFIG[role])
-	#if role == ROLE_INFECTED:
-		#$CollisionShape2D.disabled = true
-	#else:
-		#$CollisionShape2D.disabled = false
+	
+	## Définition du bon groupe
+	#match role:
+		#ROLE_SURVIVOR:
+			#add_to_group(GROUP_SURVIVORS)
+			#remove_from_group(GROUP_INFECTED)
+			#remove_from_group(GROUP_SPARROWHAWKS)
+		#ROLE_INFECTED:
+			#remove_from_group(GROUP_SURVIVORS)
+			#add_to_group(GROUP_INFECTED)
+			#remove_from_group(GROUP_SPARROWHAWKS)
+		#ROLE_SPARROWHAWK:
+			#remove_from_group(GROUP_SURVIVORS)
+			#remove_from_group(GROUP_INFECTED)
+			#add_to_group(GROUP_SPARROWHAWKS)
+	
+	if role == ROLE_INFECTED:
+		$Area2D/CollisionShape2D.set_deferred("disabled", true)
+	else:
+		$Area2D/CollisionShape2D.set_deferred("disabled", false)
 		
 func set_color(color: Color):
 	$MeshInstance2D.modulate = color
@@ -74,7 +95,6 @@ func _on_timer_dash_cooldown_timeout() -> void:
 
 func _on_timer_speed_boost_timeout() -> void:
 	speed_boosting = false
-
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:

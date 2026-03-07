@@ -38,8 +38,8 @@ project/assembly_name="Epervier Masqué"
 [global_group]
 
 infected=""
-survivors=""
 sparrowhawks=""
+survivors=""
 
 [input]
 

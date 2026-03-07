@@ -19,12 +19,13 @@ func _ready() -> void:
 	ServerSocket.player_use_bonus.connect(_on_player_use_bonus)
 	ServerSocket.player_left.connect(_on_player_left)
 
-	_start_game()
+	if len(ServerSocket.players_ids) > 0:
+		_start_game()
 
 # Position update of all players
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("start_game"):
-		_start_game()
+		_first_version_start()
 	if Input.is_action_just_pressed("start_round"):
 		_start_round()
 	
@@ -37,25 +38,10 @@ func _physics_process(_delta):
 			#player_node.direction = player_node.direction.lerp(vector_move, 0.2)
 			
 func _start_game():
-	# Création des joueurs directement lors de la connexion (si scène par défaut)
-	#if !game_started:
-		## Identifiant du joueur tiré épervier
-		#var random_player_id = players_nodes.keys().pick_random()
-		#
-		## Tous les joueurs seront survivants, sauf celui tiré
-		#for key in players_nodes:
-			#var player = players_nodes[key]
-			#
-			#if key == random_player_id:
-				#player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
-			#else:
-				#player.role_changed.emit(key, Player.ROLE_SURVIVOR)
-		#
-		#game_started = true
-		
 	# Génération des joueurs après avoir cliqué sur le bouton pour lancer (UI scène par défaut)
 	if !game_started:
 		var players_ids = ServerSocket.players_ids
+		
 		var random_sparrowhawk_id = players_ids.pick_random()
 		print("Id de l'épervier: ", str(random_sparrowhawk_id))
 		
@@ -95,7 +81,23 @@ func _start_game():
 			
 			# Ajout dans la scène
 			$Players.add_child(player)
-			
+
+func _first_version_start():
+	# Création des joueurs directement lors de la connexion (si scène par défaut)
+	# Identifiant du joueur tiré épervier
+	var random_player_id = players_nodes.keys().pick_random()
+	
+	# Tous les joueurs seront survivants, sauf celui tiré
+	for key in players_nodes:
+		var player = players_nodes[key]
+		
+		if key == random_player_id:
+			player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
+		else:
+			player.role_changed.emit(key, Player.ROLE_SURVIVOR)
+	
+	game_started = true
+
 func _start_round():
 	if current_round < max_round:
 		current_round += 1
