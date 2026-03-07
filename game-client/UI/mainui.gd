@@ -44,8 +44,9 @@ func _on_player_connected(id: int, p_name: String):
 	
 func _on_player_left(id: int):
 	var player_line = grid_players.get_node(str(id))
-	player_line.queue_free()
-	remove_player_counter()
+	if player_line:
+		player_line.queue_free()
+		remove_player_counter()
 
 func _button_start_pressed():
 	var data_to_send = {

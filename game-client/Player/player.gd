@@ -34,7 +34,7 @@ var speed_boosting = false
 var can_dash = true
 var can_speed_boost = true
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if role != ROLE_INFECTED:
 		if dashing:
 			velocity = direction * dash_speed
@@ -43,27 +43,15 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity = direction * speed
 		
-		var collision = move_and_collide(velocity * delta)
-		
-		if collision:
-			var collider = collision.get_collider()
-			if collider is Player:
-				if role == ROLE_SURVIVOR and collider.role == ROLE_SPARROWHAWK:
-					# Le joueur actuel devient infecté
-					print("Joueur " + str(id) + " : je suis survivant et j'ai touché un épervier")
-					role_changed.emit(id, ROLE_INFECTED)
-				elif role == ROLE_SPARROWHAWK and collider.role == ROLE_SURVIVOR:
-					# Le joueur cible devient infecté
-					print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
-					collider.role_changed.emit(collider.id, ROLE_INFECTED)
+		move_and_slide()
 
 func set_role(new_role: String):
 	role = new_role
 	set_color(ROLES_CONFIG[role])
-	if role == ROLE_INFECTED:
-		$CollisionShape2D.disabled = true
-	else:
-		$CollisionShape2D.disabled = false
+	#if role == ROLE_INFECTED:
+		#$CollisionShape2D.disabled = true
+	#else:
+		#$CollisionShape2D.disabled = false
 		
 func set_color(color: Color):
 	$MeshInstance2D.modulate = color
@@ -86,3 +74,15 @@ func _on_timer_dash_cooldown_timeout() -> void:
 
 func _on_timer_speed_boost_timeout() -> void:
 	speed_boosting = false
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body is Player:
+		if role == ROLE_SURVIVOR and body.role == ROLE_SPARROWHAWK:
+			# Le joueur actuel devient infecté
+			print("Joueur " + str(id) + " : je suis survivant et j'ai touché un épervier")
+			role_changed.emit(id, ROLE_INFECTED)
+		elif role == ROLE_SPARROWHAWK and body.role == ROLE_SURVIVOR:
+			# Le joueur cible devient infecté
+			print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
+			body.role_changed.emit(body.id, ROLE_INFECTED)

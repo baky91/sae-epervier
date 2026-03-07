@@ -85,7 +85,7 @@ func _start_game():
 				player.global_position = Vector2(width / 2, height / 2)
 			else: # sinon, on le place dans la zone de sécurité inférieure
 				player.role_changed.emit(id, Player.ROLE_SURVIVOR)
-				player.global_position = Vector2(randf_range(player_radius, width - player_radius), randf_range(height - safe_zone_height - player_radius, height - player_radius))
+				player.global_position = Vector2(randf_range(player_radius, width - player_radius), randf_range(height - safe_zone_height + player_radius, height - player_radius))
 			
 			# Ajout dans la scène
 			$Players.add_child(player)
@@ -127,7 +127,7 @@ func _start_round():
 		
 		timer_round.start()
 		
-func _on_room_created(code: String, url_to_join: String):
+func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
 
 func _on_player_connected(id: int, p_name: String) -> void:

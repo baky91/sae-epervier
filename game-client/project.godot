@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Epervier Masqué"
-run/main_scene="uid://dkfx43wtkgmah"
+run/main_scene="uid://dbfwwgrpxpwa2"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -34,6 +34,12 @@ window/stretch/mode="canvas_items"
 [dotnet]
 
 project/assembly_name="Epervier Masqué"
+
+[global_group]
+
+infected=""
+survivors=""
+sparrowhawks=""
 
 [input]
 
