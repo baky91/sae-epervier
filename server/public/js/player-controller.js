@@ -192,6 +192,10 @@ class PlayerController {
     };
 
     this.render();
+    document.getElementById("btn-quit").addEventListener("click", () => {
+      sessionStorage.clear();
+      window.location.href = "/";
+    });
     this.initJoystick();
     this.setupKeyboard();
   }
@@ -227,15 +231,15 @@ class PlayerController {
             <!-- Header -->
             <div class="controller-header ${config ? config.color : ""}">
                 <div class="player-info">
-                    <div class="player-icon">${config ? config.icon : ""}</div>
+                    <div class="player-icon"><p>#${this.playerNumber}</p></div>
                     <div class="player-details">
                         <h2>${this.playerName}</h2>
-                        <p>Joueur #${this.playerNumber}</p>
+                        <p>${config ? config.label : ""}</p>
                     </div>
                 </div>
-                <div class="status-badge ${config ? config.color : ""}">
-                    ${config ? config.label : ""}
-                </div>
+                <div>
+                  <button id="btn-quit">Quitter</button>
+              </div>
             </div>
 
             <!-- Control Area -->
