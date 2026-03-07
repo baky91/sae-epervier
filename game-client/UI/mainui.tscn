@@ -4,6 +4,13 @@
 [ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="2_sugu6"]
 [ext_resource type="Script" uid="uid://dynulhnyq5hpq" path="res://addons/qr_code/qr_code_rect.gd" id="3_l4j27"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_2eomw"]
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_sugu6"]
+font_size = 22
+font_color = Color(0.6, 0.6313726, 0.6862745, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_dyfb5"]
 font_size = 40
 
@@ -116,7 +123,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2eomw")
-_qr_rect = NodePath("MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer2/Panel/QRCode")
+_qr_rect = NodePath("MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer2/Panel/QRCode")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=532784945]
 layout_mode = 1
@@ -135,75 +142,98 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1795947748]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=47295498]
 layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=1747871212]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=248094247]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1633057799]
+layout_mode = 2
+text = "Jeu de l'Épervier"
+label_settings = SubResource("LabelSettings_2eomw")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=379243004]
+layout_mode = 2
+text = "Salle d'attente - En attente de joueurs"
+label_settings = SubResource("LabelSettings_sugu6")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1795947748]
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 50
 alignment = 1
 
-[node name="LeftContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=1031906294]
+[node name="LeftContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1031906294]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("2_sugu6")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftContainer" unique_id=393983506]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer" unique_id=393983506]
 layout_mode = 2
 alignment = 1
 
-[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer" unique_id=1477214399]
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer" unique_id=1477214399]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer4" unique_id=688099589]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer4" unique_id=688099589]
 layout_mode = 2
 text = "Code de partie"
 label_settings = SubResource("LabelSettings_dyfb5")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer" unique_id=411261088]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer" unique_id=411261088]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelCode" type="PanelContainer" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer" unique_id=1765930881]
+[node name="PanelCode" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer" unique_id=1765930881]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dyfb5")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer/PanelCode" unique_id=883121300]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer/PanelCode" unique_id=883121300]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer/PanelCode/VBoxContainer" unique_id=1237080846]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer/PanelCode/VBoxContainer" unique_id=1237080846]
 layout_mode = 2
 text = "Code"
 label_settings = SubResource("LabelSettings_deq60")
 horizontal_alignment = 1
 
-[node name="LabelCode" type="Label" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer/PanelCode/VBoxContainer" unique_id=1247700228]
+[node name="LabelCode" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer/PanelCode/VBoxContainer" unique_id=1247700228]
 layout_mode = 2
 label_settings = SubResource("LabelSettings_6sydh")
 horizontal_alignment = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer" unique_id=1624434638]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer" unique_id=1624434638]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer2" unique_id=865664363]
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer2" unique_id=865664363]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dk31d")
 
-[node name="QRCode" type="TextureRect" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer2/Panel" unique_id=1759380804]
+[node name="QRCode" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer2/Panel" unique_id=1759380804]
 layout_mode = 0
 offset_left = -3.0
-offset_top = 59.0
+offset_top = 23.0
 offset_right = 425.0
-offset_bottom = 487.0
+offset_bottom = 451.0
 texture = SubResource("ImageTexture_sugu6")
 expand_mode = 2
 stretch_mode = 3
@@ -219,64 +249,64 @@ dark_module_color = Color(0, 0, 0, 1)
 auto_module_px_size = true
 quiet_zone_size = 4
 
-[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer" unique_id=577704618]
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer" unique_id=577704618]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelLien" type="PanelContainer" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3" unique_id=306622775]
+[node name="PanelLien" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3" unique_id=306622775]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_e5ruq")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3/PanelLien" unique_id=596931962]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3/PanelLien" unique_id=596931962]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3/PanelLien/VBoxContainer" unique_id=684509696]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3/PanelLien/VBoxContainer" unique_id=684509696]
 layout_mode = 2
 text = "URL de la partie"
 label_settings = SubResource("LabelSettings_fmhtc")
 
-[node name="LabelURL" type="Label" parent="MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3/PanelLien/VBoxContainer" unique_id=24514647]
+[node name="LabelURL" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3/PanelLien/VBoxContainer" unique_id=24514647]
 layout_mode = 2
 text = "http://127.0.0.1:3000/"
 label_settings = SubResource("LabelSettings_uw6j2")
 
-[node name="MiddleContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=1023264101]
+[node name="MiddleContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1023264101]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 theme_override_styles/panel = ExtResource("2_sugu6")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MiddleContainer" unique_id=1765980787]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer" unique_id=1765980787]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer" unique_id=1764642585]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer" unique_id=1764642585]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer" unique_id=1907073803]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer" unique_id=1907073803]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=2143530704]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=2143530704]
 layout_mode = 2
 text = "Joueurs connectés : "
 label_settings = SubResource("LabelSettings_dyfb5")
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=852101698]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=852101698]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_deq60")
 
-[node name="LabelCounterPlayers" type="Label" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer/HBoxContainer/PanelContainer" unique_id=1830068899]
+[node name="LabelCounterPlayers" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer/HBoxContainer/PanelContainer" unique_id=1830068899]
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_dk31d")
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer" unique_id=741746555]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer" unique_id=741746555]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -284,23 +314,23 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer2" unique_id=44023877]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer2" unique_id=44023877]
 layout_mode = 2
 
-[node name="GridPlayers" type="GridContainer" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer2/ScrollContainer" unique_id=515134829]
+[node name="GridPlayers" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer2/ScrollContainer" unique_id=515134829]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 2
 
-[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer" unique_id=475092048]
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer" unique_id=475092048]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="ButtonStart" type="Button" parent="MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer3" unique_id=109325696]
+[node name="ButtonStart" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer3" unique_id=109325696]
 layout_mode = 2
 theme_override_font_sizes/font_size = 45
 theme_override_styles/normal = SubResource("StyleBoxFlat_uw6j2")
@@ -308,22 +338,22 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_6sydh")
 theme_override_styles/hover = SubResource("StyleBoxFlat_eto42")
 text = "Lancer la partie"
 
-[node name="RightContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=1210529095]
+[node name="RightContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1210529095]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("2_sugu6")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/RightContainer" unique_id=1833312295]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer" unique_id=1833312295]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/RightContainer/VBoxContainer" unique_id=2026274110]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer" unique_id=2026274110]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer" unique_id=1661176174]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer" unique_id=1661176174]
 layout_mode = 2
 text = "Paramètres de jeu"
 label_settings = SubResource("LabelSettings_eto42")

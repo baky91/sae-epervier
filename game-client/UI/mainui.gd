@@ -3,11 +3,11 @@ class_name MainUI extends Control
 const QRCode = preload("res://addons/qr_code/qr_code.gd")
 const PLAYER_CARD = preload("res://UI/player_card.tscn")
 
-@onready var label_code: Label = $MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer/PanelCode/VBoxContainer/LabelCode
-@onready var label_url: Label = $MarginContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3/PanelLien/VBoxContainer/LabelURL
-@onready var label_counter_players: Label = $MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer/HBoxContainer/PanelContainer/LabelCounterPlayers
-@onready var grid_players: GridContainer = $MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer2/ScrollContainer/GridPlayers
-@onready var button_start: Button = $MarginContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer3/ButtonStart
+@onready var label_code: Label = $MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer/PanelCode/VBoxContainer/LabelCode
+@onready var label_url: Label = $MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer3/PanelLien/VBoxContainer/LabelURL
+@onready var label_counter_players: Label = $MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer/HBoxContainer/PanelContainer/LabelCounterPlayers
+@onready var grid_players: GridContainer = $MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer2/ScrollContainer/GridPlayers
+@onready var button_start: Button = $MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer3/ButtonStart
 
 @export var _qr_rect: QRCodeRect
 var hostCode: String
