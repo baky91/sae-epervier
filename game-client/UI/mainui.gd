@@ -8,8 +8,8 @@ const PLAYER_CARD = preload("res://UI/player_card.tscn")
 @onready var label_counter_players: Label = $MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer/HBoxContainer/PanelContainer/LabelCounterPlayers
 @onready var grid_players: GridContainer = $MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer2/ScrollContainer/GridPlayers
 @onready var button_start: Button = $MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer3/ButtonStart
-
 @export var _qr_rect: QRCodeRect
+
 var hostCode: String
 var counter_players = 0
 
@@ -18,8 +18,6 @@ func _ready():
 	ServerSocket.player_connected.connect(_on_player_connected)
 	ServerSocket.player_left.connect(_on_player_left)
 	button_start.pressed.connect(_button_start_pressed)
-	
-	_qr_rect.data = "localhost:3000"
 	
 	#for i in range(1, 101):
 		#var new_card = PLAYER_CARD.instantiate()
@@ -32,8 +30,8 @@ func _ready():
 func _on_room_created(code: String, url_to_join: String):
 	hostCode = code
 	label_code.text = hostCode
-	label_url.text += hostCode
-	print(url_to_join)
+	_qr_rect.data = url_to_join.to_upper()
+	label_url.text = url_to_join
 	
 func _on_player_connected(id: int, p_name: String):
 	var new_card = PLAYER_CARD.instantiate()
