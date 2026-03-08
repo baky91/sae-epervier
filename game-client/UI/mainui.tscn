@@ -44,6 +44,18 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_sugu6"]
 image = SubResource("Image_2eomw")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l4j27"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.11372549, 0.15686275, 0.21960784, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
 [sub_resource type="LabelSettings" id="LabelSettings_l4j27"]
 font_size = 18
 font_color = Color(0.7204674, 0.7204675, 0.7204674, 1)
@@ -237,6 +249,10 @@ dark_module_color = Color(0, 0, 0, 1)
 auto_module_px_size = false
 module_px_size = 14
 quiet_zone_size = 2
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer/MarginContainer2" unique_id=937256990]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_l4j27")
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer/VBoxContainer" unique_id=1911785562]
 layout_mode = 2
