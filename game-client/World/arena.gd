@@ -168,6 +168,7 @@ func _on_player_use_bonus(id: int, bonus: String):
 		player.timer_dash.start()
 
 func _on_player_left(id: int):
+	ServerSocket.players_ids.erase(id)
 	if players_nodes.has(id):
 		players_nodes[id].queue_free()
 		players_nodes.erase(id)

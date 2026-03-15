@@ -57,7 +57,6 @@ func _handle_server_message(json):
 			player_use_bonus.emit(int(json.player_id), json.data.bonus)
 			
 		"player_left":
-			players_ids.erase(int(json.player_id))
 			player_left.emit(int(json.player_id))
 
 func send_message_to_server(data: Dictionary):

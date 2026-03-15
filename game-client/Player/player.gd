@@ -74,6 +74,13 @@ func set_role(new_role: String):
 	else:
 		$Area2D/CollisionShape2D.set_deferred("disabled", false)
 		
+	if role == ROLE_SPARROWHAWK:
+		# Mettre le 4ème bit (Sparrowhawk) à 1
+		collision_layer = collision_layer | 0x0008
+		
+		# Mettre le 5ème bit (SafeZoneLine) à 1
+		collision_mask = collision_mask | 0x0010
+		
 func set_color(color: Color):
 	$MeshInstance2D.modulate = color
 	
