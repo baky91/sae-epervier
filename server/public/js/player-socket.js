@@ -90,6 +90,12 @@ const start = (hostCode, pseudo, playerId = null) => {
 
         controller.updateRole(newRole);
       }
+    } else if (msg.type === "PLAYER_KICK") {
+      console.log("Vous avez été expulsé de la partie.");
+      controller.container.innerHTML = `
+        <h1>Vous avez été expulsé</h1>
+        <a href="/">Retour à l'accueil</a>
+      `;
     } else if (msg.type === "ERROR") {
       console.log("Erreur :", msg.message);
     }

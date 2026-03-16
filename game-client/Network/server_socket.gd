@@ -41,22 +41,22 @@ func _process(_delta):
 
 func _handle_server_message(json):
 	match json.type:
-		"room_created":
+		"ROOM_CREATED":
 			#print("Code de la partie : ", json.data.code)
 			url_to_join += "/" + json.data.code
 			#print("URL: ", url_to_join)
 			room_created.emit(json.data.code, url_to_join)
-		"player_joined":
+		"PLAYER_JOIN":
 			players_ids.append(int(json.data.id))
 			player_connected.emit(int(json.data.id), json.data.name)
 			
-		"move":
+		"MOVE":
 			players_inputs_buffer[int(json.player_id)] = Vector2(json.data.x, json.data.y)
 
-		"use_bonus":
+		"USE_BONUS":
 			player_use_bonus.emit(int(json.player_id), json.data.bonus)
 			
-		"player_left":
+		"PLAYER_LEFT":
 			player_left.emit(int(json.player_id))
 
 func send_message_to_server(data: Dictionary):

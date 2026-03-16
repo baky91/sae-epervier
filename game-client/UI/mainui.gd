@@ -35,13 +35,6 @@ func _ready():
 	
 	h_slider_nb_round.visible = false
 	update()
-	#for i in range(1, 101):
-		#var new_card = PLAYER_CARD.instantiate()
-		#new_card.name = "Player" + str(i)
-		#new_card.set_text(str(i), "Joueur" + str(i))
-		#add_player_counter()
-		#
-		#grid_players.add_child(new_card)
 
 func _on_room_created(code: String, url_to_join: String):
 	hostCode = code
@@ -123,3 +116,5 @@ func update():
 	count_rounds = calculate_auto_rounds(counter_players)
 	label_nb_round.text = str(count_rounds)
 	h_slider_nb_round.value = count_rounds
+	
+	label_round_duration.text = str(int(h_slider_round_duration.value)) + "s"

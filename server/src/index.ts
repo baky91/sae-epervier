@@ -185,7 +185,6 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
         // Envoi à tous les joueurs
         if (!parsed.player_id) {
           currentUser.sendToAllPlayers(parsed);
-
           return;
         }
 
@@ -202,6 +201,8 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
             targetPlayer.bonus[parsed.data.bonus]++;
           } else if (parsed.type === "SET_ROLE") {
             targetPlayer.role = parsed.data.role;
+          } else if (parsed.type === "PLAYER_KICK") {
+            targetPlayer.closeWithTimeout(0);
           }
         }
       }
