@@ -69,7 +69,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
     console.log(`Écran Godot (Host) connecté avec le code : ${code}`);
 
     currentUser.sendMessage({
-      type: "room_created",
+      type: "ROOM_CREATED",
       data: {
         code: code,
       },
@@ -85,7 +85,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
     if (!hosts.has(hostCode)) {
       ws.send(
         JSON.stringify({
-          type: "error",
+          type: "ERROR",
           message: "Code de partie invalide",
         }),
       );
@@ -118,7 +118,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
       }
 
       currentUser.sendMessage({
-        type: "reconnection",
+        type: "RECONNECTION",
         data: {
           player_id: currentUser.id,
           player_name: currentUser.name,
@@ -143,7 +143,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
 
       // Confirmation au joueur
       currentUser.sendMessage({
-        type: "newplayer",
+        type: "SETUP_CONTROLLER",
         data: {
           player_id: currentUser.id,
           player_name: currentUser.name,
@@ -152,7 +152,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
 
       // On prévient le Host (Godot) qu'un joueur est arrivé
       hostSocket.sendMessage({
-        type: "player_joined",
+        type: "PLAYER_JOIN",
         data: {
           id: currentUser.id,
           name: currentUser.name,
@@ -198,9 +198,9 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
             data: parsed.data,
           });
           // Enregistrement de quelques informations utiles
-          if (parsed.type === "bonus_obtained") {
+          if (parsed.type === "GET_BONUS") {
             targetPlayer.bonus[parsed.data.bonus]++;
-          } else if (parsed.type === "new_role") {
+          } else if (parsed.type === "SET_ROLE") {
             targetPlayer.role = parsed.data.role;
           }
         }
@@ -213,9 +213,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
   // DECONNEXION
   ws.on("close", () => {
     if (currentUser instanceof ClientPlayer) {
-      if (hostSocket) {
-        currentUser.closeWithTimeout(10);
-      }
+      currentUser.closeWithTimeout(10);
     } else if (currentUser instanceof ClientHost) {
       currentUser.closeGame();
       hosts.delete(currentUser.hostCode);

@@ -29,15 +29,17 @@ export default class ClientPlayer extends ClientModel {
   }
 
   closeWithTimeout(timeout: number): void {
-    this.disconnectTimeout = setTimeout(() => {
-      this.hostSocket.removePlayer(this.id);
-      this.hostSocket.sendMessage({
-        type: "player_left",
-        player_id: this.id,
-      });
-      console.log(
-        `Joueur ${this.name} déconnecté de la partie ${this.hostSocket.hostCode}`,
-      );
-    }, timeout * 1000);
+    if (this.hostSocket) {
+      this.disconnectTimeout = setTimeout(() => {
+        this.hostSocket.removePlayer(this.id);
+        this.hostSocket.sendMessage({
+          type: "PLAYER_LEFT",
+          player_id: this.id,
+        });
+        console.log(
+          `Joueur ${this.name} déconnecté de la partie ${this.hostSocket.hostCode}`,
+        );
+      }, timeout * 1000);
+    }
   }
 }

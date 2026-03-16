@@ -13,7 +13,7 @@ const start = (hostCode, pseudo, playerId = null) => {
   socket.onmessage = (event) => {
     const msg = JSON.parse(event.data);
 
-    if (msg.type === "newplayer" || msg.type === "reconnection") {
+    if (msg.type === "SETUP_CONTROLLER" || msg.type === "RECONNECTION") {
       const player_id = msg.data.player_id;
       // On enregistre l'id en cas de reconnexion
       localStorage.setItem("playerId", player_id);
@@ -32,7 +32,7 @@ const start = (hostCode, pseudo, playerId = null) => {
             if (isMoving) {
               socket.send(
                 JSON.stringify({
-                  type: "move",
+                  type: "MOVE",
                   data: { x: 0, y: 0 },
                 }),
               );
@@ -44,7 +44,7 @@ const start = (hostCode, pseudo, playerId = null) => {
           if (now - lastEmitTime >= EMIT_INTERVAL) {
             socket.send(
               JSON.stringify({
-                type: "move",
+                type: "MOVE",
                 data: { x: x, y: y },
               }),
             );
@@ -56,7 +56,7 @@ const start = (hostCode, pseudo, playerId = null) => {
           controller.setSpeedBonus(controller.speedBonus - 1);
           socket.send(
             JSON.stringify({
-              type: "use_bonus",
+              type: "USE_BONUS",
               data: { bonus: "speed" },
             }),
           );
@@ -65,7 +65,7 @@ const start = (hostCode, pseudo, playerId = null) => {
           controller.setDashBonus(controller.dashBonus - 1);
           socket.send(
             JSON.stringify({
-              type: "use_bonus",
+              type: "USE_BONUS",
               data: { bonus: "dash" },
             }),
           );
@@ -73,24 +73,24 @@ const start = (hostCode, pseudo, playerId = null) => {
       });
 
       // Si c'est une reconnexion, on reassigne le rôle et les bonus au joueur
-      if (msg.type === "reconnection") {
+      if (msg.type === "RECONNECTION") {
         controller.updateRole(msg.data.player_role);
         controller.setSpeedBonus(msg.data.player_bonus.speed);
         controller.setDashBonus(msg.data.player_bonus.dash);
       }
-    } else if (msg.type === "bonus_obtained") {
+    } else if (msg.type === "GET_BONUS") {
       if (controller) {
         const bonusName = msg.data.bonus;
 
         controller.addBonus(bonusName);
       }
-    } else if (msg.type === "new_role") {
+    } else if (msg.type === "SET_ROLE") {
       if (controller) {
         const newRole = msg.data.role;
 
         controller.updateRole(newRole);
       }
-    } else if (msg.type === "error") {
+    } else if (msg.type === "ERROR") {
       console.log("Erreur :", msg.message);
     }
   };

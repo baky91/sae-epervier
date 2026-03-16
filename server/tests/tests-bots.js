@@ -18,7 +18,7 @@ function createBot(id) {
   socket.onmessage = (event) => {
     const msg = JSON.parse(event.data);
 
-    if (msg.type === "newplayer") {
+    if (msg.type === "SETUP_CONTROLLER") {
       console.log(`Nouveau bot ajouté: Bot_${id}`);
 
       setInterval(() => {
@@ -31,7 +31,7 @@ function createBot(id) {
 
         socket.send(
           JSON.stringify({
-            type: "move",
+            type: "MOVE",
             player_id: id,
             data: {
               x: moveX,
