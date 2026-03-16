@@ -68,7 +68,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
 
     console.log(`Écran Godot (Host) connecté avec le code : ${code}`);
 
-    currentUser.sendToGodot({
+    currentUser.sendMessage({
       type: "room_created",
       data: {
         code: code,
@@ -117,7 +117,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
         currentUser.disconnectTimeout = null;
       }
 
-      currentUser.sendToController({
+      currentUser.sendMessage({
         type: "reconnection",
         data: {
           player_id: currentUser.id,
@@ -136,13 +136,13 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
 
       // Création du joueur si le salon existe
       const playerId = hostSocket.getNextPlayerId();
-      currentUser = new ClientPlayer(playerId, ws, name, hostCode);
+      currentUser = new ClientPlayer(playerId, ws, name, hostSocket);
 
       // Ajouter le joueur à l'Host correspondant
       hostSocket.addPlayer(currentUser);
 
       // Confirmation au joueur
-      currentUser.sendToController({
+      currentUser.sendMessage({
         type: "newplayer",
         data: {
           player_id: currentUser.id,
@@ -151,7 +151,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
       });
 
       // On prévient le Host (Godot) qu'un joueur est arrivé
-      hostSocket.sendToGodot({
+      hostSocket.sendMessage({
         type: "player_joined",
         data: {
           id: currentUser.id,
@@ -173,7 +173,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
       // Si c'est un message d'un joueur (mouvement, bonus...), on le relaie à Godot
       if (currentUser instanceof ClientPlayer) {
         if (hostSocket) {
-          hostSocket.sendToGodot({
+          hostSocket.sendMessage({
             type: parsed.type,
             player_id: currentUser.id,
             data: parsed.data,
@@ -193,7 +193,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
         const targetPlayer = currentUser.getPlayer(targetId);
 
         if (targetPlayer) {
-          targetPlayer.sendToController({
+          targetPlayer.sendMessage({
             type: parsed.type,
             data: parsed.data,
           });
@@ -214,16 +214,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
   ws.on("close", () => {
     if (currentUser instanceof ClientPlayer) {
       if (hostSocket) {
-        currentUser.disconnectTimeout = setTimeout(() => {
-          hostSocket.removePlayer(currentUser.id);
-          hostSocket.sendToGodot({
-            type: "player_left",
-            player_id: currentUser.id,
-          });
-          console.log(
-            `Joueur ${currentUser.name} déconnecté de la partie ${currentUser.hostCode}`,
-          );
-        }, 10000); // On laisse 10 secondes au joueur pour se reconnecter avant de le supprimer
+        currentUser.closeWithTimeout(10);
       }
     } else if (currentUser instanceof ClientHost) {
       currentUser.closeGame();

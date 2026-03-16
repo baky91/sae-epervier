@@ -1,35 +1,26 @@
+import { ClientModel } from "./ClientModel.js";
 import ClientPlayer from "./ClientPlayer.js";
 import WebSocket from "ws";
 
-export default class ClientHost {
-  socket: WebSocket;
+export default class ClientHost extends ClientModel {
   hostCode: string;
   players: Map<number, ClientPlayer>;
   counterPlayers: number;
   maxRound: number;
   currentRound: number;
-  disconnectTimeout: NodeJS.Timeout | null;
 
   constructor(socket: WebSocket, hostCode: string) {
-    this.socket = socket;
+    super(socket);
     this.hostCode = hostCode;
     this.players = new Map<number, ClientPlayer>();
     this.counterPlayers = 0;
     this.maxRound = 0;
     this.currentRound = 0;
-    this.disconnectTimeout = null;
-  }
-
-  sendToGodot(data: any): void {
-    if (this.socket.readyState === 1) {
-      // 1 = OPEN
-      this.socket.send(JSON.stringify(data));
-    }
   }
 
   sendToAllPlayers(data: any): void {
     this.players.forEach((player) => {
-      player.sendToController(data);
+      player.sendMessage(data);
     });
   }
 

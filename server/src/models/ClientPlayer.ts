@@ -1,33 +1,43 @@
 import WebSocket from "ws";
+import { ClientModel } from "./ClientModel.js";
+import ClientHost from "./ClientHost.js";
 
-export default class ClientPlayer {
+export default class ClientPlayer extends ClientModel {
   id: number;
-  socket: WebSocket;
   name: string;
-  hostCode: string;
+  hostSocket: ClientHost;
   role: string | null;
   bonus: {
     [Key: string]: number;
   };
-  disconnectTimeout: NodeJS.Timeout | null;
 
-  constructor(id: number, socket: WebSocket, name: string, hostCode: string) {
+  constructor(
+    id: number,
+    socket: WebSocket,
+    name: string,
+    hostSocket: ClientHost,
+  ) {
+    super(socket);
     this.id = id;
-    this.socket = socket;
     this.name = name;
-    this.hostCode = hostCode;
+    this.hostSocket = hostSocket;
     this.role = null;
     this.bonus = {
       speed: 0,
       dash: 0,
     };
-    this.disconnectTimeout = null;
   }
 
-  sendToController(data: any): void {
-    if (this.socket.readyState === 1) {
-      // 1 = OPEN
-      this.socket.send(JSON.stringify(data));
-    }
+  closeWithTimeout(timeout: number): void {
+    this.disconnectTimeout = setTimeout(() => {
+      this.hostSocket.removePlayer(this.id);
+      this.hostSocket.sendMessage({
+        type: "player_left",
+        player_id: this.id,
+      });
+      console.log(
+        `Joueur ${this.name} déconnecté de la partie ${this.hostSocket.hostCode}`,
+      );
+    }, timeout * 1000);
   }
 }
