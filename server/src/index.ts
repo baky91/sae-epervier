@@ -77,9 +77,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
   } else if (type === "player") {
     const hostCode = params.get("hostCode");
 
-    if (!hosts || !hostCode) {
-      return;
-    }
+    if (!hosts || !hostCode) return;
 
     // Vérification que le code entré par le joueur correspond à un client Godot
     if (!hosts.has(hostCode)) {
@@ -95,9 +93,7 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
 
     hostSocket = hosts.get(hostCode);
 
-    if (!hostSocket) {
-      return;
-    }
+    if (!hostSocket) return;
 
     let name = params.get("name") || "Anonyme";
 
@@ -108,32 +104,8 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
     }
 
     if (currentUser instanceof ClientPlayer) {
-      // Mise à jour de la socket
-      currentUser.socket = ws;
-
-      // On arrête le timer de déconnexion
-      if (currentUser.disconnectTimeout) {
-        clearTimeout(currentUser.disconnectTimeout);
-        currentUser.disconnectTimeout = null;
-      }
-
-      currentUser.sendMessage({
-        type: "RECONNECTION",
-        data: {
-          player_id: currentUser.id,
-          player_name: currentUser.name,
-          player_bonus: currentUser.bonus,
-          player_role: currentUser.role,
-        },
-      });
-
-      console.log(
-        `Joueur ${name} (ID: ${currentUser.id}) s'est reconnecté dans la partie ${hostCode}`,
-      );
+      currentUser.reconnect(ws);
     } else {
-      counterPlayers++;
-      if (name === "Anonyme") name += counterPlayers;
-
       // Création du joueur si le salon existe
       const playerId = hostSocket.getNextPlayerId();
       currentUser = new ClientPlayer(playerId, ws, name, hostSocket);
@@ -172,39 +144,11 @@ wss.on("connection", (ws: WebSocket, req: Request) => {
 
       // Si c'est un message d'un joueur (mouvement, bonus...), on le relaie à Godot
       if (currentUser instanceof ClientPlayer) {
-        if (hostSocket) {
-          hostSocket.sendMessage({
-            type: parsed.type,
-            player_id: currentUser.id,
-            data: parsed.data,
-          });
-        }
+        currentUser.sendToHost(parsed);
       }
       // Si c'est un message de Godot (par exemple: récupération de bonus) on le relaie au joueur concerné
       else if (currentUser instanceof ClientHost) {
-        // Envoi à tous les joueurs
-        if (!parsed.player_id) {
-          currentUser.sendToAllPlayers(parsed);
-          return;
-        }
-
-        const targetId = parsed.player_id;
-        const targetPlayer = currentUser.getPlayer(targetId);
-
-        if (targetPlayer) {
-          targetPlayer.sendMessage({
-            type: parsed.type,
-            data: parsed.data,
-          });
-          // Enregistrement de quelques informations utiles
-          if (parsed.type === "GET_BONUS") {
-            targetPlayer.bonus[parsed.data.bonus]++;
-          } else if (parsed.type === "SET_ROLE") {
-            targetPlayer.role = parsed.data.role;
-          } else if (parsed.type === "PLAYER_KICK") {
-            targetPlayer.closeWithTimeout(0);
-          }
-        }
+        currentUser.sendToPlayer(parsed);
       }
     } catch (e) {
       console.error("Erreur format JSON :", e);

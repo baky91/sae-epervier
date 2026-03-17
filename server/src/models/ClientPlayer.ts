@@ -1,6 +1,7 @@
 import WebSocket from "ws";
 import { ClientModel } from "./ClientModel.js";
 import ClientHost from "./ClientHost.js";
+import { SocketMessage } from "../types/types.js";
 
 export default class ClientPlayer extends ClientModel {
   id: number;
@@ -26,6 +27,42 @@ export default class ClientPlayer extends ClientModel {
       speed: 0,
       dash: 0,
     };
+  }
+
+  sendToHost(message: SocketMessage) {
+    if (this.hostSocket) {
+      this.hostSocket.sendMessage({
+        type: message.type,
+        player_id: this.id,
+        data: message.data,
+      });
+    }
+  }
+
+  reconnect(socket: WebSocket) {
+    // Mise à jour de la socket
+    this.socket = socket;
+
+    // On arrête le timer de déconnexion
+    if (this.disconnectTimeout) {
+      clearTimeout(this.disconnectTimeout);
+      this.disconnectTimeout = null;
+    }
+
+    // On envoi un message pour remettre en place le contrôleur
+    this.sendMessage({
+      type: "RECONNECTION",
+      data: {
+        player_id: this.id,
+        player_name: this.name,
+        player_bonus: this.bonus,
+        player_role: this.role,
+      },
+    });
+
+    console.log(
+      `Joueur ${this.name} (ID: ${this.id}) s'est reconnecté dans la partie ${this.hostSocket.hostCode}`,
+    );
   }
 
   closeWithTimeout(timeout: number): void {

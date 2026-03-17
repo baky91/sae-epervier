@@ -1,5 +1,5 @@
 export type SocketMessage = {
   type: string;
-  player_id: number | undefined;
+  player_id: number;
   data: any;
 };

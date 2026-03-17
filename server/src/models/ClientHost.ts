@@ -1,3 +1,4 @@
+import { SocketMessage } from "../types/types.js";
 import { ClientModel } from "./ClientModel.js";
 import ClientPlayer from "./ClientPlayer.js";
 import WebSocket from "ws";
@@ -16,6 +17,35 @@ export default class ClientHost extends ClientModel {
     this.counterPlayers = 0;
     this.maxRound = 0;
     this.currentRound = 0;
+  }
+
+  sendToPlayer(message: SocketMessage): void {
+    const id = message.player_id;
+    if (id === 0) {
+      this.sendToAllPlayers(message);
+    } else {
+      const targetPlayer = this.getPlayer(id);
+
+      if (targetPlayer) {
+        // console.log(message);
+
+        targetPlayer.sendMessage(message);
+
+        const type = message.type;
+        // Enregistrement de quelques informations utiles
+        switch (type) {
+          case "GET_BONUS":
+            targetPlayer.bonus[message.data.bonus]++;
+            break;
+          case "SET_ROLE":
+            targetPlayer.role = message.data.role;
+            break;
+          case "PLAYER_KICK":
+            targetPlayer.closeWithTimeout(0);
+            break;
+        }
+      }
+    }
   }
 
   sendToAllPlayers(data: any): void {
