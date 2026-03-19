@@ -518,3 +518,146 @@ button[type="submit"]:active,
     }
 
 }
+
+/* --- Styles pour la page d'accueil (index.html) --- */
+
+/* Titre principal */
+h1 {
+    text-align: center;
+    color: #ffffff;
+    margin: 2rem 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(243, 18, 176, 0.3);
+}
+
+/* Liens de navigation rapides */
+body > a {
+    display: inline-block;
+    color: #6a63f7;
+    text-decoration: none;
+    margin: 0 10px 20px 10px;
+    font-weight: bold;
+}
+
+/* Conteneur principal séparé en deux */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Colonnes Gauche et Droite */
+div[name="left-div"], 
+div[name="right-div"] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    background: rgba(31, 41, 55, 0.6); /* Semi-transparent pour voir le gradient */
+    border: 2px solid #374151;
+    border-radius: 1.5rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    color: #fff;
+}
+
+div[name="left-div"]:hover, 
+div[name="right-div"]:hover {
+    transform: translateY(-5px);
+    border-color: #6c63ff;
+}
+
+/* Conteneurs d'images (écrans) */
+div[name="game-screen"], 
+div[name="controller-screen"] {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border: 2px solid #4b5563;
+}
+
+div[name="game-screen"] img, 
+div[name="controller-screen"] img {
+    width: 100%;
+    display: block;
+    transition: opacity 0.3s;
+}
+
+/* Styles spécifiques aux boutons de l'index */
+button[name="host-button"],
+button[name="join-party"] {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: white;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+button[name="host-button"] {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%); /* Vert */
+}
+
+button[name="join-party"] {
+    padding: 15px;
+    background: linear-gradient(135deg, #6c63ff 0%, #4b44d1 100%); /* Violet */
+}
+
+button:hover {
+    filter: brightness(1.2);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Formulaire de saisie du code */
+form[action="controller.html"] {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#game-code {
+    width: 100%;
+    padding: 12px;
+    background: #111827;
+    border: 2px solid #374151;
+    border-radius: 8px;
+    color: #f39c12;
+    font-size: 1.5rem;
+    text-align: center;
+    letter-spacing: 5px;
+    font-weight: bold;
+    margin-bottom:15px;
+}
+
+#game-code:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
+
+/* Adaptation Mobile */
+@media (max-width: 850px) {
+    main {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    div[name="left-div"], 
+    div[name="right-div"] {
+        width: 100%;
+    }
+}
