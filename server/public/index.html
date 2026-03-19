@@ -4,8 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'épervier masqué</title>
+    <style href="./css/styles.css"></style>
 </head>
 <body>
     <h1>L'épervier masqué - Godot</h1><a href='game'>Game</a><br><a href='controller'>Controller</a>
+    <main>
+        <div name="left-div">
+            <div name="game-screen">
+                <a> <img href="./images/game.jpg"> </a>
+            </div>
+
+            <button name="host-button"> Héberger une partie </button>
+
+        </div>
+    
+        <div name="right-dev">
+
+            <div name="controller-screen">
+                <a> <img href="./images/controller.jpg"></a>
+            </div>
+
+            <form action ="controller.html">
+                <input
+                    type="text"
+                    id="game-code"
+                    minlength="4"
+                    maxlength="4"
+                    required
+                >
+    
+                <button name="join-party"> Rejoindre une partie </button>
+            </form>
+            
+        </div>
+    </main>
 </body>
 </html>
