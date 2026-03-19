@@ -32,7 +32,7 @@ export default class ClientHost extends ClientModel {
         targetPlayer.sendMessage(message);
 
         const type = message.type;
-        // Enregistrement de quelques informations utiles
+        // Actions en fonction du type de message
         switch (type) {
           case "GET_BONUS":
             targetPlayer.bonus[message.data.bonus]++;
@@ -41,6 +41,7 @@ export default class ClientHost extends ClientModel {
             targetPlayer.role = message.data.role;
             break;
           case "PLAYER_KICK":
+            this.removePlayer(id);
             targetPlayer.closeWithTimeout(0);
             break;
         }
@@ -73,6 +74,7 @@ export default class ClientHost extends ClientModel {
 
   removePlayer(id: number): void {
     this.players.delete(id);
+    console.log(`Host ${this.hostCode} : Le joueur n°${id} a été retiré de la partie.`);
   }
 
   getSurvivors(): ClientPlayer[] {

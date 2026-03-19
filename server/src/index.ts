@@ -49,8 +49,6 @@ app.get("/:hostCode", (req: Request, res: Response) => {
 
 // COMMUNICATIONS SOCKETS
 
-let counterPlayers: number = 0;
-
 wss.on("connection", (ws: WebSocket, req: Request) => {
   // Extraction des paramètres de l'URL (ex: ?clientType=player&name=Alex)
   const params = new URLSearchParams(req.url.split("?")[1]);
