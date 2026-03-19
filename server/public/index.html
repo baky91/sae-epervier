@@ -5,35 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'épervier masqué</title>
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/main-page.css">
 </head>
 <body>
     <h1>L'épervier masqué - Godot</h1>
     <main>
-        <div name="left-div">
-            <div name="game-screen">
-                <a> <img src="./images/host-screen.png"> </a>
+        <div class="left-div">
+            <div class="game-screen">
+                <img src="./images/host-screen.png">
             </div>
 
-            <button name="host-button"> Héberger une partie </button>
+            <button id="host-button"> Héberger une partie </button>
 
         </div>
     
-        <div name="right-div">
+        <div class="right-div">
 
-            <div name="controller-screen">
-                <a> <img src="./images/controller-screen.png"></a>
+            <div class="controller-screen">
+                <img src="./images/controller-screen.png">
             </div>
-            <a> Entrer code du jeu </a>
-            <form action ="controllero.html">
-                <input
-                    type="text"
-                    id="game-code"
-                    minlength="4"
-                    maxlength="4"
-                    required
-                >
-    
-                <button name="join-party"> Rejoindre une partie </button>
+            <form>
+                <label for="game-code">Code de la partie</label>
+                <input type="text" name="game-code" id="game-code" autocomplete="off" required>
+                <button id="join-button">Rejoindre une partie</button>
             </form>
 
         </div>

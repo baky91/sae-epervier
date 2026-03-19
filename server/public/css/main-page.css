@@ -1,0 +1,47 @@
+/* Conteneurs d'images (écrans) */
+.game-screen, 
+.controller-screen {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border: 2px solid #4b5563;
+}
+
+.game-screen img, 
+.controller-screen img {
+    width: 100%;
+    display: block;
+    transition: opacity 0.3s;
+}
+
+#host-button,
+#join-button {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: white;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+#host-button {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%); /* Vert */
+}
+
+#join-button {
+    padding: 15px;
+    background: linear-gradient(135deg, #6c63ff 0%, #4b44d1 100%); /* Violet */
+}
+
+button:hover {
+    filter: brightness(1.2);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
