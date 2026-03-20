@@ -22,19 +22,11 @@
     border-radius: 10px;
     border: none;
     font-weight: bold;
-    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
     cursor: pointer;
     color: white;
     transition: filter 0.2s, transform 0.1s;
-}
-
-#host-button {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%); /* Vert */
-}
-
-#join-button {
-    padding: 15px;
-    background: linear-gradient(135deg, #6c63ff 0%, #4b44d1 100%); /* Violet */
 }
 
 button:hover {

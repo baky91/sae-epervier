@@ -116,7 +116,7 @@ if (!pseudo) {
   const modal = document.querySelector(".modal");
   const overlay = document.querySelector(".overlay");
   const formPseudo = document.getElementById("form-pseudo");
-  const inputPseudo = document.getElementById("pseudo");
+  const inputPseudo = document.getElementById("player-pseudo");
 
   // Afficher la modal
   modal.classList.remove("hidden");

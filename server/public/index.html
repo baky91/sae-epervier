@@ -9,13 +9,13 @@
 </head>
 <body>
     <h1>L'épervier masqué - Godot</h1>
-    <main>
+    <main class="home-page-main">
         <div class="left-div">
             <div class="game-screen">
                 <img src="./images/host-screen.png">
             </div>
 
-            <button id="host-button"> Héberger une partie </button>
+            <a id="host-button" href="/game">Héberger une partie</a>
 
         </div>
     
@@ -24,13 +24,23 @@
             <div class="controller-screen">
                 <img src="./images/controller-screen.png">
             </div>
-            <form>
-                <label for="game-code">Code de la partie</label>
-                <input type="text" name="game-code" id="game-code" autocomplete="off" required>
-                <button id="join-button">Rejoindre une partie</button>
+            <form id="form-code">
+                <label for="game-code">Code de partie</label>
+                <input type="text" name="game-code" id="game-code" autocomplete="off" placeholder="Entrez le code" required>
+                <button type="submit" id="join-button">Rejoindre une partie</button>
             </form>
 
         </div>
     </main>
+
+    <script>
+const inputCode = document.getElementById("game-code");
+document.getElementById("form-code").addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    const hostCode = inputCode.value.toUpperCase();
+    window.location.href = hostCode;
+})
+    </script>
 </body>
 </html>
