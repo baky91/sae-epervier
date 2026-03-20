@@ -6,7 +6,7 @@ signal player_use_bonus(id: int, bonus_name: String)
 signal player_left(id: int)
 
 var socket = WebSocketPeer.new()
-var url = "ws://localhost:3000"
+var origin_url = "http://localhost:3000"
 var url_to_join: String
 
 var players_ids = []
@@ -14,10 +14,10 @@ var players_inputs_buffer = {}
 
 func _ready():
 	if OS.has_feature("web"):
-		var host = JavaScriptBridge.eval("window.location.hostname")
-		url = "ws://" + host + ":3000"
+		origin_url = JavaScriptBridge.eval("window.location.origin")
 	
-	url_to_join = url.replace("ws", "http")
+	var url = origin_url.replace("http", "ws")
+	url_to_join = origin_url
 	
 	socket.connect_to_url(url)
 	print("Tentative de connexion au serveur...")
