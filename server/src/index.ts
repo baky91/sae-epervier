@@ -21,7 +21,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // FICHIERS STATIQUES
-app.use(express.static(join(import.meta.dirname, "../public")));
+app.use(express.static(join(import.meta.dirname, "public")));
 app.use(express.static(join(import.meta.dirname, "../game")));
 
 // ROUTES

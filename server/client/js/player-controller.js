@@ -198,6 +198,30 @@ class PlayerController {
     });
     this.initJoystick();
     this.setupKeyboard();
+
+    // Empêche le zoom au double-tap
+    document.addEventListener(
+      "touchstart",
+      function (event) {
+        if (event.touches.length > 1) {
+          event.preventDefault(); // Bloque le pinch-to-zoom (zoom à deux doigts)
+        }
+      },
+      { passive: false },
+    );
+
+    let lastTouchEnd = 0;
+    document.addEventListener(
+      "touchend",
+      function (event) {
+        const now = new Date().getTime();
+        if (now - lastTouchEnd <= 300) {
+          event.preventDefault(); // Bloque le double-tap zoom
+        }
+        lastTouchEnd = now;
+      },
+      false,
+    );
   }
 
   getRoleConfig() {
