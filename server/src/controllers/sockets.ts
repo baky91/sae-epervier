@@ -1,7 +1,7 @@
 import { WebSocketServer, WebSocket } from "ws";
 import ClientHost from "../models/ClientHost.js";
 import ClientPlayer from "../models/ClientPlayer.js";
-import { generateUniqueCode } from "../models/utils.js";
+import { generateUniqueCode } from "../utils/utils.js";
 import { SocketMessage } from "../types/types.js";
 
 export function setupWebSockets(
