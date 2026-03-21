@@ -1,3 +1,5 @@
+import { PlayerController } from "./player-controller";
+
 const start = (hostCode, pseudo, playerId = null) => {
   console.log("Host code:", hostCode, "; Pseudo:", pseudo);
 
