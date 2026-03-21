@@ -3,11 +3,11 @@ import { resolve } from "path";
 
 export default defineConfig({
   root: "client",
+  publicDir: "../public",
   build: {
     outDir: "../dist/public",
-    sourcemap: false,
+    emptyOutDir: true,
     rollupOptions: {
-      // C'est ici qu'on déclare tes multiples pages HTML
       input: {
         main: resolve(__dirname, "client/index.html"),
         controller: resolve(__dirname, "client/controller.html"),
