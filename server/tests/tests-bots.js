@@ -1,4 +1,4 @@
-import { randomIntFromInterval, toSquare } from "../dist/models/utils.js";
+import { randomIntFromInterval, toSquare } from "../dist/utils/utils.js";
 
 // Usage : node tests/tests-bots.js {hostCode} {numBots}
 
@@ -32,11 +32,8 @@ function createBot(id) {
         socket.send(
           JSON.stringify({
             type: "MOVE",
-            player_id: id,
-            data: {
-              x: moveX,
-              y: moveY,
-            },
+            id: id,
+            data: [Math.round(moveX * 100), Math.round(moveY * 100)],
           }),
         );
       }, EMIT_INTERVAL); // Mouvements aléatoire

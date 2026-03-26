@@ -16,10 +16,10 @@ const start = (hostCode, pseudo, playerId = null) => {
     const msg = JSON.parse(event.data);
 
     if (msg.type === "SETUP_CONTROLLER" || msg.type === "RECONNECTION") {
-      const player_id = msg.data.player_id;
+      const player_id = msg.data.id;
       // On enregistre l'id en cas de reconnexion
       localStorage.setItem("playerId", player_id);
-      const player_name = msg.data.player_name;
+      const player_name = msg.data.name;
 
       let lastEmitTime = 0;
       const EMIT_INTERVAL = 40;
@@ -35,7 +35,7 @@ const start = (hostCode, pseudo, playerId = null) => {
               socket.send(
                 JSON.stringify({
                   type: "MOVE",
-                  data: { x: 0, y: 0 },
+                  data: [0, 0],
                 }),
               );
               isMoving = false;
@@ -47,7 +47,8 @@ const start = (hostCode, pseudo, playerId = null) => {
             socket.send(
               JSON.stringify({
                 type: "MOVE",
-                data: { x: x, y: y },
+                // Optimisation: limiter le nombre de caractères envoyés: par exemple 13 (2) au lieu de 0.13 (4)
+                data: [Math.round(x * 100), Math.round(y * 100)],
               }),
             );
             lastEmitTime = now;

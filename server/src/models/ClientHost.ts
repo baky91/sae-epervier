@@ -20,7 +20,7 @@ export default class ClientHost extends ClientModel {
   }
 
   sendToPlayer(message: SocketMessage): void {
-    const id = message.player_id;
+    const id = message.id;
     if (id === 0) {
       this.sendToAllPlayers(message);
     } else {
@@ -73,24 +73,6 @@ export default class ClientHost extends ClientModel {
 
   removePlayer(id: number): void {
     this.players.delete(id);
-  }
-
-  getSurvivors(): ClientPlayer[] {
-    let survivors: ClientPlayer[] = [];
-
-    return survivors;
-  }
-
-  getInfected(): ClientPlayer[] {
-    let infected: ClientPlayer[] = [];
-
-    return infected;
-  }
-
-  getSparrowhawk(): ClientPlayer[] {
-    let sparrowhawks: ClientPlayer[] = [];
-
-    return sparrowhawks;
   }
 
   closeGame(): void {

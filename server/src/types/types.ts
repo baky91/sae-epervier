@@ -1,5 +1,5 @@
 export type SocketMessage = {
   type: string;
-  player_id: number;
+  id: number;
   data: any;
 };

@@ -74,8 +74,8 @@ export function setupWebSockets(
         currentUser.sendMessage({
           type: "SETUP_CONTROLLER",
           data: {
-            player_id: currentUser.id,
-            player_name: currentUser.name,
+            id: currentUser.id,
+            name: currentUser.name,
           },
         });
 

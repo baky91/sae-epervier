@@ -51,13 +51,14 @@ func _handle_server_message(json):
 			player_connected.emit(int(json.data.id), json.data.name)
 			
 		"MOVE":
-			players_inputs_buffer[int(json.player_id)] = Vector2(json.data.x, json.data.y)
+			# Diviser par 100 car le serveur a envoyé des valeurs multipliées par 100
+			players_inputs_buffer[int(json.id)] = Vector2(json.data[0] / 100, json.data[1] / 100)
 
 		"USE_BONUS":
-			player_use_bonus.emit(int(json.player_id), json.data.bonus)
+			player_use_bonus.emit(int(json.id), json.data.bonus)
 			
 		"PLAYER_LEFT":
-			player_left.emit(int(json.player_id))
+			player_left.emit(int(json.id))
 
 func send_message_to_server(data: Dictionary):
 	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
