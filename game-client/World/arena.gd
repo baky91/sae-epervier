@@ -182,7 +182,7 @@ func _on_timer_bonus_timeout() -> void:
 func _on_player_signal_bonus(player_id: int, bonus_name: String):
 	var data_to_send = {
 		"type": "GET_BONUS",
-		"player_id": player_id,
+		"id": player_id,
 		"data": {
 			"bonus": bonus_name
 		}
@@ -195,7 +195,7 @@ func _on_role_changed(player_id: int, role: String) -> void:
 	player.set_role(role)
 	var data_to_send = {
 		"type": "SET_ROLE",
-		"player_id": player_id,
+		"id": player_id,
 		"data": {
 			"role": role
 		}

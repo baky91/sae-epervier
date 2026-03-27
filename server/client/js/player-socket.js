@@ -55,6 +55,13 @@ const start = (hostCode, pseudo, playerId = null) => {
             isMoving = true;
           }
         },
+        onUseBonus: (type) => {
+          const btn = document.getElementById(`${type}-btn`);
+          if (!btn || btn.disabled) return;
+
+          // Désactivation du bouton
+          btn.disabled = true;
+        },
         onUseSpeedBonus: () => {
           controller.setSpeedBonus(controller.speedBonus - 1);
           socket.send(
@@ -77,9 +84,9 @@ const start = (hostCode, pseudo, playerId = null) => {
 
       // Si c'est une reconnexion, on reassigne le rôle et les bonus au joueur
       if (msg.type === "RECONNECTION") {
-        controller.updateRole(msg.data.player_role);
-        controller.setSpeedBonus(msg.data.player_bonus.speed);
-        controller.setDashBonus(msg.data.player_bonus.dash);
+        controller.updateRole(msg.data.role);
+        controller.setSpeedBonus(msg.data.bonus.speed);
+        controller.setDashBonus(msg.data.bonus.dash);
       }
     } else if (msg.type === "GET_BONUS") {
       if (controller) {
