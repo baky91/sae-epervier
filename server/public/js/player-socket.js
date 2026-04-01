@@ -16,7 +16,7 @@ const start = (hostCode, pseudo, playerId = null) => {
     if (msg.type === "SETUP_CONTROLLER" || msg.type === "RECONNECTION") {
       const player_id = msg.data.player_id;
       // On enregistre l'id en cas de reconnexion
-      localStorage.setItem("playerId", player_id);
+      sessionStorage.setItem("playerId", player_id);
       const player_name = msg.data.player_name;
 
       let lastEmitTime = 0;
