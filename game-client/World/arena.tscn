@@ -26,6 +26,9 @@ image = SubResource("Image_ktx4i")
 a = Vector2(0, 80)
 b = Vector2(1920, 80)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nwrlw"]
+size = Vector2(1920, 80)
+
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_ktx4i"]
 a = Vector2(0, 1000)
 b = Vector2(1920, 1000)
@@ -116,6 +119,13 @@ points = PackedVector2Array(0, 80, 1920, 80)
 width = 3.0
 default_color = Color(1, 0, 0, 1)
 
+[node name="TopZoneArea2D" type="Area2D" parent="TopSafeZone" unique_id=1997018394]
+collision_layer = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopSafeZone/TopZoneArea2D" unique_id=1799098038]
+position = Vector2(960, 40)
+shape = SubResource("RectangleShape2D_nwrlw")
+
 [node name="BottomSafeZone" type="Node2D" parent="." unique_id=784138534]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="BottomSafeZone" unique_id=1270282641]
@@ -130,7 +140,19 @@ points = PackedVector2Array(0, 1000, 1920, 1000)
 width = 3.0
 default_color = Color(1, 0, 0, 1)
 
+[node name="BottomZoneArea2D" type="Area2D" parent="BottomSafeZone" unique_id=463382824]
+position = Vector2(0, 1000)
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomSafeZone/BottomZoneArea2D" unique_id=967737303]
+position = Vector2(960, 40)
+shape = SubResource("RectangleShape2D_nwrlw")
+
 [node name="Players" type="Node2D" parent="." unique_id=401491857]
 
 [connection signal="timeout" from="TimerBonus" to="." method="_on_timer_bonus_timeout"]
 [connection signal="timeout" from="TimerRound" to="." method="_on_timer_round_timeout"]
+[connection signal="body_entered" from="TopSafeZone/TopZoneArea2D" to="." method="_on_top_zone_area_2d_body_entered"]
+[connection signal="body_exited" from="TopSafeZone/TopZoneArea2D" to="." method="_on_top_zone_area_2d_body_exited"]
+[connection signal="body_entered" from="BottomSafeZone/BottomZoneArea2D" to="." method="_on_bottom_zone_area_2d_body_entered"]
+[connection signal="body_exited" from="BottomSafeZone/BottomZoneArea2D" to="." method="_on_bottom_zone_area_2d_body_exited"]
