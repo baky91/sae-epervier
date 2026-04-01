@@ -2,7 +2,10 @@ import { randomIntFromInterval, toSquare } from "../dist/utils/utils.js";
 
 // Usage : node tests/tests-bots.js {hostCode} {numBots}
 
-const SERVER_URL = "ws://localhost:3000";
+const SERVER_URL = process.argv[4]
+  ? "wss://multiplicative-emmett-knockless.ngrok-free.dev"
+  : "ws://localhost:3000";
+
 const HOST_CODE = process.argv[2] || "ABCD";
 const NUM_BOTS = parseInt(process.argv[3]) || 25;
 const EMIT_INTERVAL = 40;
