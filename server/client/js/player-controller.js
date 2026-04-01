@@ -4,11 +4,12 @@ export class PlayerController {
     this.playerNumber = options.playerNumber;
     this.playerName = options.playerName;
     this.role = null;
-    this.speedBonus = 0;
-    this.dashBonus = 0;
+    this.bonus = {
+      speed: 0,
+      dash: 0,
+    };
     this.onMove = options.onMove;
-    this.onUseSpeedBonus = options.onUseSpeedBonus;
-    this.onUseDashBonus = options.onUseDashBonus;
+    this.onUseBonus = options.onUseBonus;
     this.keys = {
       up: false,
       down: false,
@@ -105,27 +106,19 @@ export class PlayerController {
                     </div>
 
                     <div class="controls-right">
-                        <!-- Bonus Speed - Center -->
-                        <div class="bonus-section">
-                            <button id="speed-btn" class="bonus-button speed" ${this.speedBonus === 0 || this.role === "infected" ? "disabled" : ""}>
-                                ${this.getZapIcon()}
-                                <span>Vitesse</span>
+                      ${Object.keys(this.bonus).map((type) => {
+                        return `
+                          <div class="bonus-section">
+                            <button id="${type}-btn" class="bonus-button ${type}" ${this.bonus[type] === 0 || this.role === "infected" ? "disabled" : ""}>
+                                ${this.getBonusIcon(type)}
+                                <span>${ucfirst(type)}</span>
                             </button>
-                            <div class="bonus-count ${this.speedBonus > 0 ? "speed" : "inactive"}">
-                                ×${this.speedBonus}
+                            <div class="bonus-count ${this.bonus[type] > 0 ? type : "inactive"}">
+                                ×${this.bonus[type]}
                             </div>
-                        </div>
-
-                        <!-- Bonus Dash - Right -->
-                        <div class="bonus-section">
-                            <button id="dash-btn" class="bonus-button dash" ${this.dashBonus === 0 || this.role === "infected" ? "disabled" : ""}>
-                                ${this.getMoveIcon()}
-                                <span>Dash</span>
-                            </button>
-                            <div class="bonus-count ${this.dashBonus > 0 ? "dash" : "inactive"}">
-                                ×${this.dashBonus}
-                            </div>
-                        </div>
+                          </div>
+                        `;
+                      })}
                     </div>
 
                 </div>
@@ -147,31 +140,30 @@ export class PlayerController {
     const speedBtn = document.getElementById(`speed-btn`);
     const dashBtn = document.getElementById(`dash-btn`);
 
-    const handleSpeed = (e) => {
-      // Empêche le clic fantôme si on utilise touchstart
+    const handleBonus = (e, type) => {
       if (e.cancelable) e.preventDefault();
-      if (this.speedBonus > 0 && this.role !== "infected") {
-        this.onUseSpeedBonus();
-      }
+      this.onUseBonus(type);
     };
 
-    const handleDash = (e) => {
-      if (e.cancelable) e.preventDefault();
-      if (this.dashBonus > 0 && this.role !== "infected") {
-        this.onUseDashBonus();
-      }
-    };
+    speedBtn.addEventListener("touchstart", (e) => handleBonus(e, "speed"), {
+      passive: false,
+    });
+    speedBtn.addEventListener("click", (e) => handleBonus(e, "speed"));
 
-    // On écoute le tactile (instantané) ET le clic (souris/fallback)
-    speedBtn.addEventListener("touchstart", handleSpeed, { passive: false });
-    speedBtn.addEventListener("click", handleSpeed);
-
-    dashBtn.addEventListener("touchstart", handleDash, { passive: false });
-    dashBtn.addEventListener("click", handleDash);
+    dashBtn.addEventListener("touchstart", (e) => handleBonus(e, "dash"), {
+      passive: false,
+    });
+    dashBtn.addEventListener("click", (e) => handleBonus(e, "dash"));
 
     document.addEventListener("keydown", (e) => {
-      if (e.code === "KeyX") handleDash(e);
-      else if (e.code === "KeyC") handleSpeed(e);
+      switch (e.code) {
+        case "KeyX":
+          handleBonus(e, "dash");
+          break;
+        case "KeyC":
+          handleBonus(e, "speed");
+          break;
+      }
     });
   }
 
@@ -193,6 +185,8 @@ export class PlayerController {
       this.joystick.setInactive(true);
     }
   }
+
+  /* GESTION DES MOUVEMENTS AU CLAVIER */
 
   setupKeyboard() {
     // Gestion de l'appui sur une touche
@@ -270,41 +264,57 @@ export class PlayerController {
     }
   }
 
-  addBonus(bonus_name) {
-    if (bonus_name === "speed") {
-      this.setSpeedBonus(this.speedBonus + 1);
-    } else if (bonus_name === "dash") {
-      this.setDashBonus(this.dashBonus + 1);
-    }
+  /* GESTION DES BONUS */
+
+  addBonus(type) {
+    this.setBonusCount(type, this.bonus[type] + 1);
   }
 
-  setSpeedBonus(value) {
-    this.speedBonus = value;
-    this.updateBonusDisplay();
+  removeBonus(type) {
+    this.setBonusCount(type, this.bonus[type] - 1);
   }
 
-  setDashBonus(value) {
-    this.dashBonus = value;
+  setBonusCount(type, value) {
+    this.bonus[type] = value;
     this.updateBonusDisplay();
   }
 
   updateBonusDisplay() {
-    const speedBtn = document.getElementById(`speed-btn`);
-    const dashBtn = document.getElementById(`dash-btn`);
-    const speedCount = speedBtn.nextElementSibling;
-    const dashCount = dashBtn.nextElementSibling;
+    for (const [key, value] of Object.entries(this.bonus)) {
+      const btn = document.getElementById(`${key}-btn`);
+      const count = btn.nextElementSibling;
 
-    // Update buttons
-    speedBtn.disabled = this.speedBonus === 0 || this.role === "infected";
-    dashBtn.disabled = this.dashBonus === 0 || this.role === "infected";
+      // Update button
+      // console.log("disabled ?", btn.disabled);
+      btn.disabled = value === 0 || this.role === "infected";
+      // console.log("disabled ?", btn.disabled);
 
-    // Update counts
-    speedCount.textContent = `×${this.speedBonus}`;
-    dashCount.textContent = `×${this.dashBonus}`;
+      // Update count
+      count.textContent = `×${value}`;
 
-    // Update count styles
-    speedCount.className = `bonus-count ${this.speedBonus > 0 ? "speed" : "inactive"}`;
-    dashCount.className = `bonus-count ${this.dashBonus > 0 ? "dash" : "inactive"}`;
+      // Update count style
+      count.className = `bonus-count ${value > 0 ? key : "inactive"}`;
+    }
+  }
+
+  getBonusIcon(type) {
+    switch (type) {
+      case "speed":
+        return `<svg class="bonus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>`;
+      case "dash":
+        return `<svg class="bonus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="5 9 2 12 5 15"></polyline>
+            <polyline points="9 5 12 2 15 5"></polyline>
+            <polyline points="15 19 12 22 9 19"></polyline>
+            <polyline points="19 9 22 12 19 15"></polyline>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <line x1="12" y1="2" x2="12" y2="22"></line>
+        </svg>`;
+      default:
+        return type + "-bonus";
+    }
   }
 
   // SVG Icons
@@ -506,4 +516,8 @@ class VirtualJoystick {
       this.stick.classList.remove("inactive");
     }
   }
+}
+
+function ucfirst(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }

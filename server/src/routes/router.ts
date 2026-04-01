@@ -7,9 +7,8 @@ export function createRouter(hosts: Map<string, ClientHost>) {
 
   router.get("/", (req: Request, res: Response) => {
     // res.sendFile(join(import.meta.dirname, "../public/index.html"));
-    
-    res.sendFile(join(import.meta.dirname, "../../client/index.html"));
 
+    res.sendFile(join(import.meta.dirname, "../../client/index.html"));
   });
 
   router.get("/game", (req: Request, res: Response) => {
