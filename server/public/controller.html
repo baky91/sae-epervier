@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contrôleur de Joueur - Jeu de l'Épervier</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/controller.css">
 </head>
 <body>
     <div class="modal hidden">
         <form id="form-pseudo">
-            <h1>Veuillez entrer votre pseudo</h1>
-            <input type="text" name="pseudo" id="pseudo" placeholder="Entrez votre pseudo" autocomplete="off" required>
+            <label for="player-pseudo">Pseudo</label>
+            <input type="text" name="player-pseudo" id="player-pseudo" autocomplete="off" placeholder="Entrez votre pseudo" required>
+            <a href="/" id="go-to-home" style="background: red;">Retour</a>
             <button type="submit">Valider</button>
         </form>
     </div>
