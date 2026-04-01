@@ -30,7 +30,7 @@ func _connect_to_server():
 	print("Tentative de connexion au serveur...")
 
 func _process(_delta):
-	if Input.is_action_just_pressed("connect_to_server"):
+	if OS.has_feature("debug") && Input.is_action_just_pressed("connect_to_server"):
 		print("Touche pressée : Reconnexion manuelle...")
 		
 		players_ids.clear() 
@@ -49,11 +49,10 @@ func _process(_delta):
 			if json:
 				_handle_server_message(json)
 
-	elif state == WebSocketPeer.STATE_CLOSED:
-		if !socket_closed:
-			socket_closed = true
-			print("Connexion perdue.")
-			#set_process(false)
+	elif state == WebSocketPeer.STATE_CLOSED && !socket_closed:
+		socket_closed = true
+		print("Connexion perdue.")
+		#set_process(false)
 
 func _handle_server_message(json):
 	match json.type:
