@@ -1,6 +1,6 @@
 class_name Bonus extends Area2D
 
-var BONUS_LIST = ["speed", "dash"]
+var BONUS_LIST = ["speed", "dash", "armor"]
 
 var bonus_name: String
 
