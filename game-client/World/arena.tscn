@@ -1,8 +1,9 @@
-[gd_scene format=3 uid="uid://dkfx43wtkgmah"]
+[gd_scene load_steps=11 format=3 uid="uid://dkfx43wtkgmah"]
 
 [ext_resource type="Script" uid="uid://d0ix40thmevt7" path="res://World/arena.gd" id="1_24pi4"]
 [ext_resource type="Texture2D" uid="uid://c6o2fu260qre4" path="res://Assets/grass-grid.png" id="2_ktx4i"]
 [ext_resource type="Script" uid="uid://dynulhnyq5hpq" path="res://addons/qr_code/qr_code_rect.gd" id="3_ktx4i"]
+[ext_resource type="PackedScene" uid="uid://cmim8uqnnenjr" path="res://interface_utilisateur.tscn" id="4_7cq58"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ra8g6"]
 size = Vector2(1920, 20)
@@ -30,11 +31,11 @@ b = Vector2(1920, 80)
 a = Vector2(0, 1000)
 b = Vector2(1920, 1000)
 
-[node name="Arena" type="Node2D" unique_id=944765600 node_paths=PackedStringArray("qr_code")]
+[node name="Arena" type="Node2D" node_paths=PackedStringArray("qr_code")]
 script = ExtResource("1_24pi4")
 qr_code = NodePath("TextureRect")
 
-[node name="Background" type="Sprite2D" parent="." unique_id=1942510949]
+[node name="Background" type="Sprite2D" parent="."]
 texture_filter = 1
 texture_repeat = 2
 position = Vector2(960, 540)
@@ -42,46 +43,46 @@ texture = ExtResource("2_ktx4i")
 region_enabled = true
 region_rect = Rect2(5, 0, 1920, 1080)
 
-[node name="Borders" type="Node2D" parent="." unique_id=1045544380]
+[node name="Borders" type="Node2D" parent="."]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Borders" unique_id=1845441005]
+[node name="StaticBody2D" type="StaticBody2D" parent="Borders"]
 position = Vector2(960, -10)
 collision_layer = 4
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D" unique_id=582814976]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D"]
 shape = SubResource("RectangleShape2D_ra8g6")
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="Borders" unique_id=280413216]
+[node name="StaticBody2D2" type="StaticBody2D" parent="Borders"]
 position = Vector2(960, 1090)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D2" unique_id=1981285185]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D2"]
 shape = SubResource("RectangleShape2D_ra8g6")
 
-[node name="StaticBody2D3" type="StaticBody2D" parent="Borders" unique_id=1435941410]
+[node name="StaticBody2D3" type="StaticBody2D" parent="Borders"]
 position = Vector2(-10, 540)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D3" unique_id=1111368052]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D3"]
 shape = SubResource("RectangleShape2D_piv0h")
 
-[node name="StaticBody2D4" type="StaticBody2D" parent="Borders" unique_id=596628342]
+[node name="StaticBody2D4" type="StaticBody2D" parent="Borders"]
 position = Vector2(1930, 540)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D4" unique_id=1254123239]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D4"]
 shape = SubResource("RectangleShape2D_piv0h")
 
-[node name="TimerBonus" type="Timer" parent="." unique_id=1189824554]
+[node name="TimerBonus" type="Timer" parent="."]
 wait_time = 10.0
 autostart = true
 
-[node name="TimerRound" type="Timer" parent="." unique_id=1053360445]
+[node name="TimerRound" type="Timer" parent="."]
 wait_time = 30.0
 one_shot = true
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=695830827]
+[node name="TextureRect" type="TextureRect" parent="."]
 visible = false
 offset_left = 67.0
 offset_top = 86.0
@@ -102,35 +103,37 @@ dark_module_color = Color(0, 0, 0, 1)
 auto_module_px_size = true
 quiet_zone_size = 4
 
-[node name="TopSafeZone" type="Node2D" parent="." unique_id=1038180690]
+[node name="TopSafeZone" type="Node2D" parent="."]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="TopSafeZone" unique_id=1318729194]
+[node name="StaticBody2D" type="StaticBody2D" parent="TopSafeZone"]
 collision_layer = 16
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopSafeZone/StaticBody2D" unique_id=1873881371]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopSafeZone/StaticBody2D"]
 shape = SubResource("SegmentShape2D_nwrlw")
 
-[node name="Line2D" type="Line2D" parent="TopSafeZone" unique_id=1249393066]
+[node name="Line2D" type="Line2D" parent="TopSafeZone"]
 points = PackedVector2Array(0, 80, 1920, 80)
 width = 3.0
 default_color = Color(1, 0, 0, 1)
 
-[node name="BottomSafeZone" type="Node2D" parent="." unique_id=784138534]
+[node name="BottomSafeZone" type="Node2D" parent="."]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="BottomSafeZone" unique_id=1270282641]
+[node name="StaticBody2D" type="StaticBody2D" parent="BottomSafeZone"]
 collision_layer = 16
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomSafeZone/StaticBody2D" unique_id=680675840]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomSafeZone/StaticBody2D"]
 shape = SubResource("SegmentShape2D_ktx4i")
 
-[node name="Line2D" type="Line2D" parent="BottomSafeZone" unique_id=1067244503]
+[node name="Line2D" type="Line2D" parent="BottomSafeZone"]
 points = PackedVector2Array(0, 1000, 1920, 1000)
 width = 3.0
 default_color = Color(1, 0, 0, 1)
 
-[node name="Players" type="Node2D" parent="." unique_id=401491857]
+[node name="Players" type="Node2D" parent="."]
+
+[node name="Interface Utilisateur" parent="." instance=ExtResource("4_7cq58")]
 
 [connection signal="timeout" from="TimerBonus" to="." method="_on_timer_bonus_timeout"]
 [connection signal="timeout" from="TimerRound" to="." method="_on_timer_round_timeout"]

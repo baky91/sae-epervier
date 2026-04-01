@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://cmim8uqnnenjr"]
+
+[node name="Interface Utilisateur" type="CanvasLayer"]
+
+[node name="Marge Manche" type="MarginContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -178.0
+offset_right = 178.0
+offset_bottom = 103.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 0
+
+[node name="Label" type="Label" parent="Marge Manche"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "Manche #"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -27.5
+offset_bottom = 27.5
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/separation = -8
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_right = 53
+
+[node name="LblEpervier" type="Label" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.666667, 0, 0, 1)
+theme_override_font_sizes/font_size = 45
+text = "Eperviers"
+
+[node name="nbEpervier" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "#"
+
+[node name="LblInfecté" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.838897, 0.838897, 0.838897, 1)
+theme_override_font_sizes/font_size = 45
+text = "Infectés"
+
+[node name="nbInfecté" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "#"
+
+[node name="LblSurvivant" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 1, 1)
+theme_override_font_sizes/font_size = 45
+text = "Survivants"
+
+[node name="nbSurvivant" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.398642, 0.587427, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "#"
