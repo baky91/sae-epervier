@@ -109,12 +109,14 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		if role == ROLE_SURVIVOR and body.role == ROLE_SPARROWHAWK:
 			# Le joueur actuel devient infecté
 			print("Joueur " + str(id) + " : je suis survivant et j'ai touché un épervier")
+			ServerSocket.players_inputs_buffer[id] = Vector2(0, 0)
 			role_changed.emit(id, ROLE_INFECTED)
 			# Envoie d'un signal réceptionné par l'Arène pour mettre à jour son compteur de joueurs
 			player_infected.emit()
 		elif role == ROLE_SPARROWHAWK and body.role == ROLE_SURVIVOR:
 			# Le joueur cible devient infecté
 			print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
+			ServerSocket.players_inputs_buffer[body.id] = Vector2(0, 0)
 			body.role_changed.emit(body.id, ROLE_INFECTED)
 			# Envoie d'un signal réceptionné par l'Arène pour mettre à jour son compteur de joueurs
 			player_infected.emit()

@@ -33,6 +33,9 @@ size = Vector2(1920, 80)
 a = Vector2(0, 1000)
 b = Vector2(1920, 1000)
 
+[sub_resource type="LabelSettings" id="LabelSettings_ktx4i"]
+font_size = 37
+
 [node name="Arena" type="Node2D" unique_id=944765600 node_paths=PackedStringArray("qr_code")]
 script = ExtResource("1_24pi4")
 qr_code = NodePath("TextureRect")

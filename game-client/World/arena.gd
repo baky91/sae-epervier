@@ -112,15 +112,15 @@ func _first_version_start():
 	game_started = true
 
 func _start_round():
-	# On initialise les compteurs à 0 si on ne connait pas le nombre final à la fin de la manche (éperviers)
-	players_counter = {
-		"total": players_nodes.keys().size(),
-		Player.ROLE_SURVIVOR: 0,
-		Player.ROLE_INFECTED: 0,
-		Player.ROLE_SPARROWHAWK: 0
-	}
-	
 	if current_round < max_round:
+		# On initialise les compteurs à 0 si on ne connait pas le nombre final à la fin de la manche (éperviers)
+		players_counter = {
+			"total": players_nodes.keys().size(),
+			Player.ROLE_SURVIVOR: 0,
+			Player.ROLE_INFECTED: 0,
+			Player.ROLE_SPARROWHAWK: 0
+		}
+		
 		current_round += 1
 		print("Commencement de la manche ", str(current_round))
 		
@@ -159,7 +159,18 @@ func _start_round():
 		timer_round.start()
 		
 		print(players_counter)
-		
+
+	else:
+		_end_round()
+
+func _end_round():
+	print("Fin de la manche ", str(current_round))
+	
+	_start_round()
+			
+func _end_game():
+	print("Fin de la partie")
+			
 func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
 
@@ -199,7 +210,6 @@ func _on_player_left(id: int):
 		players_nodes.erase(id)
 		print("Player n°" + str(id) + " left.")
 
-
 func _on_timer_bonus_timeout() -> void:
 	var bonus = bonus_scene.instantiate()
 	add_child(bonus)
@@ -228,7 +238,6 @@ func _on_role_changed(player_id: int, role: String) -> void:
 	
 	ServerSocket.send_message_to_server(data_to_send)
 
-
 func _on_timer_round_timeout() -> void:
 	_end_round()
 
@@ -253,6 +262,7 @@ func _on_bottom_zone_area_2d_body_exited(body: Node2D) -> void:
 		players_counter[Player.ROLE_SURVIVOR] -= 1
 
 func _check_end_of_round():
+	print(players_counter)
 	#On vérifie si le nombre de survivant dans la zone est égale au nombre total de joueurs sans les infectés
 	var total = players_counter["total"]
 	var survivors = players_counter[Player.ROLE_SURVIVOR]
@@ -262,12 +272,8 @@ func _check_end_of_round():
 	if survivors == total - infected - sparrowhawks:
 		_end_round()
 		
-func _end_round():
-	print("Fin de la manche ", str(current_round))
-	
 func _on_player_infected():
 	print("Un joueur a été infecté")
 	#On décrémente le compteur de survivants et on incrémente le compteur d'infectés
-	players_counter[Player.ROLE_SURVIVOR] -= 1
 	players_counter[Player.ROLE_INFECTED] += 1
 	
