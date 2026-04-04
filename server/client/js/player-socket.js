@@ -16,7 +16,7 @@ const start = (hostCode, pseudo, playerId = null) => {
     if (msg.type === "SETUP_CONTROLLER" || msg.type === "RECONNECTION") {
       const player_id = msg.data.id;
       // On enregistre l'id en cas de reconnexion
-      localStorage.setItem("playerId", player_id);
+      sessionStorage.setItem("playerId", player_id);
       const player_name = msg.data.name;
 
       let lastEmitTime = 0;
@@ -149,7 +149,7 @@ if (!pseudo) {
   // Si il y'a un pseudo et que c'est la même partie on lance directement
 
   // Si un pseudo est enregistré, alors un id est aussi enregistré
-  const playerId = localStorage.getItem("playerId");
+  const playerId = sessionStorage.getItem("playerId");
 
   start(hostCode, pseudo, playerId);
 }

@@ -106,8 +106,9 @@ export class PlayerController {
                     </div>
 
                     <div class="controls-right">
-                      ${Object.keys(this.bonus).map((type) => {
-                        return `
+                      ${Object.keys(this.bonus)
+                        .map((type) => {
+                          return `
                           <div class="bonus-section">
                             <button id="${type}-btn" class="bonus-button ${type}" ${this.bonus[type] === 0 || this.role === "infected" ? "disabled" : ""}>
                                 ${this.getBonusIcon(type)}
@@ -118,7 +119,8 @@ export class PlayerController {
                             </div>
                           </div>
                         `;
-                      })}
+                        })
+                        .join("")}
                     </div>
 
                 </div>
