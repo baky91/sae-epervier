@@ -9,6 +9,7 @@ export default class ClientHost extends ClientModel {
   counterPlayers: number;
   maxRound: number;
   currentRound: number;
+  gameStarted: boolean;
 
   constructor(socket: WebSocket, hostCode: string) {
     super(socket);
@@ -17,10 +18,11 @@ export default class ClientHost extends ClientModel {
     this.counterPlayers = 0;
     this.maxRound = 0;
     this.currentRound = 0;
+    this.gameStarted = false;
   }
 
   sendToPlayer(message: SocketMessage): void {
-    const id = message.player_id;
+    const id = message.id;
     if (id === 0) {
       this.sendToAllPlayers(message);
     } else {
@@ -75,24 +77,6 @@ export default class ClientHost extends ClientModel {
   removePlayer(id: number): void {
     this.players.delete(id);
     console.log(`Host ${this.hostCode} : Le joueur n°${id} a été retiré de la partie.`);
-  }
-
-  getSurvivors(): ClientPlayer[] {
-    let survivors: ClientPlayer[] = [];
-
-    return survivors;
-  }
-
-  getInfected(): ClientPlayer[] {
-    let infected: ClientPlayer[] = [];
-
-    return infected;
-  }
-
-  getSparrowhawk(): ClientPlayer[] {
-    let sparrowhawks: ClientPlayer[] = [];
-
-    return sparrowhawks;
   }
 
   closeGame(): void {

@@ -1,6 +1,6 @@
-const start = (hostCode, pseudo, playerId = null) => {
-  console.log("Host code:", hostCode, "; Pseudo:", pseudo);
+import { PlayerController } from "./player-controller.js";
 
+const start = (hostCode, pseudo, playerId = null) => {
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
   let socketUrl = `${protocol}://${window.location.host}/?clientType=player&hostCode=${hostCode}&name=${pseudo}`;
   if (playerId) {
@@ -14,10 +14,10 @@ const start = (hostCode, pseudo, playerId = null) => {
     const msg = JSON.parse(event.data);
 
     if (msg.type === "SETUP_CONTROLLER" || msg.type === "RECONNECTION") {
-      const player_id = msg.data.player_id;
+      const player_id = msg.data.id;
       // On enregistre l'id en cas de reconnexion
       sessionStorage.setItem("playerId", player_id);
-      const player_name = msg.data.player_name;
+      const player_name = msg.data.name;
 
       let lastEmitTime = 0;
       const EMIT_INTERVAL = 40;
@@ -33,7 +33,7 @@ const start = (hostCode, pseudo, playerId = null) => {
               socket.send(
                 JSON.stringify({
                   type: "MOVE",
-                  data: { x: 0, y: 0 },
+                  data: [0, 0],
                 }),
               );
               isMoving = false;
@@ -45,38 +45,45 @@ const start = (hostCode, pseudo, playerId = null) => {
             socket.send(
               JSON.stringify({
                 type: "MOVE",
-                data: { x: x, y: y },
+                // Optimisation: limiter le nombre de caractères envoyés: par exemple 13 (2) au lieu de 0.13 (4)
+                data: [Math.round(x * 100), Math.round(y * 100)],
               }),
             );
             lastEmitTime = now;
             isMoving = true;
           }
         },
-        onUseSpeedBonus: () => {
-          controller.setSpeedBonus(controller.speedBonus - 1);
+        onUseBonus: (type) => {
+          const btn = document.getElementById(`${type}-btn`);
+          if (!btn || btn.disabled) return;
+
+          // Mise à jour de l'interface
+          controller.removeBonus(type);
+
+          // Désactivation du bouton
+          btn.disabled = true;
+
+          // Envoie au serveur
           socket.send(
             JSON.stringify({
               type: "USE_BONUS",
-              data: { bonus: "speed" },
+              data: { bonus: type },
             }),
           );
-        },
-        onUseDashBonus: () => {
-          controller.setDashBonus(controller.dashBonus - 1);
-          socket.send(
-            JSON.stringify({
-              type: "USE_BONUS",
-              data: { bonus: "dash" },
-            }),
-          );
+
+          // Réactivation après 5 secondes
+          setTimeout(() => {
+            if (controller.bonus[type] > 0) btn.disabled = false;
+          }, 5000);
         },
       });
 
       // Si c'est une reconnexion, on reassigne le rôle et les bonus au joueur
       if (msg.type === "RECONNECTION") {
-        controller.updateRole(msg.data.player_role);
-        controller.setSpeedBonus(msg.data.player_bonus.speed);
-        controller.setDashBonus(msg.data.player_bonus.dash);
+        controller.updateRole(msg.data.role);
+        for (const [key, value] of Object.entries(msg.data.bonus)) {
+          controller.setBonusCount(key, value);
+        }
       }
     } else if (msg.type === "GET_BONUS") {
       if (controller) {
@@ -142,7 +149,7 @@ if (!pseudo) {
   // Si il y'a un pseudo et que c'est la même partie on lance directement
 
   // Si un pseudo est enregistré, alors un id est aussi enregistré
-  const playerId = localStorage.getItem("playerId");
+  const playerId = sessionStorage.getItem("playerId");
 
   start(hostCode, pseudo, playerId);
 }

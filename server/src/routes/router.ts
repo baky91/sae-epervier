@@ -6,7 +6,9 @@ export function createRouter(hosts: Map<string, ClientHost>) {
   const router = express.Router();
 
   router.get("/", (req: Request, res: Response) => {
-    res.sendFile(join(import.meta.dirname, "../../public/index.html"));
+    // res.sendFile(join(import.meta.dirname, "../public/index.html"));
+
+    res.sendFile(join(import.meta.dirname, "../../client/index.html"));
   });
 
   router.get("/game", (req: Request, res: Response) => {
@@ -17,9 +19,11 @@ export function createRouter(hosts: Map<string, ClientHost>) {
     const { hostCode } = req.params;
 
     if (!Array.isArray(hostCode) && hosts.has(hostCode)) {
-      res.sendFile(join(import.meta.dirname, "../../public/controller.html"));
+      // res.sendFile(join(import.meta.dirname, "../public/controller.html"));
+      res.sendFile(join(import.meta.dirname, "../../client/controller.html"));
     } else {
-      res.sendFile(join(import.meta.dirname, "../../public/error-page.html"));
+      // res.sendFile(join(import.meta.dirname, "../public/error-page.html"));
+      res.sendFile(join(import.meta.dirname, "../../client/error-page.html"));
     }
   });
 
