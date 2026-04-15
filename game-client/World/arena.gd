@@ -2,6 +2,7 @@ extends Node2D
 
 const TOP_ZONE = "top_zone"
 const BOTTOM_ZONE = "bottom_zone"
+const SAFE_SURVIVORS = "safe_survivor"
 
 var player_scene = preload("res://Player/player.tscn")
 var bonus_scene = preload("res://World/bonus.tscn")
@@ -24,6 +25,7 @@ var max_round = 5
 
 var players_counter = {
 	"total": 0,
+	SAFE_SURVIVORS: 0,
 	Player.ROLE_SURVIVOR: 0,
 	Player.ROLE_INFECTED: 0,
 	Player.ROLE_SPARROWHAWK: 0,
@@ -126,6 +128,7 @@ func _start_round():
 		# On initialise les compteurs à 0 si on ne connait pas le nombre final à la fin de la manche (éperviers)
 		players_counter = {
 			"total": players_nodes.keys().size(),
+			SAFE_SURVIVORS: 0,
 			Player.ROLE_SURVIVOR: 0,
 			Player.ROLE_INFECTED: 0,
 			Player.ROLE_SPARROWHAWK: 0
@@ -149,6 +152,8 @@ func _start_round():
 			elif player.role == Player.ROLE_SPARROWHAWK:
 				next_sparrowhawk.append(player)
 				players_counter[Player.ROLE_SPARROWHAWK] += 1
+			else:
+				players_counter[Player.ROLE_SURVIVOR] += 1
 		
 		# On met tous les éperviers au centre
 		var counter_sparrowhawk = next_sparrowhawk.size()
@@ -253,28 +258,28 @@ func _on_timer_round_timeout() -> void:
 func _on_top_zone_area_2d_body_entered(body: Node2D) -> void:
 	if dest_safe_zone == TOP_ZONE:
 		print(body)
-		players_counter[Player.ROLE_SURVIVOR] += 1
+		players_counter[SAFE_SURVIVORS] += 1
 		_check_end_of_round()
 
 func _on_top_zone_area_2d_body_exited(body: Node2D) -> void:
 	if dest_safe_zone == TOP_ZONE:
-		players_counter[Player.ROLE_SURVIVOR] -= 1
+		players_counter[SAFE_SURVIVORS] -= 1
 
 func _on_bottom_zone_area_2d_body_entered(body: Node2D) -> void:
 	if dest_safe_zone == BOTTOM_ZONE:
 		print(body)
-		players_counter[Player.ROLE_SURVIVOR] += 1
+		players_counter[SAFE_SURVIVORS] += 1
 		_check_end_of_round()
 		
 func _on_bottom_zone_area_2d_body_exited(body: Node2D) -> void:
 	if dest_safe_zone == BOTTOM_ZONE:
-		players_counter[Player.ROLE_SURVIVOR] -= 1
+		players_counter[SAFE_SURVIVORS] -= 1
 
 func _check_end_of_round():
 	print(players_counter)
 	#On vérifie si le nombre de survivant dans la zone est égale au nombre total de joueurs sans les infectés
 	var total = players_counter["total"]
-	var survivors = players_counter[Player.ROLE_SURVIVOR]
+	var survivors = players_counter[SAFE_SURVIVORS]
 	var infected = players_counter[Player.ROLE_INFECTED]
 	var sparrowhawks = players_counter[Player.ROLE_SPARROWHAWK]
 	
@@ -285,4 +290,5 @@ func _on_player_infected():
 	print("Un joueur a été infecté")
 	#On décrémente le compteur de survivants et on incrémente le compteur d'infectés
 	players_counter[Player.ROLE_INFECTED] += 1
+	players_counter[Player.ROLE_SURVIVOR] -= 1
 	
