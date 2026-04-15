@@ -174,6 +174,8 @@ func _start_round():
 		
 		timer_round.start()
 
+		_update_players_counter_labels()
+
 	else:
 		_end_round()
 
@@ -292,3 +294,9 @@ func _on_player_infected():
 	players_counter[Player.ROLE_INFECTED] += 1
 	players_counter[Player.ROLE_SURVIVOR] -= 1
 	
+	_update_players_counter_labels()
+	
+func _update_players_counter_labels():
+	label_nb_survivors.text = str(players_counter[Player.ROLE_SURVIVOR])
+	label_nb_infected.text = str(players_counter[Player.ROLE_INFECTED])
+	label_nb_sparrowhawks.text = str(players_counter[Player.ROLE_SPARROWHAWK])
