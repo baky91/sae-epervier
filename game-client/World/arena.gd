@@ -7,6 +7,12 @@ var bonus_scene = preload("res://World/bonus.tscn")
 
 @onready var timer_round = $TimerRound
 
+@onready var label_nb_manche: Label = $CanvasLayer/VBoxContainer2/LabelNbManche
+@onready var label_duree_manche: Label = $CanvasLayer/VBoxContainer2/LabelDureeManche
+@onready var label_nb_sparrowhawks: Label = $CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer/LabelNbSparrowhawks
+@onready var label_nb_infected: Label = $CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer/LabelNbInfected
+@onready var label_nb_survivors: Label = $CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer/LabelNbSurvivors
+
 var players_nodes = {}
 
 var game_started = false
@@ -28,6 +34,10 @@ func _physics_process(_delta):
 		_first_version_start()
 	if Input.is_action_just_pressed("start_round"):
 		_start_round()
+	if !timer_round.is_stopped():
+		var time_left = int(ceil(timer_round.time_left))
+		label_duree_manche.text = str(time_left) + " s"
+	
 	
 	for id in ServerSocket.players_inputs_buffer:
 		if players_nodes.has(id):
@@ -102,6 +112,7 @@ func _start_round():
 	if current_round < max_round:
 		current_round += 1
 		print("Commencement de la manche ", str(current_round))
+		label_nb_manche.text = "Manche " + str(current_round) + "/" + str(max_round)
 		
 		# Liste contenant les éperviers de la prochaine manche
 		var next_sparrowhawk = []
@@ -134,6 +145,8 @@ func _start_round():
 			player.position = Vector2(x, y)
 		
 		timer_round.start()
+		
+		
 		
 func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
