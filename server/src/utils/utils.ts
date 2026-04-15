@@ -1,4 +1,4 @@
-import ClientHost from "./ClientHost.js";
+import ClientHost from "../models/ClientHost.js";
 
 export function generateUniqueCode(hosts: Map<string, ClientHost>): string {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

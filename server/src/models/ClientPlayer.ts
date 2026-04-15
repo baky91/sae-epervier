@@ -33,7 +33,7 @@ export default class ClientPlayer extends ClientModel {
     if (this.hostSocket) {
       this.hostSocket.sendMessage({
         type: message.type,
-        player_id: this.id,
+        id: this.id,
         data: message.data,
       });
     }
@@ -53,10 +53,10 @@ export default class ClientPlayer extends ClientModel {
     this.sendMessage({
       type: "RECONNECTION",
       data: {
-        player_id: this.id,
-        player_name: this.name,
-        player_bonus: this.bonus,
-        player_role: this.role,
+        id: this.id,
+        name: this.name,
+        bonus: this.bonus,
+        role: this.role,
       },
     });
 
@@ -71,7 +71,7 @@ export default class ClientPlayer extends ClientModel {
         this.hostSocket.removePlayer(this.id);
         this.hostSocket.sendMessage({
           type: "PLAYER_LEFT",
-          player_id: this.id,
+          id: this.id,
         });
         console.log(
           `Joueur ${this.name} déconnecté de la partie ${this.hostSocket.hostCode}`,

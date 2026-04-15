@@ -1,0 +1,250 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+    text-align: center;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+#btn-quit {
+    padding: 12px 15px;
+    background-color: #fd4d2d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.3s;
+    border: 2px solid #ff401e;
+}
+
+
+#btn-quit:hover{
+    background-color: #ff694e;
+}
+
+/* Colonnes Gauche et Droite */
+.left-div, 
+.right-div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    background: rgba(31, 41, 55, 0.6);
+    border: 2px solid #374151;
+    border-radius: 1.5rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    color: #fff;
+}
+
+.left-div:hover, 
+.right-div:hover {
+    border-color: #6c63ff;
+}
+
+#game-code,
+#player-pseudo {
+    width: 100%;
+    padding: 12px;
+    background: #111827;
+    border: 2px solid #374151;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.5rem;
+    /* text-align: center; */
+    letter-spacing: 5px;
+    font-weight: bold;
+    margin-bottom:15px;
+}
+
+#game-code:focus,
+#player-pseudo:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
+
+#game-code,
+#host-button,
+#go-to-home,
+button[type="submit"] {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#game-code::placeholder,
+#player-pseudo::placeholder {
+    text-transform: none;
+    font-size: 0.9rem;
+}
+
+/* Modal */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+}
+
+h1 {
+    text-align: center;
+    color: #ffffff;
+    margin: 2rem 0;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(243, 18, 176, 0.3);
+}
+
+form {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    font-size: 1.5rem;
+}
+
+#form-pseudo {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#form-code {
+    width: 100%;
+    gap: 10px;
+}
+
+button[type="submit"],
+#go-to-home,
+#host-button {
+    margin-top: auto;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.3s;
+}
+
+button[type="submit"] {
+    font-weight: 800;
+}
+
+button[type="submit"],
+#go-to-home {
+    background-color: #6c63ff;
+}
+
+#host-button {
+    background-color:#10b981;
+}
+
+
+button[type="submit"]:hover,
+#go-to-home:hover {
+    background-color: #5a52e0;
+}
+
+#host-button:hover {
+    background-color: #059669;
+}
+
+button[type="submit"]:active,
+#go-to-home:active,
+#host-button:active {
+    transform: scale(0.98);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 5;
+}
+
+.hidden {
+    display: none;
+}
+
+#btn-quit {
+    padding: 12px;
+    background-color: #fd4d2d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.3s;
+}
+
+
+#btn-quit:hover{
+    background-color: #ff694e;
+}
+
+@media (max-width: 850px) {
+    main {
+        padding: 1rem;
+    }
+
+    .home-page-main {
+        flex-direction: column-reverse;
+    }
+
+    .error-page-main {
+        flex-direction: column;
+    }
+    
+    .left-div, 
+    .right-div {
+        width: 100%;
+    }
+}

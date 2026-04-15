@@ -1,5 +1,8 @@
 extends Node2D
 
+const TOP_ZONE = "top_zone"
+const BOTTOM_ZONE = "bottom_zone"
+
 var player_scene = preload("res://Player/player.tscn")
 var bonus_scene = preload("res://World/bonus.tscn")
 
@@ -18,6 +21,15 @@ var players_nodes = {}
 var game_started = false
 var current_round = 0
 var max_round = 5
+
+var players_counter = {
+	"total": 0,
+	Player.ROLE_SURVIVOR: 0,
+	Player.ROLE_INFECTED: 0,
+	Player.ROLE_SPARROWHAWK: 0,
+}
+
+var dest_safe_zone: String = TOP_ZONE
 
 func _ready() -> void:
 	ServerSocket.room_created.connect(_on_room_created)
@@ -77,6 +89,7 @@ func _start_game():
 			# Connexion des signaux
 			player.get_bonus.connect(_on_player_signal_bonus)
 			player.role_changed.connect(_on_role_changed)
+			player.player_infected.connect(_on_player_infected)
 			
 			# Ajout du numéro sur le pion du joueur
 			player.set_label(str(id))
@@ -110,6 +123,14 @@ func _first_version_start():
 
 func _start_round():
 	if current_round < max_round:
+		# On initialise les compteurs à 0 si on ne connait pas le nombre final à la fin de la manche (éperviers)
+		players_counter = {
+			"total": players_nodes.keys().size(),
+			Player.ROLE_SURVIVOR: 0,
+			Player.ROLE_INFECTED: 0,
+			Player.ROLE_SPARROWHAWK: 0
+		}
+		
 		current_round += 1
 		print("Commencement de la manche ", str(current_round))
 		label_nb_manche.text = "Manche " + str(current_round) + "/" + str(max_round)
@@ -124,8 +145,10 @@ func _start_round():
 			if player.role == Player.ROLE_INFECTED:
 				player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
 				next_sparrowhawk.append(player)
+				players_counter[Player.ROLE_SPARROWHAWK] += 1
 			elif player.role == Player.ROLE_SPARROWHAWK:
 				next_sparrowhawk.append(player)
+				players_counter[Player.ROLE_SPARROWHAWK] += 1
 		
 		# On met tous les éperviers au centre
 		var counter_sparrowhawk = next_sparrowhawk.size()
@@ -145,9 +168,18 @@ func _start_round():
 			player.position = Vector2(x, y)
 		
 		timer_round.start()
-		
-		
-		
+
+	else:
+		_end_round()
+
+func _end_round():
+	print("Fin de la manche ", str(current_round))
+	
+	_start_round()
+			
+func _end_game():
+	print("Fin de la partie")
+			
 func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
 
@@ -187,7 +219,6 @@ func _on_player_left(id: int):
 		players_nodes.erase(id)
 		print("Player n°" + str(id) + " left.")
 
-
 func _on_timer_bonus_timeout() -> void:
 	var bonus = bonus_scene.instantiate()
 	add_child(bonus)
@@ -195,7 +226,7 @@ func _on_timer_bonus_timeout() -> void:
 func _on_player_signal_bonus(player_id: int, bonus_name: String):
 	var data_to_send = {
 		"type": "GET_BONUS",
-		"player_id": player_id,
+		"id": player_id,
 		"data": {
 			"bonus": bonus_name
 		}
@@ -208,7 +239,7 @@ func _on_role_changed(player_id: int, role: String) -> void:
 	player.set_role(role)
 	var data_to_send = {
 		"type": "SET_ROLE",
-		"player_id": player_id,
+		"id": player_id,
 		"data": {
 			"role": role
 		}
@@ -216,6 +247,42 @@ func _on_role_changed(player_id: int, role: String) -> void:
 	
 	ServerSocket.send_message_to_server(data_to_send)
 
-
 func _on_timer_round_timeout() -> void:
-	print("Fin de la manche ", str(current_round))
+	_end_round()
+
+func _on_top_zone_area_2d_body_entered(body: Node2D) -> void:
+	if dest_safe_zone == TOP_ZONE:
+		print(body)
+		players_counter[Player.ROLE_SURVIVOR] += 1
+		_check_end_of_round()
+
+func _on_top_zone_area_2d_body_exited(body: Node2D) -> void:
+	if dest_safe_zone == TOP_ZONE:
+		players_counter[Player.ROLE_SURVIVOR] -= 1
+
+func _on_bottom_zone_area_2d_body_entered(body: Node2D) -> void:
+	if dest_safe_zone == BOTTOM_ZONE:
+		print(body)
+		players_counter[Player.ROLE_SURVIVOR] += 1
+		_check_end_of_round()
+		
+func _on_bottom_zone_area_2d_body_exited(body: Node2D) -> void:
+	if dest_safe_zone == BOTTOM_ZONE:
+		players_counter[Player.ROLE_SURVIVOR] -= 1
+
+func _check_end_of_round():
+	print(players_counter)
+	#On vérifie si le nombre de survivant dans la zone est égale au nombre total de joueurs sans les infectés
+	var total = players_counter["total"]
+	var survivors = players_counter[Player.ROLE_SURVIVOR]
+	var infected = players_counter[Player.ROLE_INFECTED]
+	var sparrowhawks = players_counter[Player.ROLE_SPARROWHAWK]
+	
+	if survivors == total - infected - sparrowhawks:
+		_end_round()
+		
+func _on_player_infected():
+	print("Un joueur a été infecté")
+	#On décrémente le compteur de survivants et on incrémente le compteur d'infectés
+	players_counter[Player.ROLE_INFECTED] += 1
+	

@@ -60,7 +60,8 @@ func _on_player_left(id: int):
 
 func _on_button_start_pressed():
 	var data_to_send = {
-		"type": "game_start",
+		"type": "GAME_START",
+		"id": 0,
 		"data": {
 			"message": "Game " + hostCode +" has started."
 		}
