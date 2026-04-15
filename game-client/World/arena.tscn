@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dkfx43wtkgmah"]
+[gd_scene format=3 uid="uid://dkfx43wtkgmah"]
 
 [ext_resource type="Script" uid="uid://d0ix40thmevt7" path="res://World/arena.gd" id="1_24pi4"]
 [ext_resource type="Texture2D" uid="uid://c6o2fu260qre4" path="res://Assets/grass-grid.png" id="2_ktx4i"]
@@ -30,11 +30,11 @@ b = Vector2(1920, 80)
 a = Vector2(0, 1000)
 b = Vector2(1920, 1000)
 
-[node name="Arena" type="Node2D" node_paths=PackedStringArray("qr_code")]
+[node name="Arena" type="Node2D" unique_id=1315835147 node_paths=PackedStringArray("qr_code")]
 script = ExtResource("1_24pi4")
 qr_code = NodePath("TextureRect")
 
-[node name="Background" type="Sprite2D" parent="."]
+[node name="Background" type="Sprite2D" parent="." unique_id=1162300064]
 texture_filter = 1
 texture_repeat = 2
 position = Vector2(960, 540)
@@ -42,46 +42,46 @@ texture = ExtResource("2_ktx4i")
 region_enabled = true
 region_rect = Rect2(5, 0, 1920, 1080)
 
-[node name="Borders" type="Node2D" parent="."]
+[node name="Borders" type="Node2D" parent="." unique_id=590232158]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Borders"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Borders" unique_id=1457156026]
 position = Vector2(960, -10)
 collision_layer = 4
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D" unique_id=796706442]
 shape = SubResource("RectangleShape2D_ra8g6")
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="Borders"]
+[node name="StaticBody2D2" type="StaticBody2D" parent="Borders" unique_id=1770628691]
 position = Vector2(960, 1090)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D2" unique_id=1877732105]
 shape = SubResource("RectangleShape2D_ra8g6")
 
-[node name="StaticBody2D3" type="StaticBody2D" parent="Borders"]
+[node name="StaticBody2D3" type="StaticBody2D" parent="Borders" unique_id=1187598692]
 position = Vector2(-10, 540)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D3" unique_id=271686970]
 shape = SubResource("RectangleShape2D_piv0h")
 
-[node name="StaticBody2D4" type="StaticBody2D" parent="Borders"]
+[node name="StaticBody2D4" type="StaticBody2D" parent="Borders" unique_id=620988641]
 position = Vector2(1930, 540)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D4" unique_id=1082029384]
 shape = SubResource("RectangleShape2D_piv0h")
 
-[node name="TimerBonus" type="Timer" parent="."]
+[node name="TimerBonus" type="Timer" parent="." unique_id=1009526076]
 wait_time = 10.0
 autostart = true
 
-[node name="TimerRound" type="Timer" parent="."]
-wait_time = 30.0
+[node name="TimerRound" type="Timer" parent="." unique_id=1692996985]
+wait_time = 45.0
 one_shot = true
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=616894357]
 visible = false
 offset_left = 67.0
 offset_top = 86.0
@@ -102,39 +102,39 @@ dark_module_color = Color(0, 0, 0, 1)
 auto_module_px_size = true
 quiet_zone_size = 4
 
-[node name="TopSafeZone" type="Node2D" parent="."]
+[node name="TopSafeZone" type="Node2D" parent="." unique_id=2119658827]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="TopSafeZone"]
+[node name="StaticBody2D" type="StaticBody2D" parent="TopSafeZone" unique_id=1115298577]
 collision_layer = 16
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopSafeZone/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopSafeZone/StaticBody2D" unique_id=730025463]
 shape = SubResource("SegmentShape2D_nwrlw")
 
-[node name="Line2D" type="Line2D" parent="TopSafeZone"]
+[node name="Line2D" type="Line2D" parent="TopSafeZone" unique_id=827075042]
 points = PackedVector2Array(0, 80, 1920, 80)
 width = 3.0
 default_color = Color(1, 0, 0, 1)
 
-[node name="BottomSafeZone" type="Node2D" parent="."]
+[node name="BottomSafeZone" type="Node2D" parent="." unique_id=1700716612]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="BottomSafeZone"]
+[node name="StaticBody2D" type="StaticBody2D" parent="BottomSafeZone" unique_id=1296076926]
 collision_layer = 16
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomSafeZone/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomSafeZone/StaticBody2D" unique_id=2053494119]
 shape = SubResource("SegmentShape2D_ktx4i")
 
-[node name="Line2D" type="Line2D" parent="BottomSafeZone"]
+[node name="Line2D" type="Line2D" parent="BottomSafeZone" unique_id=296516242]
 points = PackedVector2Array(0, 1000, 1920, 1000)
 width = 3.0
 default_color = Color(1, 0, 0, 1)
 
-[node name="Players" type="Node2D" parent="."]
+[node name="Players" type="Node2D" parent="." unique_id=604316342]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=121744359]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1801480653]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -144,7 +144,7 @@ offset_bottom = 80.0
 grow_horizontal = 2
 color = Color(0.835294, 0.835294, 0.835294, 0.215686)
 
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer" unique_id=721980934]
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -157,7 +157,7 @@ grow_horizontal = 0
 grow_vertical = 2
 color = Color(0.835294, 0.835294, 0.835294, 0.215686)
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer" unique_id=1200948446]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -167,20 +167,20 @@ offset_bottom = 103.0
 grow_horizontal = 2
 theme_override_constants/separation = 0
 
-[node name="LabelNbManche" type="Label" parent="CanvasLayer/VBoxContainer2"]
+[node name="LabelNbManche" type="Label" parent="CanvasLayer/VBoxContainer2" unique_id=1660871350]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
-text = "Manche 10 / 10"
+text = "Manche # / #"
 horizontal_alignment = 1
 
-[node name="LabelDureeManche" type="Label" parent="CanvasLayer/VBoxContainer2"]
+[node name="LabelDureeManche" type="Label" parent="CanvasLayer/VBoxContainer2" unique_id=1997689578]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "45s"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=2133148255]
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -193,44 +193,44 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_constants/separation = -8
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VBoxContainer" unique_id=1088513627]
 layout_mode = 2
 theme_override_constants/margin_right = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer" unique_id=598454912]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=792723087]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "Eperviers"
 
-[node name="LabelNbSparrowhawks" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="LabelNbSparrowhawks" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=664244]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "#"
 
-[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1508085278]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 36
 text = "Infectés"
 
-[node name="LabelNbInfected" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="LabelNbInfected" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=274658414]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 36
 text = "#"
 
-[node name="Label3" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1866113511]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 1, 1)
 theme_override_font_sizes/font_size = 36
 text = "Survivants"
 
-[node name="LabelNbSurvivors" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="LabelNbSurvivors" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=455637235]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 1, 1)
 theme_override_font_sizes/font_size = 36
