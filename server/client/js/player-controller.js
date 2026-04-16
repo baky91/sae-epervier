@@ -100,7 +100,7 @@ export class PlayerController {
                         <div class="joystick-section">
                             <div id="joystick" class="joystick-container"></div>
                             <div class="joystick-label">
-                                ${this.role === "infected" ? "Immobilisé" : "Déplacements"}
+                                ${this.role === "infected" ? "Immobilisé" : ""}
                             </div>
                         </div>
                     </div>
