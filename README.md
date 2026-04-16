@@ -27,11 +27,16 @@ sae-epervier
 │  ├─ World
 │  └─ project.godot     
 └─ server               # Serveur NodeJS & Front-End
+   ├─ client            # Page d'accueil + Contrôleur web
    ├─ game              # Jeu Godot exporté en HTML
-   ├─ models            
-   ├─ public            # Page d'accueil + Contrôleur web
-   ├─ tests             
-   └─ index.js          # Point d'entrée du serveur
+   ├─ src               # Serveur Express avec TypeScript
+   |  ├─ controllers
+   |  ├─ models
+   |  ├─ routes
+   |  ├─ types
+   |  ├─ utils
+   |  └─ index.ts       # Point d'entrée du serveur
+   └─ tests
 ```
 
 ## Installation et Lancement
