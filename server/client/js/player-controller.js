@@ -18,10 +18,39 @@ export class PlayerController {
     };
 
     this.render();
+
     document.getElementById("btn-quit").addEventListener("click", () => {
       sessionStorage.clear();
       window.location.href = "/";
     });
+
+    const fullscreenBtn = document.getElementById("toggle-fullscreen");
+    fullscreenBtn.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        console.log("Mode Plein-Ecran activé")
+
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen(); // Standard (Chrome, Edge moderne)
+        } else if (document.documentElement.mozRequestFullScreen) { 
+          document.documentElement.mozRequestFullScreen(); // Firefox
+        } else if (document.documentElement.webkitRequestFullscreen) { 
+          document.documentElement.webkitRequestFullscreen(); // Safari et vieux Chrome
+        } else if (document.documentElement.msRequestFullscreen) { 
+          document.documentElement.msRequestFullscreen(); // Internet Explorer
+        }
+
+        fullscreenBtn.innerHTML = getFullscreenIcon(true);
+
+      } else if (document.exitFullscreen) {
+        console.log("Mode Plein-Ecran désactivé")
+
+        document.exitFullscreen();
+
+        fullscreenBtn.innerHTML = getFullscreenIcon(false);
+      }
+
+    })
+    
     this.initJoystick();
     this.setupKeyboard();
 
@@ -87,9 +116,13 @@ export class PlayerController {
                         <p>${config ? config.label : ""}</p>
                     </div>
                 </div>
-                <div>
-                  <button id="btn-quit">Quitter</button>
-              </div>
+
+                <button id="toggle-fullscreen">
+                  ${this.getFullscreenIcon(false)}
+                </button>
+
+                <button id="btn-quit">Quitter</button>
+
             </div>
 
             <!-- Control Area -->
@@ -342,6 +375,22 @@ export class PlayerController {
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             <path d="m9 12 2 2 4-4"></path>
         </svg>`;
+  }
+
+  getFullscreenIcon(enabled){
+    // Si le mode plein écran est activé, 
+    // on affiche l'image permettant de désactiver, et inversement
+    if (enabled){
+      return `
+          <img src="images/fullscreen-disable.svg">
+          <span>Désactiver Plein-Ecran</span>
+          `;
+    } else {
+      return `
+          <img src="images/fullscreen-disable.svg">
+          <span>Activer Plein-Ecran</span>
+        `;
+    }
   }
 }
 
