@@ -1,5 +1,9 @@
 import ClientHost from "../models/ClientHost.js";
 
+export function logMessage(message: any){
+  console.log(`[${new Date().toLocaleTimeString()}] ${message}`)
+}
+
 export function generateUniqueCode(hosts: Map<string, ClientHost>): string {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const codeLength = 4;
