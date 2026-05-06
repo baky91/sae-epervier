@@ -10,6 +10,8 @@ const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server }); // On lie ws au serveur http
 
+const isDev = process.env.NODE_ENV === "development";
+
 const PORT = process.env.PORT || 3000;
 const hosts = new Map<string, ClientHost>();
 
@@ -21,10 +23,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // FICHIERS STATIQUES
+if (isDev)
+  app.use(express.static(join(import.meta.dirname, "../client")));
 app.use(express.static(join(import.meta.dirname, "public")));
 app.use(express.static(join(import.meta.dirname, "../game")));
-
-app.use(express.static(join(import.meta.dirname, "../client")));
 
 // ROUTES
 app.use("/", createRouter(hosts));
