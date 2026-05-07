@@ -2,9 +2,9 @@ import express, { NextFunction, Request, Response } from "express";
 import { createServer } from "http";
 import { join } from "node:path";
 import { WebSocketServer } from "ws";
-import ClientHost from "./models/ClientHost.js";
-import { createRouter } from "./routes/router.js";
-import { setupWebSockets } from "./controllers/sockets.js";
+import ClientHost from "./models/ClientHost";
+import { createRouter } from "./routes/router";
+import { setupWebSockets } from "./controllers/sockets";
 
 const app = express();
 const server = createServer(app);
@@ -23,10 +23,13 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // FICHIERS STATIQUES
-if (isDev)
-  app.use(express.static(join(import.meta.dirname, "../client")));
-app.use(express.static(join(import.meta.dirname, "public")));
-app.use(express.static(join(import.meta.dirname, "../game")));
+if (isDev){
+  app.use(express.static(join(__dirname, "../client")));
+  app.use(express.static(join(__dirname, "../public")));
+} else {
+  app.use(express.static(join(__dirname, "public")));
+}
+app.use(express.static(join(__dirname, "../game")));
 
 // ROUTES
 app.use("/", createRouter(hosts));

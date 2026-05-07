@@ -1,8 +1,8 @@
 import { WebSocketServer, WebSocket } from "ws";
-import ClientHost from "../models/ClientHost.js";
-import ClientPlayer from "../models/ClientPlayer.js";
-import { generateUniqueCode, logMessage } from "../utils/utils.js";
-import { SocketMessage } from "../types/types.js";
+import ClientHost from "../models/ClientHost";
+import ClientPlayer from "../models/ClientPlayer";
+import { generateUniqueCode, logMessage } from "../utils/utils";
+import { SocketMessage } from "../types/types";
 
 export function setupWebSockets(
   wss: WebSocketServer,

@@ -1,4 +1,4 @@
-import ClientHost from "../models/ClientHost.js";
+import ClientHost from "../models/ClientHost";
 
 export function logMessage(message: any){
   console.log(`[${new Date().toLocaleTimeString()}] ${message}`)

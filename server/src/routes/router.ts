@@ -1,14 +1,11 @@
 import express, { Request, Response } from "express";
-import ClientHost from "../models/ClientHost.js";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
-import { stat } from "fs";
+import ClientHost from "../models/ClientHost";
+import { join } from "path";
 
 export function createRouter(hosts: Map<string, ClientHost>) {
   const router = express.Router();
   const isDev = process.env.NODE_ENV === "development";
-
-  const __dirname = dirname(fileURLToPath(import.meta.url));
+  
   const staticPath = isDev
     ? join(__dirname, "../../client")
     : join(__dirname, "../public");

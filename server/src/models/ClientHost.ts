@@ -1,7 +1,7 @@
-import { SocketMessage } from "../types/types.js";
-import { logMessage } from "../utils/utils.js";
-import { ClientModel } from "./ClientModel.js";
-import ClientPlayer from "./ClientPlayer.js";
+import { SocketMessage } from "../types/types";
+import { logMessage } from "../utils/utils";
+import { ClientModel } from "./ClientModel";
+import ClientPlayer from "./ClientPlayer";
 import WebSocket from "ws";
 
 export default class ClientHost extends ClientModel {
