@@ -2,12 +2,13 @@
   "name": "epervier-server",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "build": "tsc && vite build",
+    "build:server": "tsc",
     "build:client": "vite build",
     "build:game": "..\\..\\Godot_v4.6-stable_win64.exe --headless ..\\game-client\\project.godot --export-release Web",
-    "start": "tsc && node dist/index",
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "start": "node dist/index",
     "bots": "node tests/tests-bots.js"
   },
   "keywords": [],
@@ -22,6 +23,9 @@
     "@types/express": "^5.0.6",
     "@types/node": "^25.3.3",
     "@types/ws": "^8.18.1",
+    "cross-env": "^10.1.0",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vite": "^8.0.1"
   }

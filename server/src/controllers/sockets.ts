@@ -1,8 +1,8 @@
 import { WebSocketServer, WebSocket } from "ws";
-import ClientHost from "../models/ClientHost.js";
-import ClientPlayer from "../models/ClientPlayer.js";
-import { generateUniqueCode } from "../utils/utils.js";
-import { SocketMessage } from "../types/types.js";
+import ClientHost from "../models/ClientHost";
+import ClientPlayer from "../models/ClientPlayer";
+import { generateUniqueCode, logMessage } from "../utils/utils";
+import { SocketMessage } from "../types/types";
 
 export function setupWebSockets(
   wss: WebSocketServer,
@@ -23,7 +23,7 @@ export function setupWebSockets(
       currentUser = new ClientHost(ws, code);
       hosts.set(code, currentUser);
 
-      console.log(`Écran Godot (Host) connecté avec le code : ${code}`);
+      logMessage(`Nouvel hôte crée avec le code : ${code}`);
 
       currentUser.sendMessage({
         type: "ROOM_CREATED",
@@ -88,9 +88,7 @@ export function setupWebSockets(
           },
         });
 
-        console.log(
-          `Joueur ${name} (ID: ${currentUser.id}) a rejoint la partie ${hostCode}`,
-        );
+        logMessage(`Joueur ${name} (ID: ${currentUser.id}) a rejoint la partie ${hostCode}`);
       }
     }
 
@@ -119,7 +117,7 @@ export function setupWebSockets(
       } else if (currentUser instanceof ClientHost) {
         currentUser.closeGame();
         hosts.delete(currentUser.hostCode);
-        console.log(`Partie ${currentUser.hostCode} fermée`);
+        logMessage(`La partie ${currentUser.hostCode} a été fermée`);
       }
     });
   });

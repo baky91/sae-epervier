@@ -1,6 +1,7 @@
-import { SocketMessage } from "../types/types.js";
-import { ClientModel } from "./ClientModel.js";
-import ClientPlayer from "./ClientPlayer.js";
+import { SocketMessage } from "../types/types";
+import { logMessage } from "../utils/utils";
+import { ClientModel } from "./ClientModel";
+import ClientPlayer from "./ClientPlayer";
 import WebSocket from "ws";
 
 export default class ClientHost extends ClientModel {
@@ -29,8 +30,6 @@ export default class ClientHost extends ClientModel {
       const targetPlayer = this.getPlayer(id);
 
       if (targetPlayer) {
-        // console.log(message);
-
         targetPlayer.sendMessage(message);
 
         const type = message.type;
@@ -75,8 +74,9 @@ export default class ClientHost extends ClientModel {
   }
 
   removePlayer(id: number): void {
+    const playerName = this.getPlayer(id)?.name;
     this.players.delete(id);
-    console.log(`Host ${this.hostCode} : Le joueur n°${id} a été retiré de la partie.`);
+    logMessage(`Joueur ${playerName} (ID: ${id}) a quitté la partie ${this.hostCode}`);
   }
 
   closeGame(): void {

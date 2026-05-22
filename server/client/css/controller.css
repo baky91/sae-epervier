@@ -1,21 +1,38 @@
+/* Bloquer le scroll et l'effet de rebond (pull-to-refresh) sur mobile */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    touch-action: none;
+}
+
 .controller-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
-    margin: 0 1rem;
-    min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
 }
 
 .controller-wrapper {
+    max-height: 500px;
     width: 100%;
+    height: 100%;
+    display: flex;
 }
 
 .controller {
     width: 100%;
     max-width: 80rem;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 /* Header */
@@ -23,9 +40,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem;
+    padding: 1rem 1.5rem;
     border-radius: 1rem 1rem 0 0;
     border: 2px solid;
+    flex-shrink: 0; /* Empêche le header de s'écraser */
 }
 
 .controller-header.survivor {
@@ -106,25 +124,49 @@
     border: 2px solid #f87171;
 }
 
+#toggle-fullscreen {
+    cursor: pointer;
+    display: flex;
+    padding: .5rem;
+    gap: 0.5rem;
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
+#toggle-fullscreen img {
+    width: 16px;
+    height: 16px;
+}
+
 /* Main control area */
 .control-area {
     background: rgba(31, 41, 55, 0.95);
     backdrop-filter: blur(8px);
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
     border-radius: 0 0 1rem 1rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    border: 2px solid #374151;
-    border-top: none;
-    padding: 0 2rem;
 }
 
 .controls {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
     align-items: center;
 }
 
 /* Joystick section */
+.joystick-container {
+    width: clamp(6rem, 35vmin, 12rem);
+    height: clamp(6rem, 35vmin, 12rem);
+    aspect-ratio: 1 / 1;
+    position: relative;
+}
+
 .joystick-section {
     display: flex;
     flex-direction: column;
@@ -187,11 +229,16 @@
     border-color: #9ca3af;
 }
 
-/* Bonus buttons */
-.controls-right {
-    width: 50%;
+.controls-left, .controls-right {
+    flex: 1;
     display: flex;
-    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.controls-right {
+    gap: 3vw; /* Espace proportionnel à l'écran */
 }
 
 .bonus-section {
@@ -202,20 +249,21 @@
 }
 
 .bonus-button {
-    width: 8rem;
-    height: 8rem;
-    border-radius: 1rem;
+    /* clamp(taille_mini, taille_fluide, taille_maxi) */
+    width: clamp(4rem, 22vmin, 8rem);
+    height: clamp(4rem, 22vmin, 8rem);
+    border-radius: clamp(0.5rem, 3vmin, 1rem);
+    
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    transition: all 0.2s ease;
     border: 4px solid;
     cursor: pointer;
-    font-size: 1rem;
     font-weight: bold;
     color: white;
+    transition: all 0.2s ease;
 }
 
 .bonus-button.speed {
@@ -244,8 +292,8 @@
 }
 
 .bonus-icon {
-    width: 48px;
-    height: 48px;
+    width: 40%;
+    height: 40%;
     fill: white;
 }
 
@@ -297,19 +345,9 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-    .controls-grid {
-        grid-template-columns: 1fr;
+/* @media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
         gap: 1.5rem;
     }
-    
-    .bonus-button {
-        width: 6rem;
-        height: 6rem;
-    }
-    
-    .bonus-icon {
-        width: 32px;
-        height: 32px;
-    }
-}
+} */

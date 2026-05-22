@@ -1,7 +1,8 @@
 import WebSocket from "ws";
-import { ClientModel } from "./ClientModel.js";
-import ClientHost from "./ClientHost.js";
-import { SocketMessage } from "../types/types.js";
+import { ClientModel } from "./ClientModel";
+import ClientHost from "./ClientHost";
+import { SocketMessage } from "../types/types";
+import { logMessage } from "../utils/utils";
 
 export default class ClientPlayer extends ClientModel {
   id: number;
@@ -60,9 +61,7 @@ export default class ClientPlayer extends ClientModel {
       },
     });
 
-    console.log(
-      `Joueur ${this.name} (ID: ${this.id}) s'est reconnecté dans la partie ${this.hostSocket.hostCode}`,
-    );
+    logMessage(`Joueur ${this.name} (ID: ${this.id}) s'est reconnecté dans la partie ${this.hostSocket.hostCode}`);    
   }
 
   closeWithTimeout(timeout: number): void {
@@ -73,9 +72,8 @@ export default class ClientPlayer extends ClientModel {
           type: "PLAYER_LEFT",
           id: this.id,
         });
-        console.log(
-          `Joueur ${this.name} déconnecté de la partie ${this.hostSocket.hostCode}`,
-        );
+        
+        logMessage(`Joueur ${this.name} (ID: ${this.id}) s'est déconnecté de la partie ${this.hostSocket.hostCode}`);    
       }, timeout * 1000);
     }
   }
