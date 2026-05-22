@@ -9,7 +9,7 @@
     "build:game": "..\\..\\Godot_v4.6-stable_win64.exe --headless ..\\game-client\\project.godot --export-release Web",
     "dev": "cross-env NODE_ENV=development nodemon",
     "start": "node dist/index",
-    "bots": "node tests/tests-bots.js"
+    "bots": "tsc && node tests/tests-bots.js"
   },
   "keywords": [],
   "author": "",
