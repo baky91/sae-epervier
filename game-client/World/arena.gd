@@ -106,6 +106,8 @@ func _start_game():
 			
 			# Ajout dans la scène
 			$Players.add_child(player)
+			
+		game_started = true
 
 func _first_version_start():
 	# Création des joueurs directement lors de la connexion (si scène par défaut)
@@ -124,6 +126,9 @@ func _first_version_start():
 	game_started = true
 
 func _start_round():
+	if !game_started:
+		_start_game()
+		
 	if current_round < max_round:
 		# On initialise les compteurs à 0 si on ne connait pas le nombre final à la fin de la manche (éperviers)
 		players_counter = {
@@ -173,6 +178,7 @@ func _start_round():
 			player.position = Vector2(x, y)
 		
 		timer_round.start()
+		_update_players_labels()
 
 	else:
 		_end_round()
@@ -292,3 +298,12 @@ func _on_player_infected():
 	players_counter[Player.ROLE_INFECTED] += 1
 	players_counter[Player.ROLE_SURVIVOR] -= 1
 	
+	if players_counter[Player.ROLE_SURVIVOR] == 0:
+		print("Tous les joueurs ont été infectés : les éperviers sont vainqueurs.")
+	
+	_update_players_labels()
+	
+func _update_players_labels():
+	label_nb_sparrowhawks.text = str(players_counter[Player.ROLE_SPARROWHAWK])
+	label_nb_infected.text = str(players_counter[Player.ROLE_INFECTED])
+	label_nb_survivors.text = str(players_counter[Player.ROLE_SURVIVOR])
