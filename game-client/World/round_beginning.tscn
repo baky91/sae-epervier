@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cleon43d2a8xp"]
 
-[ext_resource type="Script" uid="uid://cmxel7mgfrhwa" path="res://UI/mainui.gd" id="1_vdw1d"]
+[ext_resource type="Script" uid="uid://b8yt26orvxfbk" path="res://World/round_beginning.gd" id="1_vdw1d"]
 [ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="2_dvc48"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2eomw"]
@@ -13,12 +13,11 @@ font_color = Color(0.6, 0.6313726, 0.6862745, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_dyfb5"]
 font_size = 40
 
-[node name="Main" type="Control" unique_id=1538082545 node_paths=PackedStringArray("_qr_rect")]
+[node name="round_beginning" type="Control" unique_id=1538082545]
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_vdw1d")
-_qr_rect = NodePath("")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=532784945]
 layout_mode = 1

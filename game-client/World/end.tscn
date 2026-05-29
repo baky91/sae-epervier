@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cvcumj1371e68"]
 
-[ext_resource type="Script" uid="uid://cmxel7mgfrhwa" path="res://UI/mainui.gd" id="1_5qaft"]
+[ext_resource type="Script" uid="uid://cd271mh1m4lx" path="res://World/end.gd" id="1_5qaft"]
 [ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="2_m6ux5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2eomw"]
@@ -16,12 +16,11 @@ font_size = 40
 [sub_resource type="LabelSettings" id="LabelSettings_eto42"]
 font_size = 40
 
-[node name="Main" type="Control" unique_id=1538082545 node_paths=PackedStringArray("_qr_rect")]
+[node name="end" type="Control" unique_id=1538082545]
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_5qaft")
-_qr_rect = NodePath("")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=532784945]
 layout_mode = 1
