@@ -11,24 +11,34 @@ export function createRouter(hosts: Map<string, ClientHost>) {
     : join(__dirname, "../public");
 
   router.get("/", (req: Request, res: Response) => {
-    res.sendFile(join(staticPath, "index.html"));
+    return res.sendFile(join(staticPath, "index.html"));
   });
 
   router.get("/game", (req: Request, res: Response) => {
-    res.sendFile(join(__dirname, "../../game/index.html"));
+    return res.sendFile(join(__dirname, "../../game/index.html"));
+  });
+
+  router.get("/error", (req: Request, res: Response) => {
+    console.log("erreur");
+    return res.sendFile(join(staticPath, "error-page.html"));
   });
 
   router.get("/:hostCode", (req: Request, res: Response) => {
     const hostCode = req.params.hostCode as string;
     const host = hosts.get(hostCode);
 
-    // Si l'hôte existe ET que la partie n'a pas commencé
-    if (host && !host.gameStarted) {
-      return res.sendFile(join(staticPath, "controller.html"));
+    // Erreur 1 : La partie n'a pas été trouvée
+    if (!host) {
+      return res.redirect("/error?reason=not_found&code=" + hostCode);
     }
 
-    // Dans tous les autres cas (erreur, pas d'hôte, partie déjà lancée)
-    return res.sendFile(join(staticPath, "error-page.html"));
+    // Erreur 2 : La partie est déjà lancée
+    if (host.gameStarted) {
+      return res.redirect("/error?reason=started&code=" + hostCode);
+    }
+
+    // Succès : La partie existe et elle est disponible
+    return res.sendFile(join(staticPath, "controller.html"));
   });
 
   return router;
