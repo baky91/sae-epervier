@@ -117,6 +117,10 @@ func _start_game():
 			$Players.add_child(player)
 			
 		game_started = true
+		ServerSocket.send_message_to_server({
+			"type": "GAME_START",
+			"id": 0
+		})
 
 func _first_version_start():
 	# Création des joueurs directement lors de la connexion (si scène par défaut)
