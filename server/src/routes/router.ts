@@ -19,7 +19,6 @@ export function createRouter(hosts: Map<string, ClientHost>) {
   });
 
   router.get("/error", (req: Request, res: Response) => {
-    console.log("erreur");
     return res.sendFile(join(staticPath, "error-page.html"));
   });
 

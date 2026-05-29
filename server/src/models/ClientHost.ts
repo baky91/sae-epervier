@@ -23,13 +23,12 @@ export default class ClientHost extends ClientModel {
   }
 
   handleHostMessage(message: SocketMessage): void {
-    console.log(message);
     const id = message.id;
     const type = message.type;
 
     if (id === 0) {
       if (type === "GAME_START") {
-        console.log("La partie a été lancée");
+        logMessage(`La partie ${this.hostCode} a démarré`);
         this.gameStarted = true;
       }
 
