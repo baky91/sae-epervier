@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dqa0aqf5pj3vv"]
+
+[ext_resource type="Script" uid="uid://dtboqa7lt358t" path="res://World/bonus.gd" id="1_0jsq2"]
+[ext_resource type="Shader" uid="uid://drhn3wxy3qhdc" path="res://Shaders/outline2D_outer.gdshader" id="2_55axi"]
+[ext_resource type="Texture2D" uid="uid://bf0ctkf6a7v01" path="res://Assets/bonus-dash.png" id="3_h3hyg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eq7rh"]
+shader = ExtResource("2_55axi")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_thickness = 3.0000001425
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ay8no"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h3hyg"]
+radius = 17.0
+
+[node name="Bonus" type="Area2D" unique_id=690805062]
+collision_layer = 2
+script = ExtResource("1_0jsq2")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=136762061]
+material = SubResource("ShaderMaterial_eq7rh")
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("3_h3hyg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=749186068]
+material = SubResource("ShaderMaterial_ay8no")
+shape = SubResource("CircleShape2D_h3hyg")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
