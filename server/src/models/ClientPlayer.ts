@@ -30,7 +30,7 @@ export default class ClientPlayer extends ClientModel {
     };
   }
 
-  sendToHost(message: SocketMessage) {
+  handlePlayerMessage(message: SocketMessage) {
     if (this.hostSocket) {
       this.hostSocket.sendMessage({
         type: message.type,

@@ -5,7 +5,7 @@ import { join } from "path";
 export function createRouter(hosts: Map<string, ClientHost>) {
   const router = express.Router();
   const isDev = process.env.NODE_ENV === "development";
-  
+
   const staticPath = isDev
     ? join(__dirname, "../../client")
     : join(__dirname, "../public");
@@ -19,13 +19,16 @@ export function createRouter(hosts: Map<string, ClientHost>) {
   });
 
   router.get("/:hostCode", (req: Request, res: Response) => {
-    const { hostCode } = req.params;
+    const hostCode = req.params.hostCode as string;
+    const host = hosts.get(hostCode);
 
-    if (!Array.isArray(hostCode) && hosts.has(hostCode)) {
-      res.sendFile(join(staticPath, "controller.html"));
-    } else {
-      res.sendFile(join(staticPath, "error-page.html"));
+    // Si l'hôte existe ET que la partie n'a pas commencé
+    if (host && !host.gameStarted) {
+      return res.sendFile(join(staticPath, "controller.html"));
     }
+
+    // Dans tous les autres cas (erreur, pas d'hôte, partie déjà lancée)
+    return res.sendFile(join(staticPath, "error-page.html"));
   });
 
   return router;
