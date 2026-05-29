@@ -21,7 +21,12 @@ var players_nodes = {}
 
 var game_started = false
 var current_round = 0
-var max_round = 5
+
+var max_round: int:
+	get:
+		return Globals.count_rounds if Globals.count_rounds > 0 else 5
+	set(value):
+		Globals.count_rounds = value
 
 var players_counter = {
 	"total": 0,
@@ -34,6 +39,10 @@ var players_counter = {
 var dest_safe_zone: String = TOP_ZONE
 
 func _ready() -> void:
+	
+	if Globals.time_rounds > 0:
+		timer_round.wait_time = Globals.time_rounds
+	
 	ServerSocket.room_created.connect(_on_room_created)
 	ServerSocket.player_connected.connect(_on_player_connected)
 	ServerSocket.player_use_bonus.connect(_on_player_use_bonus)
