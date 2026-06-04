@@ -11,6 +11,7 @@ export default class ClientHost extends ClientModel {
   maxRound: number;
   currentRound: number;
   gameStarted: boolean;
+  inputsBlocked: boolean;
 
   constructor(socket: WebSocket, hostCode: string) {
     super(socket);
@@ -20,6 +21,7 @@ export default class ClientHost extends ClientModel {
     this.maxRound = 0;
     this.currentRound = 0;
     this.gameStarted = false;
+    this.inputsBlocked = false;
   }
 
   sendToPlayer(message: SocketMessage): void {

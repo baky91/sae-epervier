@@ -122,3 +122,24 @@ export function setupWebSockets(
     });
   });
 }
+
+function prepareNextRound(host: ClientHost){
+  // Empêcher l'envoi des entrées utilisateur à Godot
+  host.inputsBlocked = true;
+  
+  // Lancement du décompte du lancement de la manche : 3, 2, 1
+  host.socket.send(JSON.stringify({type: "START_COUNTDOWN"}));
+
+  setTimeout(() => {
+    host.socket.send(JSON.stringify({type: "COUNTDOWN_TICK", value: 2}));
+  }, 1000);
+
+  setTimeout(() => {
+    host.socket.send(JSON.stringify({type: "COUNTDOWN_TICK", value: 1}));
+  }, 2000);
+
+  setTimeout(() => {
+    host.inputsBlocked = false;
+    host.socket.send(JSON.stringify({type: "ROUND_START"}));
+  }, 3000);
+}
