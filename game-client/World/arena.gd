@@ -4,7 +4,7 @@ const TOP_ZONE = "top_zone"
 const BOTTOM_ZONE = "bottom_zone"
 const SAFE_SURVIVORS = "safe_survivor"
 
-const OVERLAY_SCENE_END_ROUND = preload("res://World/round_infos.tscn")
+const OVERLAY_SCENE_END_ROUND = preload("res://UI/Overlays/round_infos.tscn")
 
 var player_scene = preload("res://Player/player.tscn")
 var bonus_scene = preload("res://World/bonus.tscn")
@@ -316,28 +316,22 @@ func _update_players_labels():
 	label_nb_survivors.text = str(players_counter[Player.ROLE_SURVIVOR])
 
 func show_overlay(scene) -> Control:
-	# 1. On crée un CanvasLayer dynamiquement pour forcer le premier plan
+	# On crée un CanvasLayer dynamiquement pour forcer le premier plan
 	var canvas_layer = CanvasLayer.new()
 	canvas_layer.name = "OverlayCanvas"
 	
-	# Optionnel : On peut définir le layer. Plus le chiffre est haut, 
-	# plus il s'affiche par-dessus les autres interfaces (par défaut à 1)
 	canvas_layer.layer = 10 
 	
-	# 2. On instancie ta scène de type Control
 	var overlay_instance = scene.instantiate() as Control
 	
-	# 3. On configure le Control pour qu'il prenne TOUT l'écran automatiquement
 	overlay_instance.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	
-	# 4. On assemble la structure : Arène -> CanvasLayer -> Scène Control
+	# On assemble la structure : Arène -> CanvasLayer -> Scène Control
 	canvas_layer.add_child(overlay_instance)
 	add_child(canvas_layer)
 	
-	# On retourne l'instance au cas où tu as besoin de modifier ses variables ou ses textes immédiatement
 	return overlay_instance
 
-## Fonction pour détruire l'overlay proprement quand la transition est finie
 func remove_overlay():
 	var canvas = get_node_or_null("OverlayCanvas")
 	if canvas:

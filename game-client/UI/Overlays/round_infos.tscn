@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://eakbn6ymfppq"]
 
-[ext_resource type="Script" uid="uid://wmlqhdsn572m" path="res://World/round_infos.gd" id="1_e2l1j"]
+[ext_resource type="Script" uid="uid://wmlqhdsn572m" path="res://UI/Overlays/round_infos.gd" id="1_e2l1j"]
 [ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="2_x4p0y"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2eomw"]
