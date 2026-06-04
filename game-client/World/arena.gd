@@ -4,6 +4,7 @@ const TOP_ZONE = "top_zone"
 const BOTTOM_ZONE = "bottom_zone"
 const SAFE_SURVIVORS = "safe_survivor"
 
+const OVERLAY_SCENE_START_ROUND = preload("res://UI/Overlays/round_start.tscn")
 const OVERLAY_SCENE_END_ROUND = preload("res://UI/Overlays/round_infos.tscn")
 
 var player_scene = preload("res://Player/player.tscn")
@@ -51,7 +52,8 @@ func _physics_process(_delta):
 	if Input.is_action_just_pressed("start_round"):
 		_start_round()
 	if Input.is_action_just_pressed("show_overlay"):
-		var ui = show_overlay(OVERLAY_SCENE_END_ROUND)
+		#var ui = show_overlay(OVERLAY_SCENE_END_ROUND)
+		var ui = show_overlay(OVERLAY_SCENE_START_ROUND)
 		await get_tree().create_timer(5.0).timeout
 		remove_overlay()
 		
