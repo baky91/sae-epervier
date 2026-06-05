@@ -61,8 +61,6 @@ func _ready() -> void:
 
 # Position update of all players
 func _physics_process(_delta):
-	if Input.is_action_just_pressed("start_game"):
-		_first_version_start()
 	if Input.is_action_just_pressed("start_round"):
 		_start_round()
 	if Input.is_action_just_pressed("show_overlay"):
@@ -82,7 +80,7 @@ func _physics_process(_delta):
 			player_node.direction = vector_move
 			
 			#player_node.direction = player_node.direction.lerp(vector_move, 0.2)
-			
+
 func _start_game():
 	# Génération des joueurs après avoir cliqué sur le bouton pour lancer (UI scène par défaut)
 	if !game_started:		
@@ -135,22 +133,6 @@ func _start_game():
 			"type": "GAME_START",
 			"id": 0
 		})
-
-func _first_version_start():
-	# Création des joueurs directement lors de la connexion (si scène par défaut)
-	# Identifiant du joueur tiré épervier
-	var random_player_id = players_nodes.keys().pick_random()
-	
-	# Tous les joueurs seront survivants, sauf celui tiré
-	for key in players_nodes:
-		var player = players_nodes[key]
-		
-		if key == random_player_id:
-			player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
-		else:
-			player.role_changed.emit(key, Player.ROLE_SURVIVOR)
-	
-	game_started = true
 
 func _start_round():
 	if !game_started:
@@ -362,7 +344,6 @@ func remove_overlay():
 		canvas.queue_free() # Supprime le CanvasLayer et la scène Control à l'intérieur
 
 func _start_round_overlay():
-	print("_start_round_overlay")
 	round_start_overlay = show_overlay(OVERLAY_SCENE_START_ROUND)
 	ServerSocket.send_message_to_server({
 		"type": "REQUEST_ROUND_START", "id": 0
