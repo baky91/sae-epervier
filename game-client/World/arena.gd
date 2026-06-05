@@ -64,11 +64,6 @@ func _ready() -> void:
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("start_round"):
 		_start_round()
-	if Input.is_action_just_pressed("show_overlay"):
-		#var ui = show_overlay(OVERLAY_SCENE_END_ROUND)
-		var ui = show_overlay(OVERLAY_SCENE_START_ROUND)
-		await get_tree().create_timer(5.0).timeout
-		remove_overlay()
 		
 	if !timer_round.is_stopped():
 		var time_left = int(ceil(timer_round.time_left))
@@ -238,6 +233,7 @@ func _end_game():
 func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
 
+# Ne devrait plus être utilisé : un joueur n'est pas censé pouvoir rejoindre une partie commencée
 func _on_player_connected(id: int, p_name: String) -> void:
 	print("New player joined : " + p_name + " (ID: " + str(id) + ")")
 	var player = player_scene.instantiate()
