@@ -4,6 +4,7 @@ const TOP_ZONE = "top_zone"
 const BOTTOM_ZONE = "bottom_zone"
 const SAFE_SURVIVORS = "safe_survivor"
 
+# Scènes d'overlay
 const OVERLAY_SCENE_START_ROUND = preload("res://UI/Overlays/round_start.tscn")
 const OVERLAY_SCENE_END_ROUND = preload("res://UI/Overlays/round_end.tscn")
 
@@ -153,7 +154,7 @@ func _start_round():
 		print("Commencement de la manche ", str(current_round))
 		label_nb_manche.text = "Manche " + str(current_round) + "/" + str(max_round)
 		
-		# Overlay timeout
+		# Affichage de l'overlay de décompte de la manche
 		_start_round_overlay()
 		
 		# Liste contenant les éperviers de la prochaine manche
@@ -199,6 +200,11 @@ func _start_round():
 func _end_round():
 	print("Fin de la manche ", str(current_round))
 	label_duree_manche.text = "0 s" # Ne pas bloquer le compteur à 1 sur l'affichage
+	
+	# Affichage de l'overlay de statistiques de la manche
+	await _end_round_overlay()
+	
+	# Lancement de la prochaine manche
 	_start_round()
 			
 func _end_game():
@@ -360,6 +366,9 @@ func _on_round_start():
 	round_start_overlay = null
 	# Lancement du timer de la manche
 	timer_round.start()
-	
-	
-	
+
+func _end_round_overlay():
+	# Affichage de l'écran pendant 5 secondes puis suppression
+	var round_end_overlay = show_overlay(OVERLAY_SCENE_END_ROUND)
+	await get_tree().create_timer(5.0).timeout
+	round_end_overlay.queue_free()
