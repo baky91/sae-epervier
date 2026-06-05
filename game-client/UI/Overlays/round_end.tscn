@@ -81,7 +81,7 @@ text = "Survivants"
 label_settings = SubResource("LabelSettings_dyfb5")
 horizontal_alignment = 1
 
-[node name="PlayersLeft" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSurvivors" unique_id=1216394047]
+[node name="SurvivorsCount" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSurvivors" unique_id=1216394047]
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_eto42")
@@ -97,7 +97,7 @@ text = "Infectés"
 label_settings = SubResource("LabelSettings_dyfb5")
 horizontal_alignment = 1
 
-[node name="PlayersInfected" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxInfected" unique_id=554918238]
+[node name="InfectedCount" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxInfected" unique_id=554918238]
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_eto42")
