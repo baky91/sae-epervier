@@ -21,7 +21,7 @@ export default class ClientHost extends ClientModel {
     this.maxRound = 0;
     this.currentRound = 0;
     this.gameStarted = false;
-    this.inputsBlocked = false;
+    this.inputsBlocked = true;
   }
 
   handleHostMessage(message: SocketMessage): void {
@@ -32,7 +32,7 @@ export default class ClientHost extends ClientModel {
       if (type === "GAME_START") {
         logMessage(`La partie ${this.hostCode} a démarré`);
         this.gameStarted = true;
-      } else if (type === "REQUEST_ROUND_START"){
+      } else if (type === "REQUEST_ROUND_START") {
         this.prepareNextRound();
         return;
       }
@@ -98,7 +98,7 @@ export default class ClientHost extends ClientModel {
     });
   }
 
-  prepareNextRound() {    
+  prepareNextRound() {
     // Empêcher l'envoi des entrées utilisateur à Godot
     this.inputsBlocked = true;
 
