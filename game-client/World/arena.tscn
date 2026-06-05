@@ -255,6 +255,8 @@ theme_override_font_sizes/font_size = 36
 text = "#"
 
 [node name="OverlayLayer" type="CanvasLayer" parent="." unique_id=282256270]
+layer = 10
+visible = false
 
 [connection signal="timeout" from="TimerBonus" to="." method="_on_timer_bonus_timeout"]
 [connection signal="timeout" from="TimerRound" to="." method="_on_timer_round_timeout"]

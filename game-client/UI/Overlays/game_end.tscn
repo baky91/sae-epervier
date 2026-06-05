@@ -16,7 +16,7 @@ font_size = 40
 [sub_resource type="LabelSettings" id="LabelSettings_eto42"]
 font_size = 40
 
-[node name="end" type="Control" unique_id=1538082545]
+[node name="game_end" type="Control" unique_id=1538082545]
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 0

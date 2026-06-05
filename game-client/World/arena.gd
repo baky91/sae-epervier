@@ -7,6 +7,8 @@ const SAFE_SURVIVORS = "safe_survivor"
 const OVERLAY_SCENE_START_ROUND = preload("res://UI/Overlays/round_start.tscn")
 const OVERLAY_SCENE_END_ROUND = preload("res://UI/Overlays/round_end.tscn")
 
+var round_start_overlay: Control
+
 var player_scene = preload("res://Player/player.tscn")
 var bonus_scene = preload("res://World/bonus.tscn")
 
@@ -50,6 +52,10 @@ func _ready() -> void:
 	ServerSocket.player_connected.connect(_on_player_connected)
 	ServerSocket.player_use_bonus.connect(_on_player_use_bonus)
 	ServerSocket.player_left.connect(_on_player_left)
+	
+	ServerSocket.start_countdown.connect(_on_start_countdown)
+	ServerSocket.countdown_tick.connect(_on_countdown_tick)
+	ServerSocket.round_start.connect(_on_round_start)
 
 	if len(ServerSocket.players_ids) > 0:
 		_start_game()
@@ -80,49 +86,50 @@ func _physics_process(_delta):
 			
 func _start_game():
 	# Génération des joueurs après avoir cliqué sur le bouton pour lancer (UI scène par défaut)
-	if !game_started:
+	if !game_started:		
 		var players_ids = ServerSocket.players_ids
 		
-		var random_sparrowhawk_id = players_ids.pick_random()
-		print("Id de l'épervier: ", str(random_sparrowhawk_id))
-		
-		var safe_zone_height = 80
-		var player_radius = 16
-		var viewport_size = get_viewport().get_visible_rect().size
-		var width = viewport_size[0]
-		var height = viewport_size[1]
-		
-		var min_x = player_radius
-		var max_x = width - player_radius
-		
-		var min_y = height - safe_zone_height + player_radius
-		var max_y = height - player_radius
-		
-		for id in players_ids:
-			print("Création du joueur ", id)
-			var player = player_scene.instantiate()
-			player.name = str(id)
-			player.id = id
-			players_nodes[id] = player
-
-			# Connexion des signaux
-			player.get_bonus.connect(_on_player_signal_bonus)
-			player.role_changed.connect(_on_role_changed)
-			player.player_infected.connect(_on_player_infected)
+		if players_ids:
+			var random_sparrowhawk_id = players_ids.pick_random()
+			print("Id de l'épervier: ", str(random_sparrowhawk_id))
 			
-			# Ajout du numéro sur le pion du joueur
-			player.set_label(str(id))
-
-			# Positionnement du joueur
-			if id == random_sparrowhawk_id: # si épervier, on le place au milieu
-				player.role_changed.emit(id, Player.ROLE_SPARROWHAWK)
-				player.global_position = Vector2(width / 2, height / 2)
-			else: # sinon, on le place dans la zone de sécurité inférieure
-				player.role_changed.emit(id, Player.ROLE_SURVIVOR)
-				player.global_position = Vector2(randf_range(min_x, max_x), randf_range(min_y, max_y))
+			var safe_zone_height = 80
+			var player_radius = 16
+			var viewport_size = get_viewport().get_visible_rect().size
+			var width = viewport_size[0]
+			var height = viewport_size[1]
 			
-			# Ajout dans la scène
-			$Players.add_child(player)
+			var min_x = player_radius
+			var max_x = width - player_radius
+			
+			var min_y = height - safe_zone_height + player_radius
+			var max_y = height - player_radius
+			
+			for id in players_ids:
+				print("Création du joueur ", id)
+				var player = player_scene.instantiate()
+				player.name = str(id)
+				player.id = id
+				players_nodes[id] = player
+
+				# Connexion des signaux
+				player.get_bonus.connect(_on_player_signal_bonus)
+				player.role_changed.connect(_on_role_changed)
+				player.player_infected.connect(_on_player_infected)
+				
+				# Ajout du numéro sur le pion du joueur
+				player.set_label(str(id))
+
+				# Positionnement du joueur
+				if id == random_sparrowhawk_id: # si épervier, on le place au milieu
+					player.role_changed.emit(id, Player.ROLE_SPARROWHAWK)
+					player.global_position = Vector2(width / 2, height / 2)
+				else: # sinon, on le place dans la zone de sécurité inférieure
+					player.role_changed.emit(id, Player.ROLE_SURVIVOR)
+					player.global_position = Vector2(randf_range(min_x, max_x), randf_range(min_y, max_y))
+				
+				# Ajout dans la scène
+				$Players.add_child(player)
 			
 		game_started = true
 		ServerSocket.send_message_to_server({
@@ -355,6 +362,22 @@ func remove_overlay():
 		canvas.queue_free() # Supprime le CanvasLayer et la scène Control à l'intérieur
 
 func _start_round_overlay():
-	pass
-	var overlay = show_overlay(OVERLAY_SCENE_START_ROUND)
+	print("_start_round_overlay")
+	round_start_overlay = show_overlay(OVERLAY_SCENE_START_ROUND)
+	ServerSocket.send_message_to_server({
+		"type": "REQUEST_ROUND_START", "id": 0
+	})
+	
+func _on_start_countdown():
+	round_start_overlay.set_time(3)
+	
+func _on_countdown_tick(value: int):
+	round_start_overlay.set_time(value)
+	
+func _on_round_start():
+	round_start_overlay.set_time(0)
+	#round_start_overlay.queue_free()
+	round_start_overlay = null
+	
+	
 	
