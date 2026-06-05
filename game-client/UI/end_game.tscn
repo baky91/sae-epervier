@@ -6,15 +6,19 @@
 font_size = 60
 
 [sub_resource type="LabelSettings" id="LabelSettings_Subtitle"]
-font_size = 40
+font_size = 36
 
 [sub_resource type="LabelSettings" id="LabelSettings_Blue"]
-font_size = 80
+font_size = 50
 font_color = Color(0.180392, 0.541176, 0.929412, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_Red"]
-font_size = 80
+font_size = 50
 font_color = Color(0.929412, 0.219608, 0.180392, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_u11pd"]
+font_size = 30
+font_color = Color(0.6, 0.631373, 0.686275, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_Normal"]
 font_size = 25
@@ -44,18 +48,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 60
-theme_override_constants/margin_top = 60
-theme_override_constants/margin_right = 60
-theme_override_constants/margin_bottom = 60
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
 
 [node name="VBoxMain" type="VBoxContainer" parent="MarginContainer" unique_id=752826528]
 layout_mode = 2
-theme_override_constants/separation = 40
 
 [node name="ZoneTitre" type="VBoxContainer" parent="MarginContainer/VBoxMain" unique_id=65437332]
 layout_mode = 2
-theme_override_constants/separation = 10
 
 [node name="LabelVictoire" type="Label" parent="MarginContainer/VBoxMain/ZoneTitre" unique_id=920817935]
 layout_mode = 2
@@ -111,7 +113,6 @@ horizontal_alignment = 1
 [node name="ZoneInfecteurs" type="VBoxContainer" parent="MarginContainer/VBoxMain" unique_id=1021411131]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 15
 
 [node name="TitreInfecteurs" type="Label" parent="MarginContainer/VBoxMain/ZoneInfecteurs" unique_id=2105992112]
 layout_mode = 2
@@ -119,32 +120,61 @@ text = "Meilleurs infecteurs"
 label_settings = SubResource("LabelSettings_Subtitle")
 horizontal_alignment = 1
 
-[node name="PanelListe" type="PanelContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs" unique_id=483000451]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs" unique_id=959652923]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_right = 300
+
+[node name="PanelListe" type="PanelContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer" unique_id=483000451]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("1_sugu6")
 
-[node name="MarginListe" type="MarginContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/PanelListe" unique_id=135680649]
+[node name="MarginListe" type="MarginContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe" unique_id=135680649]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
 
-[node name="VBoxListe" type="VBoxContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/PanelListe/MarginListe" unique_id=1097404147]
+[node name="VBoxMain" type="VBoxContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe" unique_id=2127189676]
 layout_mode = 2
-theme_override_constants/separation = 10
-alignment = 1
 
-[node name="InfecteurExemple" type="Label" parent="MarginContainer/VBoxMain/ZoneInfecteurs/PanelListe/MarginListe/VBoxListe" unique_id=772771239]
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain" unique_id=658263023]
 layout_mode = 2
-text = "1. Joueur #4 - 5 infections"
-label_settings = SubResource("LabelSettings_Normal")
+
+[node name="LabelRank" type="Label" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain/HeaderHBox" unique_id=487859818]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Rang"
+label_settings = SubResource("LabelSettings_u11pd")
 horizontal_alignment = 1
+
+[node name="LabelName" type="Label" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain/HeaderHBox" unique_id=2033751044]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Joueur"
+label_settings = SubResource("LabelSettings_u11pd")
+
+[node name="LabelScore" type="Label" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain/HeaderHBox" unique_id=1706400852]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Infections"
+label_settings = SubResource("LabelSettings_u11pd")
+horizontal_alignment = 1
+
+[node name="HSeparatorHeader" type="HSeparator" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain" unique_id=1566520928]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain" unique_id=1502683567]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxList" type="VBoxContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain/ScrollContainer" unique_id=1102054150]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
 
 [node name="ZoneAction" type="VBoxContainer" parent="MarginContainer/VBoxMain" unique_id=1460964699]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 4
 alignment = 1
 
 [node name="LabelMerci" type="Label" parent="MarginContainer/VBoxMain/ZoneAction" unique_id=2023469534]
