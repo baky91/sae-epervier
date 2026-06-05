@@ -134,6 +134,9 @@ func _start_game():
 			"type": "GAME_START",
 			"id": 0
 		})
+		
+		# Lancement de la première manche
+		_start_round()
 
 func _start_round():
 	if !game_started:
@@ -153,6 +156,7 @@ func _start_round():
 		current_round += 1
 		print("Commencement de la manche ", str(current_round))
 		label_nb_manche.text = "Manche " + str(current_round) + "/" + str(max_round)
+		label_duree_manche.text = str(int(timer_round.wait_time)) + " s" 
 		
 		# Affichage de l'overlay de décompte de la manche
 		_start_round_overlay()
