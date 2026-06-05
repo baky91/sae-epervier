@@ -54,18 +54,15 @@ func _on_player_connected(id: int, p_name: String):
 	update()
 	
 func _on_player_left(id: int):
-	ServerSocket.players_ids.erase(id)
 	var player_line = grid_players.get_node(str(id))
 	if player_line:
 		player_line.queue_free()
 		remove_player_counter()
 
 func _on_button_start_pressed():
-	
 	Globals.time_rounds = int(h_slider_round_duration.value)
 	Globals.count_rounds = int(h_slider_nb_round.value)
-	
-	
+
 	var data_to_send = {
 		"type": "GAME_START",
 		"id": 0,
@@ -123,7 +120,9 @@ func calculate_auto_rounds(player_count: int) -> int:
 
 func update():
 	count_rounds = calculate_auto_rounds(counter_players)
+	# Affichage du nombre de manches
 	label_nb_round.text = str(count_rounds)
 	h_slider_nb_round.value = count_rounds
 	
+	# Affichage de la durée maximale de chaque manche
 	label_round_duration.text = str(int(h_slider_round_duration.value)) + "s"

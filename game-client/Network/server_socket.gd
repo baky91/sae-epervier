@@ -63,7 +63,10 @@ func _handle_server_message(json):
 		"ROOM_CREATED":
 			room_created.emit(json.data.code, url_to_join + "/" + json.data.code)
 		"PLAYER_JOIN":
-			players_ids.append(int(json.data.id))
+			Globals.players[int(json.data.id)] = {
+				"name": json.data.name,
+				"infections": 0
+			}
 			player_connected.emit(int(json.data.id), json.data.name)
 			
 		"MOVE":
@@ -74,6 +77,7 @@ func _handle_server_message(json):
 			player_use_bonus.emit(int(json.id), json.data.bonus)
 			
 		"PLAYER_LEFT":
+			Globals.players.erase(int(json.id))
 			player_left.emit(int(json.id))
 			
 		# Signaux pour les décomptes avant le lancement de chaque manche

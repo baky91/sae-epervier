@@ -12,7 +12,7 @@ font_size = 40
 [sub_resource type="LabelSettings" id="LabelSettings_eto42"]
 font_size = 30
 
-[node name="round_end" type="Control"]
+[node name="round_end" type="Control" unique_id=581543767]
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 8
@@ -28,7 +28,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xedsj")
 
-[node name="ColorRect2" type="ColorRect" parent="."]
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=1960887761]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,7 +37,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.498039)
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1585129225]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 180.0
@@ -45,7 +45,7 @@ offset_right = 1600.0
 offset_bottom = 900.0
 color = Color(0.113725, 0.156863, 0.219608, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1035060856]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 180.0
@@ -56,126 +56,126 @@ theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="VBoxMain" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxMain" type="VBoxContainer" parent="MarginContainer" unique_id=1349763563]
 layout_mode = 2
 theme_override_constants/separation = 30
 
-[node name="LabelTitle" type="Label" parent="MarginContainer/VBoxMain"]
+[node name="LabelTitle" type="Label" parent="MarginContainer/VBoxMain" unique_id=1331570809]
 layout_mode = 2
 text = "Bilan de la manche"
 label_settings = SubResource("LabelSettings_2eomw")
 horizontal_alignment = 1
 
-[node name="HBoxStatsTop" type="HBoxContainer" parent="MarginContainer/VBoxMain"]
+[node name="HBoxStatsTop" type="HBoxContainer" parent="MarginContainer/VBoxMain" unique_id=1028577981]
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="VBoxSurvivors" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxStatsTop"]
+[node name="VBoxSurvivors" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxStatsTop" unique_id=1478274109]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TitleSurvivors" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSurvivors"]
+[node name="TitleSurvivors" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSurvivors" unique_id=819981596]
 layout_mode = 2
 text = "Survivants"
 label_settings = SubResource("LabelSettings_dyfb5")
 horizontal_alignment = 1
 
-[node name="PlayersLeft" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSurvivors"]
+[node name="PlayersLeft" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSurvivors" unique_id=1216394047]
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_eto42")
 horizontal_alignment = 1
 
-[node name="VBoxInfected" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxStatsTop"]
+[node name="VBoxInfected" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxStatsTop" unique_id=719562011]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TitleInfected" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxInfected"]
+[node name="TitleInfected" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxInfected" unique_id=87290331]
 layout_mode = 2
 text = "Infectés"
 label_settings = SubResource("LabelSettings_dyfb5")
 horizontal_alignment = 1
 
-[node name="PlayersInfected" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxInfected"]
+[node name="PlayersInfected" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxInfected" unique_id=554918238]
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_eto42")
 horizontal_alignment = 1
 
-[node name="VBoxSparrowhawks" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxStatsTop"]
+[node name="VBoxSparrowhawks" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxStatsTop" unique_id=749186946]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TitleSparrowhawks" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSparrowhawks"]
+[node name="TitleSparrowhawks" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSparrowhawks" unique_id=2062377119]
 layout_mode = 2
 text = "Éperviers"
 label_settings = SubResource("LabelSettings_dyfb5")
 horizontal_alignment = 1
 
-[node name="SparrowhawksCount" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSparrowhawks"]
+[node name="SparrowhawksCount" type="Label" parent="MarginContainer/VBoxMain/HBoxStatsTop/VBoxSparrowhawks" unique_id=293884778]
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_eto42")
 horizontal_alignment = 1
 
-[node name="HBoxLists" type="HBoxContainer" parent="MarginContainer/VBoxMain"]
+[node name="HBoxLists" type="HBoxContainer" parent="MarginContainer/VBoxMain" unique_id=1616788053]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 40
 
-[node name="LeftContainer" type="PanelContainer" parent="MarginContainer/VBoxMain/HBoxLists"]
+[node name="LeftContainer" type="PanelContainer" parent="MarginContainer/VBoxMain/HBoxLists" unique_id=1921927402]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("2_tijkw")
 
-[node name="MarginLeft" type="MarginContainer" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer"]
+[node name="MarginLeft" type="MarginContainer" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer" unique_id=2084349574]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxLeft" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer/MarginLeft"]
+[node name="VBoxLeft" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer/MarginLeft" unique_id=93951652]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="TitleInfectedList" type="Label" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer/MarginLeft/VBoxLeft"]
+[node name="TitleInfectedList" type="Label" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer/MarginLeft/VBoxLeft" unique_id=1467465923]
 layout_mode = 2
 text = "Joueurs infectés"
 label_settings = SubResource("LabelSettings_eto42")
 horizontal_alignment = 1
 
-[node name="ScrollInfected" type="ScrollContainer" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer/MarginLeft/VBoxLeft"]
+[node name="ScrollInfected" type="ScrollContainer" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer/MarginLeft/VBoxLeft" unique_id=1584077495]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxInfectedList" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer/MarginLeft/VBoxLeft/ScrollInfected"]
+[node name="VBoxInfectedList" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/LeftContainer/MarginLeft/VBoxLeft/ScrollInfected" unique_id=473556045]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RightContainer" type="PanelContainer" parent="MarginContainer/VBoxMain/HBoxLists"]
+[node name="RightContainer" type="PanelContainer" parent="MarginContainer/VBoxMain/HBoxLists" unique_id=1727339582]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("2_tijkw")
 
-[node name="MarginRight" type="MarginContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer"]
+[node name="MarginRight" type="MarginContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer" unique_id=1117926717]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxRight" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight"]
+[node name="VBoxRight" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight" unique_id=1175587478]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="TitleTopSparrowhawks" type="Label" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight"]
+[node name="TitleTopSparrowhawks" type="Label" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight" unique_id=712057158]
 layout_mode = 2
 text = "Top 10 Infections"
 label_settings = SubResource("LabelSettings_eto42")
 horizontal_alignment = 1
 
-[node name="VBoxTopSparrowhawks" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight"]
+[node name="VBoxTopSparrowhawks" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight" unique_id=743107244]
 layout_mode = 2
 size_flags_vertical = 3

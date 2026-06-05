@@ -50,7 +50,7 @@ func _ready() -> void:
 		timer_round.wait_time = Globals.time_rounds
 	
 	ServerSocket.room_created.connect(_on_room_created)
-	ServerSocket.player_connected.connect(_on_player_connected)
+	#ServerSocket.player_connected.connect(_on_player_connected)
 	ServerSocket.player_use_bonus.connect(_on_player_use_bonus)
 	ServerSocket.player_left.connect(_on_player_left)
 	
@@ -85,7 +85,7 @@ func _physics_process(_delta):
 func _start_game():
 	# Génération des joueurs après avoir cliqué sur le bouton pour lancer (UI scène par défaut)
 	if !game_started:		
-		var players_ids = ServerSocket.players_ids
+		var players_ids = Globals.players.keys()
 		
 		if players_ids:
 			var random_sparrowhawk_id = players_ids.pick_random()
@@ -268,7 +268,7 @@ func _on_player_use_bonus(id: int, bonus: String):
 		player.timer_dash.start()
 
 func _on_player_left(id: int):
-	ServerSocket.players_ids.erase(id)
+	Globals.players.erase(id)
 	if players_nodes.has(id):
 		players_nodes[id].queue_free()
 		players_nodes.erase(id)

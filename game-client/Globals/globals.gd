@@ -4,6 +4,11 @@ var time_rounds = 0
 var count_rounds = 0
 var auto_button:bool
 
+#player_id: {
+	#name: <player_name>,
+	#infections: <nb_infection_player>
+#}
+var players = {}
 
 func _ready() -> void:
 	if !OS.has_feature("web"):
