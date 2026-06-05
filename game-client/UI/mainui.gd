@@ -23,7 +23,8 @@ var empty_style = StyleBoxEmpty.new()
 
 var hostCode: String
 var counter_players = 0
-var count_rounds: int
+var count_rounds:int
+
 
 func _ready():
 	ServerSocket.room_created.connect(_on_room_created)
@@ -32,6 +33,7 @@ func _ready():
 	
 	set_all_button_styles(button_option_1, style_button_left_on)
 	set_all_button_styles(button_option_2, style_button_right_off)
+	Globals.auto_button = $MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/CheckButton.button_pressed
 	
 	h_slider_nb_round.visible = false
 	update()
@@ -59,6 +61,11 @@ func _on_player_left(id: int):
 		remove_player_counter()
 
 func _on_button_start_pressed():
+	
+	Globals.time_rounds = int(h_slider_round_duration.value)
+	Globals.count_rounds = int(h_slider_nb_round.value)
+	
+	
 	var data_to_send = {
 		"type": "GAME_START",
 		"id": 0,
@@ -98,7 +105,8 @@ func _on_button_option_2_pressed() -> void:
 
 func _on_check_button_toggled(toggled_on: bool) -> void:
 	h_slider_nb_round.visible = !toggled_on
-	
+	Globals.auto_button = toggled_on
+		
 	if toggled_on:
 		update()
 

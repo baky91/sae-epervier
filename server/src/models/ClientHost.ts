@@ -24,9 +24,16 @@ export default class ClientHost extends ClientModel {
     this.inputsBlocked = false;
   }
 
-  sendToPlayer(message: SocketMessage): void {
+  handleHostMessage(message: SocketMessage): void {
     const id = message.id;
+    const type = message.type;
+
     if (id === 0) {
+      if (type === "GAME_START") {
+        logMessage(`La partie ${this.hostCode} a démarré`);
+        this.gameStarted = true;
+      }
+
       this.sendToAllPlayers(message);
     } else {
       const targetPlayer = this.getPlayer(id);
@@ -34,7 +41,6 @@ export default class ClientHost extends ClientModel {
       if (targetPlayer) {
         targetPlayer.sendMessage(message);
 
-        const type = message.type;
         // Actions en fonction du type de message
         switch (type) {
           case "GET_BONUS":
@@ -78,7 +84,9 @@ export default class ClientHost extends ClientModel {
   removePlayer(id: number): void {
     const playerName = this.getPlayer(id)?.name;
     this.players.delete(id);
-    logMessage(`Joueur ${playerName} (ID: ${id}) a quitté la partie ${this.hostCode}`);
+    logMessage(
+      `Joueur ${playerName} (ID: ${id}) a quitté la partie ${this.hostCode}`,
+    );
   }
 
   closeGame(): void {

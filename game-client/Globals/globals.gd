@@ -1,5 +1,10 @@
 extends Node
 
+var time_rounds = 0
+var count_rounds = 0
+var auto_button:bool
+
+
 func _ready() -> void:
 	if !OS.has_feature("web"):
 		# Redimensionner la taille de la fenêtre

@@ -99,11 +99,11 @@ export function setupWebSockets(
 
         // Si c'est un message d'un joueur (mouvement, bonus...), on le relaie à Godot
         if (currentUser instanceof ClientPlayer) {
-          currentUser.sendToHost(parsed);
+          currentUser.handlePlayerMessage(parsed);
         }
         // Si c'est un message de Godot (par exemple: récupération de bonus) on le relaie au joueur concerné
         else if (currentUser instanceof ClientHost) {
-          currentUser.sendToPlayer(parsed);
+          currentUser.handleHostMessage(parsed);
         }
       } catch (e) {
         console.error("Erreur format JSON :", e);
