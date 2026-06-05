@@ -2,7 +2,6 @@ extends Node2D
 
 const TOP_ZONE = "top_zone"
 const BOTTOM_ZONE = "bottom_zone"
-const SAFE_SURVIVORS = "safe_survivor"
 
 # Scènes d'overlay
 const OVERLAY_SCENE_START_ROUND = preload("res://UI/Overlays/round_start.tscn")
@@ -33,14 +32,6 @@ var max_round: int:
 		return Globals.count_rounds if Globals.count_rounds > 0 else 5
 	set(value):
 		Globals.count_rounds = value
-
-var players_counter = {
-	"total": 0,
-	SAFE_SURVIVORS: 0,
-	Player.ROLE_SURVIVOR: 0,
-	Player.ROLE_INFECTED: 0,
-	Player.ROLE_SPARROWHAWK: 0,
-}
 
 var dest_safe_zone: String = TOP_ZONE
 
@@ -137,12 +128,12 @@ func _start_round():
 	if !game_started:
 		_start_game()
 		return
-		
+
 	if current_round < max_round:
 		# On initialise les compteurs à 0 si on ne connait pas le nombre final à la fin de la manche (éperviers)
-		players_counter = {
+		Globals.players_counter = {
 			"total": players_nodes.keys().size(),
-			SAFE_SURVIVORS: 0,
+			Globals.SAFE_SURVIVORS: 0,
 			Player.ROLE_SURVIVOR: 0,
 			Player.ROLE_INFECTED: 0,
 			Player.ROLE_SPARROWHAWK: 0
@@ -166,12 +157,12 @@ func _start_round():
 			if player.role == Player.ROLE_INFECTED:
 				player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
 				next_sparrowhawk.append(player)
-				players_counter[Player.ROLE_SPARROWHAWK] += 1
+				Globals.players_counter[Player.ROLE_SPARROWHAWK] += 1
 			elif player.role == Player.ROLE_SPARROWHAWK:
 				next_sparrowhawk.append(player)
-				players_counter[Player.ROLE_SPARROWHAWK] += 1
+				Globals.players_counter[Player.ROLE_SPARROWHAWK] += 1
 			else:
-				players_counter[Player.ROLE_SURVIVOR] += 1
+				Globals.players_counter[Player.ROLE_SURVIVOR] += 1
 		
 		# On met tous les éperviers au centre
 		var counter_sparrowhawk = next_sparrowhawk.size()
@@ -202,7 +193,7 @@ func _end_round():
 	
 	var last_round = \
 		(current_round == max_round) || \
-		(players_counter["total"] > 0 && players_counter[Player.ROLE_SURVIVOR] == 0)
+		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SURVIVOR] == 0)
 	
 	## Vérifier si la partie est finie : dernière manche effectuée ou plus de survivants restants
 	#if current_round == max_round:
@@ -210,7 +201,7 @@ func _end_round():
 		#print("Dernière manche effectuée")
 		#_end_game()
 		#
-	#if players_counter["total"] > 0 && players_counter[Player.ROLE_SURVIVOR] == 0:
+	#if Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SURVIVOR] == 0:
 		#print("Plus de survivant")
 		#
 		#print("Plus de survivant")
@@ -304,30 +295,30 @@ func _on_timer_round_timeout() -> void:
 func _on_top_zone_area_2d_body_entered(body: Node2D) -> void:
 	if dest_safe_zone == TOP_ZONE:
 		print(body)
-		players_counter[SAFE_SURVIVORS] += 1
+		Globals.players_counter[Globals.SAFE_SURVIVORS] += 1
 		_check_end_of_round()
 
 func _on_top_zone_area_2d_body_exited(body: Node2D) -> void:
 	if dest_safe_zone == TOP_ZONE:
-		players_counter[SAFE_SURVIVORS] -= 1
+		Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
 
 func _on_bottom_zone_area_2d_body_entered(body: Node2D) -> void:
 	if dest_safe_zone == BOTTOM_ZONE:
 		print(body)
-		players_counter[SAFE_SURVIVORS] += 1
+		Globals.players_counter[Globals.SAFE_SURVIVORS] += 1
 		_check_end_of_round()
 		
 func _on_bottom_zone_area_2d_body_exited(body: Node2D) -> void:
 	if dest_safe_zone == BOTTOM_ZONE:
-		players_counter[SAFE_SURVIVORS] -= 1
+		Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
 
 func _check_end_of_round():
-	print(players_counter)
+	print(Globals.players_counter)
 	#On vérifie si le nombre de survivant dans la zone est égale au nombre total de joueurs sans les infectés
-	var total = players_counter["total"]
-	var survivors = players_counter[SAFE_SURVIVORS]
-	var infected = players_counter[Player.ROLE_INFECTED]
-	var sparrowhawks = players_counter[Player.ROLE_SPARROWHAWK]
+	var total = Globals.players_counter["total"]
+	var survivors = Globals.players_counter[Globals.SAFE_SURVIVORS]
+	var infected = Globals.players_counter[Player.ROLE_INFECTED]
+	var sparrowhawks = Globals.players_counter[Player.ROLE_SPARROWHAWK]
 	
 	if survivors == total - infected - sparrowhawks:
 		_end_round()
@@ -335,18 +326,18 @@ func _check_end_of_round():
 func _on_player_infected():
 	print("Un joueur a été infecté")
 	#On décrémente le compteur de survivants et on incrémente le compteur d'infectés
-	players_counter[Player.ROLE_INFECTED] += 1
-	players_counter[Player.ROLE_SURVIVOR] -= 1
+	Globals.players_counter[Player.ROLE_INFECTED] += 1
+	Globals.players_counter[Player.ROLE_SURVIVOR] -= 1
 	
-	if players_counter[Player.ROLE_SURVIVOR] == 0:
+	if Globals.players_counter[Player.ROLE_SURVIVOR] == 0:
 		print("Tous les joueurs ont été infectés : les éperviers sont vainqueurs.")
 	
 	_update_players_labels()
 	
 func _update_players_labels():
-	label_nb_sparrowhawks.text = str(players_counter[Player.ROLE_SPARROWHAWK])
-	label_nb_infected.text = str(players_counter[Player.ROLE_INFECTED])
-	label_nb_survivors.text = str(players_counter[Player.ROLE_SURVIVOR])
+	label_nb_sparrowhawks.text = str(Globals.players_counter[Player.ROLE_SPARROWHAWK])
+	label_nb_infected.text = str(Globals.players_counter[Player.ROLE_INFECTED])
+	label_nb_survivors.text = str(Globals.players_counter[Player.ROLE_SURVIVOR])
 
 func show_overlay(scene) -> Control:
 	# On crée un CanvasLayer dynamiquement pour forcer le premier plan
