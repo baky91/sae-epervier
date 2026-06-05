@@ -57,8 +57,7 @@ func _ready() -> void:
 	ServerSocket.countdown_tick.connect(_on_countdown_tick)
 	ServerSocket.round_start.connect(_on_round_start)
 
-	if len(ServerSocket.players_ids) > 0:
-		_start_game()
+	_start_game()
 
 # Position update of all players
 func _physics_process(_delta):
@@ -156,6 +155,7 @@ func _first_version_start():
 func _start_round():
 	if !game_started:
 		_start_game()
+		return
 		
 	if current_round < max_round:
 		# On initialise les compteurs à 0 si on ne connait pas le nombre final à la fin de la manche (éperviers)
@@ -208,7 +208,7 @@ func _start_round():
 		
 			player.position = Vector2(x, y)
 		
-		timer_round.start()
+		#timer_round.start()
 		_update_players_labels()
 
 	else:
@@ -216,7 +216,7 @@ func _start_round():
 
 func _end_round():
 	print("Fin de la manche ", str(current_round))
-	
+	label_duree_manche.text = "0 s" # Ne pas bloquer le compteur à 1 sur l'affichage
 	_start_round()
 			
 func _end_game():
@@ -376,8 +376,9 @@ func _on_countdown_tick(value: int):
 	
 func _on_round_start():
 	round_start_overlay.set_time(0)
-	#round_start_overlay.queue_free()
 	round_start_overlay = null
+	# Lancement du timer de la manche
+	timer_round.start()
 	
 	
 	
