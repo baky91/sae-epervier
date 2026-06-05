@@ -151,6 +151,9 @@ func _start_round():
 		print("Commencement de la manche ", str(current_round))
 		label_nb_manche.text = "Manche " + str(current_round) + "/" + str(max_round)
 		
+		# Overlay timeout
+		_start_round_overlay()
+		
 		# Liste contenant les éperviers de la prochaine manche
 		var next_sparrowhawk = []
 		
@@ -337,3 +340,8 @@ func remove_overlay():
 	var canvas = get_node_or_null("OverlayCanvas")
 	if canvas:
 		canvas.queue_free() # Supprime le CanvasLayer et la scène Control à l'intérieur
+
+func _start_round_overlay():
+	pass
+	var overlay = show_overlay(OVERLAY_SCENE_START_ROUND)
+	

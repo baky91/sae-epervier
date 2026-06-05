@@ -254,6 +254,8 @@ theme_override_colors/font_color = Color(0, 0, 1, 1)
 theme_override_font_sizes/font_size = 36
 text = "#"
 
+[node name="OverlayLayer" type="CanvasLayer" parent="." unique_id=282256270]
+
 [connection signal="timeout" from="TimerBonus" to="." method="_on_timer_bonus_timeout"]
 [connection signal="timeout" from="TimerRound" to="." method="_on_timer_round_timeout"]
 [connection signal="body_entered" from="TopSafeZone/TopZoneArea2D" to="." method="_on_top_zone_area_2d_body_entered"]
