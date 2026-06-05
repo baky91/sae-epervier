@@ -205,15 +205,36 @@ func _end_round():
 	print("Fin de la manche ", str(current_round))
 	label_duree_manche.text = "0 s" # Ne pas bloquer le compteur à 1 sur l'affichage
 	
+	var last_round = \
+		(current_round == max_round) || \
+		(players_counter["total"] > 0 && players_counter[Player.ROLE_SURVIVOR] == 0)
+	
+	## Vérifier si la partie est finie : dernière manche effectuée ou plus de survivants restants
+	#if current_round == max_round:
+		#last_round = true
+		#print("Dernière manche effectuée")
+		#_end_game()
+		#
+	#if players_counter["total"] > 0 && players_counter[Player.ROLE_SURVIVOR] == 0:
+		#print("Plus de survivant")
+		#
+		#print("Plus de survivant")
+		#_end_game()
+	
 	# Affichage de l'overlay de statistiques de la manche
 	await _end_round_overlay()
 	
-	# Lancement de la prochaine manche
-	_start_round()
-			
+	if !last_round:
+		# Lancement de la prochaine manche
+		_start_round()
+	else:
+		# Basculement vers l'écran de fin
+		_end_game()		
+
 func _end_game():
 	print("Fin de la partie")
-			
+	get_tree().change_scene_to_file("res://UI/Overlays/game_end.tscn")
+
 func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
 
