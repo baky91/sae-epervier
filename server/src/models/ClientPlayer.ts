@@ -31,7 +31,7 @@ export default class ClientPlayer extends ClientModel {
   }
 
   sendToHost(message: SocketMessage) {
-    if (this.hostSocket) {
+    if (this.hostSocket && !this.hostSocket.inputsBlocked) {
       this.hostSocket.sendMessage({
         type: message.type,
         id: this.id,
