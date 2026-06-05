@@ -1,0 +1,161 @@
+[gd_scene format=3 uid="uid://dcuyyq35ddmkv"]
+
+[ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="1_sugu6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_Title"]
+font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_Subtitle"]
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_Blue"]
+font_size = 80
+font_color = Color(0.180392, 0.541176, 0.929412, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_Red"]
+font_size = 80
+font_color = Color(0.929412, 0.219608, 0.180392, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_Normal"]
+font_size = 25
+font_color = Color(0.85, 0.85, 0.85, 1)
+
+[node name="EndGame" type="Control" unique_id=749122398]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="." unique_id=1599321694]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.105882354, 0.14901961, 0.21176471, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1778107459]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 60
+
+[node name="VBoxMain" type="VBoxContainer" parent="MarginContainer" unique_id=752826528]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="ZoneTitre" type="VBoxContainer" parent="MarginContainer/VBoxMain" unique_id=65437332]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LabelVictoire" type="Label" parent="MarginContainer/VBoxMain/ZoneTitre" unique_id=920817935]
+layout_mode = 2
+text = "VICTOIRE DES ÉPERVIERS"
+label_settings = SubResource("LabelSettings_Title")
+horizontal_alignment = 1
+
+[node name="LabelManche" type="Label" parent="MarginContainer/VBoxMain/ZoneTitre" unique_id=2115280158]
+layout_mode = 2
+text = "Manche Finale : 5"
+label_settings = SubResource("LabelSettings_Subtitle")
+horizontal_alignment = 1
+
+[node name="ZoneStats" type="HBoxContainer" parent="MarginContainer/VBoxMain" unique_id=1258846556]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="SurvivantsCol" type="VBoxContainer" parent="MarginContainer/VBoxMain/ZoneStats" unique_id=2133755518]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="TitreSurvivants" type="Label" parent="MarginContainer/VBoxMain/ZoneStats/SurvivantsCol" unique_id=187878455]
+layout_mode = 2
+text = "Survivants restants"
+label_settings = SubResource("LabelSettings_Subtitle")
+horizontal_alignment = 1
+
+[node name="ValeurSurvivants" type="Label" parent="MarginContainer/VBoxMain/ZoneStats/SurvivantsCol" unique_id=216900956]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_Blue")
+horizontal_alignment = 1
+
+[node name="EperviersCol" type="VBoxContainer" parent="MarginContainer/VBoxMain/ZoneStats" unique_id=242668497]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="TitreEperviers" type="Label" parent="MarginContainer/VBoxMain/ZoneStats/EperviersCol" unique_id=502479064]
+layout_mode = 2
+text = "Éperviers"
+label_settings = SubResource("LabelSettings_Subtitle")
+horizontal_alignment = 1
+
+[node name="ValeurEperviers" type="Label" parent="MarginContainer/VBoxMain/ZoneStats/EperviersCol" unique_id=1420862015]
+layout_mode = 2
+text = "8"
+label_settings = SubResource("LabelSettings_Red")
+horizontal_alignment = 1
+
+[node name="ZoneInfecteurs" type="VBoxContainer" parent="MarginContainer/VBoxMain" unique_id=1021411131]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="TitreInfecteurs" type="Label" parent="MarginContainer/VBoxMain/ZoneInfecteurs" unique_id=2105992112]
+layout_mode = 2
+text = "Meilleurs infecteurs"
+label_settings = SubResource("LabelSettings_Subtitle")
+horizontal_alignment = 1
+
+[node name="PanelListe" type="PanelContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs" unique_id=483000451]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("1_sugu6")
+
+[node name="MarginListe" type="MarginContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/PanelListe" unique_id=135680649]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxListe" type="VBoxContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/PanelListe/MarginListe" unique_id=1097404147]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="InfecteurExemple" type="Label" parent="MarginContainer/VBoxMain/ZoneInfecteurs/PanelListe/MarginListe/VBoxListe" unique_id=772771239]
+layout_mode = 2
+text = "1. Joueur #4 - 5 infections"
+label_settings = SubResource("LabelSettings_Normal")
+horizontal_alignment = 1
+
+[node name="ZoneAction" type="VBoxContainer" parent="MarginContainer/VBoxMain" unique_id=1460964699]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="LabelMerci" type="Label" parent="MarginContainer/VBoxMain/ZoneAction" unique_id=2023469534]
+layout_mode = 2
+text = "Merci d'avoir joué !"
+label_settings = SubResource("LabelSettings_Normal")
+horizontal_alignment = 1
+
+[node name="ButtonNouvellePartie" type="Button" parent="MarginContainer/VBoxMain/ZoneAction" unique_id=2052208243]
+custom_minimum_size = Vector2(350, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 35
+text = "Nouvelle Partie"

@@ -233,7 +233,7 @@ func _end_round():
 
 func _end_game():
 	print("Fin de la partie")
-	get_tree().change_scene_to_file("res://UI/Overlays/game_end.tscn")
+	get_tree().change_scene_to_file("res://UI/end_game.tscn")
 
 func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
