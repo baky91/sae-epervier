@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://eakbn6ymfppq"]
 
-[ext_resource type="Script" uid="uid://wmlqhdsn572m" path="res://UI/Overlays/round_infos.gd" id="1_e2l1j"]
-[ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="2_x4p0y"]
+[ext_resource type="Script" uid="uid://wmlqhdsn572m" path="res://UI/Overlays/round_end.gd" id="1_xedsj"]
+[ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="2_tijkw"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2eomw"]
 font_size = 60
@@ -16,7 +16,7 @@ font_size = 40
 [sub_resource type="LabelSettings" id="LabelSettings_eto42"]
 font_size = 40
 
-[node name="round_infos" type="Control" unique_id=1538082545]
+[node name="round_end" type="Control" unique_id=1538082545]
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 8
@@ -30,7 +30,7 @@ offset_right = 640.0
 offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_e2l1j")
+script = ExtResource("1_xedsj")
 
 [node name="ColorRect2" type="ColorRect" parent="." unique_id=1166155482]
 layout_mode = 1
@@ -99,7 +99,7 @@ alignment = 1
 [node name="LeftContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1031906294]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("2_x4p0y")
+theme_override_styles/panel = ExtResource("2_tijkw")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer" unique_id=393983506]
 layout_mode = 2
@@ -124,7 +124,7 @@ horizontal_alignment = 1
 [node name="RightContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1210529095]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("2_x4p0y")
+theme_override_styles/panel = ExtResource("2_tijkw")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer" unique_id=1833312295]
 layout_mode = 2

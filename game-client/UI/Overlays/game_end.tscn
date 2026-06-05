@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cvcumj1371e68"]
 
-[ext_resource type="Script" uid="uid://cd271mh1m4lx" path="res://World/end.gd" id="1_5qaft"]
-[ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="2_m6ux5"]
+[ext_resource type="Script" uid="uid://cd271mh1m4lx" path="res://UI/Overlays/game_end.gd" id="1_emdle"]
+[ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="2_rc0l6"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2eomw"]
 font_size = 60
@@ -20,7 +20,7 @@ font_size = 40
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_5qaft")
+script = ExtResource("1_emdle")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=532784945]
 layout_mode = 1
@@ -75,7 +75,7 @@ alignment = 1
 [node name="LeftContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1031906294]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("2_m6ux5")
+theme_override_styles/panel = ExtResource("2_rc0l6")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftContainer" unique_id=393983506]
 layout_mode = 2
@@ -107,7 +107,7 @@ horizontal_alignment = 1
 [node name="RightContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1210529095]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("2_m6ux5")
+theme_override_styles/panel = ExtResource("2_rc0l6")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer" unique_id=1833312295]
 layout_mode = 2

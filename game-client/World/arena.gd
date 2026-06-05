@@ -5,7 +5,7 @@ const BOTTOM_ZONE = "bottom_zone"
 const SAFE_SURVIVORS = "safe_survivor"
 
 const OVERLAY_SCENE_START_ROUND = preload("res://UI/Overlays/round_start.tscn")
-const OVERLAY_SCENE_END_ROUND = preload("res://UI/Overlays/round_infos.tscn")
+const OVERLAY_SCENE_END_ROUND = preload("res://UI/Overlays/round_end.tscn")
 
 var player_scene = preload("res://Player/player.tscn")
 var bonus_scene = preload("res://World/bonus.tscn")
@@ -60,7 +60,6 @@ func _physics_process(_delta):
 	if !timer_round.is_stopped():
 		var time_left = int(ceil(timer_round.time_left))
 		label_duree_manche.text = str(time_left) + " s"
-	
 	
 	for id in ServerSocket.players_inputs_buffer:
 		if players_nodes.has(id):
