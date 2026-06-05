@@ -32,6 +32,9 @@ export default class ClientHost extends ClientModel {
       if (type === "GAME_START") {
         logMessage(`La partie ${this.hostCode} a démarré`);
         this.gameStarted = true;
+      } else if (type === "REQUEST_ROUND_START"){
+        this.prepareNextRound();
+        return;
       }
 
       this.sendToAllPlayers(message);
@@ -93,5 +96,26 @@ export default class ClientHost extends ClientModel {
     this.players.forEach((p) => {
       p.socket.close();
     });
+  }
+
+  prepareNextRound() {    
+    // Empêcher l'envoi des entrées utilisateur à Godot
+    this.inputsBlocked = true;
+
+    // Lancement du décompte du lancement de la manche : 3, 2, 1
+    this.socket.send(JSON.stringify({ type: "START_COUNTDOWN" }));
+
+    setTimeout(() => {
+      this.socket.send(JSON.stringify({ type: "COUNTDOWN_TICK", value: 2 }));
+    }, 1000);
+
+    setTimeout(() => {
+      this.socket.send(JSON.stringify({ type: "COUNTDOWN_TICK", value: 1 }));
+    }, 2000);
+
+    setTimeout(() => {
+      this.inputsBlocked = false;
+      this.socket.send(JSON.stringify({ type: "ROUND_START" }));
+    }, 3000);
   }
 }
