@@ -1,4 +1,4 @@
-extends Node
+extends Control
 
 @onready var v_box_leaderboard: VBoxContainer = $MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain/ScrollContainer/VBoxLeaderboard
 const TOP_INFECTIONS_ITEM = preload("res://UI/top_infections_item.tscn")
@@ -15,7 +15,7 @@ func _ready() -> void:
 		if rank <= MAX_LINE_LEADERBOARD:
 			if Globals.players[player_id]["infections"] > 0:
 				var lb_item = TOP_INFECTIONS_ITEM.instantiate()
-				var name = Globals.players[player_id]["name"] + " (" + str(player_id) + ")"
-				lb_item.set_values(rank, name, Globals.players[player_id]["infections"])
 				v_box_leaderboard.add_child(lb_item)
+				var p_name = Globals.players[player_id]["name"] + " (" + str(player_id) + ")"
+				lb_item.set_values(rank, p_name, Globals.players[player_id]["infections"])
 				rank += 1

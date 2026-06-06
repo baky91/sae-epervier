@@ -194,7 +194,7 @@ func _end_round():
 	print("Fin de la manche ", str(current_round))
 	label_duree_manche.text = "0 s" # Ne pas bloquer le compteur à 1 sur l'affichage
 	
-	print(Globals.players)
+	#print(Globals.players)
 	
 	var last_round = \
 		(current_round == max_round) || \

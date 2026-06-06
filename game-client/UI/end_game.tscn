@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dcuyyq35ddmkv"]
 
 [ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="1_sugu6"]
+[ext_resource type="Script" uid="uid://qeha4kwsbpga" path="res://UI/end_game.gd" id="1_xqbdw"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_Title"]
 font_size = 60
@@ -31,6 +32,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_xqbdw")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1599321694]
 layout_mode = 1
