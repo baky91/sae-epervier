@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://wmlqhdsn572m" path="res://UI/Overlays/round_end.gd" id="1_xedsj"]
 [ext_resource type="StyleBox" uid="uid://cma82oc42efod" path="res://UI/styles/panel_style_box_flat.tres" id="2_tijkw"]
+[ext_resource type="Script" uid="uid://kmvji7ix2dw6" path="res://UI/top_infections_item.gd" id="3_tijkw"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2eomw"]
 font_size = 60
@@ -11,6 +12,10 @@ font_size = 40
 
 [sub_resource type="LabelSettings" id="LabelSettings_eto42"]
 font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_xedsj"]
+font_size = 30
+font_color = Color(0.6, 0.631373, 0.686275, 1)
 
 [node name="round_end" type="Control" unique_id=581543767]
 custom_minimum_size = Vector2(1920, 1080)
@@ -172,10 +177,69 @@ theme_override_constants/separation = 15
 
 [node name="TitleTopSparrowhawks" type="Label" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight" unique_id=712057158]
 layout_mode = 2
-text = "Top 10 Infections"
+text = "Top 5 Infections"
 label_settings = SubResource("LabelSettings_eto42")
 horizontal_alignment = 1
 
 [node name="VBoxTopSparrowhawks" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight" unique_id=743107244]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="VBoxMain" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight" unique_id=997931356]
+layout_mode = 2
+
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain" unique_id=1414311640]
+layout_mode = 2
+
+[node name="LabelRank" type="Label" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain/HeaderHBox" unique_id=2090773637]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Rang"
+label_settings = SubResource("LabelSettings_xedsj")
+horizontal_alignment = 1
+
+[node name="LabelName" type="Label" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain/HeaderHBox" unique_id=2135118931]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Joueur"
+label_settings = SubResource("LabelSettings_xedsj")
+
+[node name="LabelScore" type="Label" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain/HeaderHBox" unique_id=776042849]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Infections"
+label_settings = SubResource("LabelSettings_xedsj")
+horizontal_alignment = 1
+
+[node name="HSeparatorHeader" type="HSeparator" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain" unique_id=1260930780]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain" unique_id=1054276754]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxList" type="VBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain/ScrollContainer" unique_id=1352786225]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="TopInfectionsItem" type="HBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain/ScrollContainer/VBoxList" unique_id=1329684223]
+layout_mode = 2
+script = ExtResource("3_tijkw")
+metadata/_custom_type_script = "uid://kmvji7ix2dw6"
+
+[node name="TopInfectionsItem2" type="HBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain/ScrollContainer/VBoxList" unique_id=1064966281]
+layout_mode = 2
+script = ExtResource("3_tijkw")
+metadata/_custom_type_script = "uid://kmvji7ix2dw6"
+
+[node name="TopInfectionsItem3" type="HBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain/ScrollContainer/VBoxList" unique_id=2078790749]
+layout_mode = 2
+script = ExtResource("3_tijkw")
+metadata/_custom_type_script = "uid://kmvji7ix2dw6"
+
+[node name="TopInfectionsItem4" type="HBoxContainer" parent="MarginContainer/VBoxMain/HBoxLists/RightContainer/MarginRight/VBoxRight/VBoxMain/ScrollContainer/VBoxList" unique_id=177542263]
+layout_mode = 2
+script = ExtResource("3_tijkw")
+metadata/_custom_type_script = "uid://kmvji7ix2dw6"

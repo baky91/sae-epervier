@@ -65,7 +65,8 @@ func _handle_server_message(json):
 		"PLAYER_JOIN":
 			Globals.players[int(json.data.id)] = {
 				"name": json.data.name,
-				"infections": 0
+				"infections": 0,
+				"last_round_infections": 0
 			}
 			player_connected.emit(int(json.data.id), json.data.name)
 			

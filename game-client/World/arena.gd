@@ -158,9 +158,12 @@ func _start_round():
 				player.role_changed.emit(key, Player.ROLE_SPARROWHAWK)
 				next_sparrowhawk.append(player)
 				Globals.players_counter[Player.ROLE_SPARROWHAWK] += 1
+				# On initialise à 0 le compteur d'infections pour la manche en cours
+				Globals.players[key]["last_round_infections"] = 0
 			elif player.role == Player.ROLE_SPARROWHAWK:
 				next_sparrowhawk.append(player)
 				Globals.players_counter[Player.ROLE_SPARROWHAWK] += 1
+				Globals.players[key]["last_round_infections"] = 0
 			else:
 				Globals.players_counter[Player.ROLE_SURVIVOR] += 1
 		
@@ -190,6 +193,8 @@ func _start_round():
 func _end_round():
 	print("Fin de la manche ", str(current_round))
 	label_duree_manche.text = "0 s" # Ne pas bloquer le compteur à 1 sur l'affichage
+	
+	print(Globals.players)
 	
 	var last_round = \
 		(current_round == max_round) || \
@@ -323,13 +328,18 @@ func _check_end_of_round():
 	if survivors == total - infected - sparrowhawks:
 		_end_round()
 		
-func _on_player_infected():
-	print("Un joueur a été infecté")
+func _on_player_infected(sparrowhawk_id: int, infected_id: int):
+	#print("Un joueur a été infecté")
 	#On décrémente le compteur de survivants et on incrémente le compteur d'infectés
 	Globals.players_counter[Player.ROLE_INFECTED] += 1
 	Globals.players_counter[Player.ROLE_SURVIVOR] -= 1
 	
+	# On incrémente le compteur d'infection pour l'épervier
+	Globals.players[sparrowhawk_id]["infections"] += 1
+	Globals.players[sparrowhawk_id]["last_round_infections"] += 1
+	
 	if Globals.players_counter[Player.ROLE_SURVIVOR] == 0:
+		_end_round()
 		print("Tous les joueurs ont été infectés : les éperviers sont vainqueurs.")
 	
 	_update_players_labels()

@@ -106,7 +106,7 @@ horizontal_alignment = 1
 
 [node name="ValeurEperviers" type="Label" parent="MarginContainer/VBoxMain/ZoneStats/EperviersCol" unique_id=1420862015]
 layout_mode = 2
-text = "8"
+text = "0"
 label_settings = SubResource("LabelSettings_Red")
 horizontal_alignment = 1
 
@@ -167,7 +167,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxList" type="VBoxContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain/ScrollContainer" unique_id=1102054150]
+[node name="VBoxLeaderboard" type="VBoxContainer" parent="MarginContainer/VBoxMain/ZoneInfecteurs/MarginContainer/PanelListe/MarginListe/VBoxMain/ScrollContainer" unique_id=1102054150]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10

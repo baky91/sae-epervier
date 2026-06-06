@@ -4,7 +4,9 @@
 font_size = 28
 font_color = Color(0.85, 0.85, 0.85, 1)
 
-[node name="TopInfectionsItem" type="HBoxContainer" unique_id=212968577]
+[node name="TopInfectionsItem" type="HBoxContainer" unique_id=1061421605]
+offset_right = 461.0
+offset_bottom = 39.0
 
 [node name="Rank" type="Label" parent="." unique_id=1354304055]
 custom_minimum_size = Vector2(120, 0)
