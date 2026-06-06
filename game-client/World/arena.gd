@@ -24,6 +24,7 @@ var bonus_scene = preload("res://World/bonus.tscn")
 
 var players_nodes = {}
 
+var inputs_blocked = true
 var game_started = false
 var current_round = 0
 
@@ -63,7 +64,11 @@ func _physics_process(_delta):
 	for id in ServerSocket.players_inputs_buffer:
 		if players_nodes.has(id):
 			var player_node = players_nodes[id]
-			var vector_move = ServerSocket.players_inputs_buffer[id]
+			var vector_move = null
+			if inputs_blocked:
+				vector_move = Vector2(0, 0)
+			else:
+				vector_move = ServerSocket.players_inputs_buffer[id]
 			player_node.direction = vector_move
 			
 			#player_node.direction = player_node.direction.lerp(vector_move, 0.2)
@@ -186,6 +191,7 @@ func _start_round():
 		
 		#timer_round.start()
 		_update_players_labels()
+		inputs_blocked = false
 
 	else:
 		_end_round()
@@ -194,23 +200,13 @@ func _end_round():
 	print("Fin de la manche ", str(current_round))
 	label_duree_manche.text = "0 s" # Ne pas bloquer le compteur à 1 sur l'affichage
 	
-	#print(Globals.players)
+	# Envoi d'un message au serveur pour bloquer les entrées
+	ServerSocket.send_message_to_server({"type": "REQUEST_ROUND_END", "id": 0})
+	inputs_blocked = true
 	
 	var last_round = \
 		(current_round == max_round) || \
 		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SURVIVOR] == 0)
-	
-	## Vérifier si la partie est finie : dernière manche effectuée ou plus de survivants restants
-	#if current_round == max_round:
-		#last_round = true
-		#print("Dernière manche effectuée")
-		#_end_game()
-		#
-	#if Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SURVIVOR] == 0:
-		#print("Plus de survivant")
-		#
-		#print("Plus de survivant")
-		#_end_game()
 	
 	# Affichage de l'overlay de statistiques de la manche
 	await _end_round_overlay()
