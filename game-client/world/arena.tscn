@@ -27,7 +27,7 @@ a = Vector2(0, 80)
 b = Vector2(1920, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nwrlw"]
-size = Vector2(1920, 48)
+size = Vector2(1920, 80)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_ktx4i"]
 a = Vector2(0, 1000)
@@ -123,7 +123,7 @@ default_color = Color(1, 0, 0, 1)
 collision_layer = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopSafeZone/TopZoneArea2D" unique_id=1799098038]
-position = Vector2(960, 24)
+position = Vector2(960, 40)
 shape = SubResource("RectangleShape2D_nwrlw")
 
 [node name="BottomSafeZone" type="Node2D" parent="." unique_id=784138534]
@@ -145,7 +145,7 @@ position = Vector2(0, 1000)
 collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomSafeZone/BottomZoneArea2D" unique_id=967737303]
-position = Vector2(960, 56)
+position = Vector2(960, 40)
 shape = SubResource("RectangleShape2D_nwrlw")
 
 [node name="Players" type="Node2D" parent="." unique_id=401491857]

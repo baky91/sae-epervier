@@ -24,6 +24,7 @@ var bonus_scene = preload("res://world/bonus.tscn")
 
 var players_nodes = {}
 
+var inputs_blocked = true
 var game_started = false
 var current_round = 0
 
@@ -64,7 +65,7 @@ func _physics_process(_delta):
 		if players_nodes.has(id):
 			var player_node = players_nodes[id]
 			var vector_move = null
-			if Globals.inputs_blocked:
+			if inputs_blocked:
 				vector_move = Vector2(0, 0)
 			else:
 				vector_move = ServerSocket.players_inputs_buffer[id]
@@ -134,15 +135,6 @@ func _start_round():
 		return
 
 	if current_round < max_round:
-		current_round += 1
-		
-		# Changement de la zone d'arrivée
-		if current_round > 1:
-			if dest_safe_zone == TOP_ZONE:
-				dest_safe_zone = BOTTOM_ZONE
-			else:
-				dest_safe_zone = TOP_ZONE
-		
 		# On initialise les compteurs à 0 si on ne connait pas le nombre final à la fin de la manche (éperviers)
 		Globals.players_counter = {
 			"total": players_nodes.keys().size(),
@@ -152,6 +144,7 @@ func _start_round():
 			Player.ROLE_SPARROWHAWK: 0
 		}
 		
+		current_round += 1
 		print("Commencement de la manche ", str(current_round))
 		label_nb_manche.text = "Manche " + str(current_round) + "/" + str(max_round)
 		label_duree_manche.text = str(int(timer_round.wait_time)) + " s" 
@@ -198,6 +191,7 @@ func _start_round():
 		
 		#timer_round.start()
 		_update_players_labels()
+		inputs_blocked = false
 
 	else:
 		_end_round()
@@ -208,7 +202,7 @@ func _end_round():
 	
 	# Envoi d'un message au serveur pour bloquer les entrées
 	ServerSocket.send_message_to_server({"type": "REQUEST_ROUND_END", "id": 0})
-	Globals.inputs_blocked = true
+	inputs_blocked = true
 	
 	var last_round = \
 		(current_round == max_round) || \
