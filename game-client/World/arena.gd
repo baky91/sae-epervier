@@ -220,7 +220,7 @@ func _end_round():
 
 func _end_game():
 	print("Fin de la partie")
-	get_tree().change_scene_to_file("res://ui/end_game.tscn")
+	get_tree().change_scene_to_file("res://UI/Menus/end_game.tscn")
 
 func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
@@ -279,7 +279,7 @@ func _on_player_signal_bonus(player_id: int, bonus_name: String):
 
 func _on_role_changed(player_id: int, role: String) -> void:
 	var player = players_nodes[player_id]
-	player.set_role(role)
+	player.set_role(role) 
 	var data_to_send = {
 		"type": "SET_ROLE",
 		"id": player_id,
