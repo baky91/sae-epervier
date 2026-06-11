@@ -339,7 +339,7 @@ func _check_end_of_round():
 	if survivors == total - infected - sparrowhawks:
 		_end_round()
 		
-func _on_player_infected(sparrowhawk_id: int, infected_id: int):
+func _on_player_infected(sparrowhawk_id: int, _infected_id: int):
 	#print("Un joueur a été infecté")
 	#On décrémente le compteur de survivants et on incrémente le compteur d'infectés
 	Globals.players_counter[Player.ROLE_INFECTED] += 1

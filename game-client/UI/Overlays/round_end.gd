@@ -28,6 +28,6 @@ func _ready() -> void:
 			if Globals.players[player_id]["last_round_infections"] > 0:
 				var lb_item = TOP_INFECTIONS_ITEM.instantiate()
 				v_box_leaderboard.add_child(lb_item)
-				var name = Globals.players[player_id]["name"] + " (" + str(player_id) + ")"
-				lb_item.set_values(rank, name, Globals.players[player_id]["last_round_infections"])
+				var p_name = Globals.players[player_id]["name"] + " (" + str(player_id) + ")"
+				lb_item.set_values(rank, p_name, Globals.players[player_id]["last_round_infections"])
 				rank += 1
