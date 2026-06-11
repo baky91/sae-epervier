@@ -30,4 +30,3 @@ func scale_label_effect(destroy_at_end):
 	if destroy_at_end:
 		# On attend la fin des 0.3s du tween, puis on supprime l'overlay
 		tween.finished.connect(func(): queue_free())
-		Globals.inputs_blocked = false
