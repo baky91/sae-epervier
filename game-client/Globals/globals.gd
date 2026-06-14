@@ -26,6 +26,18 @@ var inputs_blocked = true
 var last_round_number: int
 
 func _ready() -> void:
+	# Création de joueurs fictifs pour tester différents affichages
+	players[990] = {"name": "Player 990", "infections": 2, "last_round_infections": 0}
+	players[991] = {"name": "Player 991", "infections": 1, "last_round_infections": 0}
+	players[992] = {"name": "Player 992", "infections": 10, "last_round_infections": 4}
+	players[993] = {"name": "Player 993", "infections": 1, "last_round_infections": 2}
+	players[994] = {"name": "Player 994", "infections": 11, "last_round_infections": 7}
+	players[995] = {"name": "Player 995", "infections": 12, "last_round_infections": 2}
+	players[996] = {"name": "Player 996", "infections": 15, "last_round_infections": 3}
+	players[997] = {"name": "Player 997", "infections": 18, "last_round_infections": 2}
+	players[998] = {"name": "Player 998", "infections": 1, "last_round_infections": 5}
+	players[999] = {"name": "Player 999", "infections": 19, "last_round_infections": 0}
+	
 	if !OS.has_feature("web"):
 		# Redimensionner la taille de la fenêtre
 		DisplayServer.window_set_size(Vector2i(1280, 720))
