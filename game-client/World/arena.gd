@@ -57,7 +57,7 @@ func _physics_process(_delta):
 		_start_round()
 		
 	if !timer_round.is_stopped():
-		var time_left = int(ceil(timer_round.time_left))
+		var time_left = int(timer_round.time_left)
 		label_duree_manche.text = str(time_left) + " s"
 	
 	for id in ServerSocket.players_inputs_buffer:
@@ -203,7 +203,7 @@ func _start_round():
 
 func _end_round():
 	print("Fin de la manche ", str(current_round))
-	label_duree_manche.text = "0 s" # Ne pas bloquer le compteur à 1 sur l'affichage
+	timer_round.stop()
 	
 	# Envoi d'un message au serveur pour bloquer les entrées
 	ServerSocket.send_message_to_server({"type": "REQUEST_ROUND_END", "id": 0})
