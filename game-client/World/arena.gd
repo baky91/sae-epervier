@@ -225,6 +225,7 @@ func _end_round():
 
 func _end_game():
 	print("Fin de la partie")
+	Globals.last_round_number = current_round
 	get_tree().change_scene_to_file("res://UI/Menus/end_game.tscn")
 
 func _on_room_created(_code: String, url_to_join: String):

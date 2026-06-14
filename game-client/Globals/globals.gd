@@ -23,6 +23,8 @@ var players_counter = {
 
 var inputs_blocked = true
 
+var last_round_number: int
+
 func _ready() -> void:
 	if !OS.has_feature("web"):
 		# Redimensionner la taille de la fenêtre
