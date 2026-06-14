@@ -175,7 +175,9 @@ func _start_round():
 				next_sparrowhawk.append(player)
 				Globals.players_counter[Player.ROLE_SPARROWHAWK] += 1
 				Globals.players[key]["last_round_infections"] = 0
-			else:
+			else: # Role survivant
+				# Le joueur n'est pas dans la zone de sécurité opposée
+				player.is_safe = false
 				Globals.players_counter[Player.ROLE_SURVIVOR] += 1
 		
 		# On met tous les éperviers au centre
