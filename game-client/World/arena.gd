@@ -300,6 +300,8 @@ func _on_timer_round_timeout() -> void:
 	for player in players_nodes.values():
 		if player.role == Player.ROLE_SURVIVOR && !player.is_safe:
 			player.set_role(Player.ROLE_INFECTED)
+			Globals.players_counter[Player.ROLE_INFECTED] += 1
+			Globals.players_counter[Player.ROLE_SURVIVOR] -= 1
 	
 	_end_round()
 
