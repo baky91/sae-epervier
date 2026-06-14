@@ -38,6 +38,9 @@ func _ready() -> void:
 	players[998] = {"name": "Player 998", "infections": 1, "last_round_infections": 5}
 	players[999] = {"name": "Player 999", "infections": 19, "last_round_infections": 0}
 	
+	var leaderboard = get_sorted_infections_leaderboard()
+	print(leaderboard)
+	
 	if !OS.has_feature("web"):
 		# Redimensionner la taille de la fenêtre
 		DisplayServer.window_set_size(Vector2i(1280, 720))
@@ -48,3 +51,22 @@ func _ready() -> void:
 		
 		@warning_ignore("integer_division")
 		DisplayServer.window_set_position(screen_size / 2 - window_size / 2)
+
+func get_sorted_infections_leaderboard(col_name: String = "infections", nb_rows: int = 10):
+	var players_array = []
+	
+	# Construction d'une liste de dictionnaire (clés: id, name, {col_name})
+	for player_id in players:
+		var player_data = players[player_id]
+		players_array.append({
+			"id": player_id,
+			"name": player_data["name"],
+			col_name: player_data[col_name]
+		})
+	
+	# Trie personnalisé de la liste
+	players_array.sort_custom(func(a, b): return a[col_name] > b[col_name])
+	players_array.resize(nb_rows)
+	
+	return players_array
+	
