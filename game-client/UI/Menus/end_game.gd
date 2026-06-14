@@ -31,6 +31,9 @@ func _ready() -> void:
 	var rank = 1
 	
 	for player_data in leaderboard_data:
+		if not player_data:
+			break
+			
 		var p_id = player_data["id"]
 		var p_name = player_data["name"]
 		var p_infections = player_data["infections"]

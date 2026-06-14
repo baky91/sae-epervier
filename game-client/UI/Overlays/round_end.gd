@@ -22,9 +22,13 @@ func _ready() -> void:
 	
 	# Afficher les 10 premiers éperviers en nombre d'infection
 	var leaderboard_data = Globals.get_sorted_infections_leaderboard("last_round_infections", MAX_LINE_LEADERBOARD)
+	print(leaderboard_data)
 	var rank = 1
 	
 	for player_data in leaderboard_data:
+		if not player_data:
+			break
+		
 		var p_id = player_data["id"]
 		var p_name = player_data["name"]
 		var p_infections = player_data["last_round_infections"]
