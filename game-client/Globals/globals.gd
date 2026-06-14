@@ -21,6 +21,8 @@ var players_counter = {
 	Player.ROLE_SPARROWHAWK: 0,
 }
 
+var inputs_blocked = true
+
 func _ready() -> void:
 	if !OS.has_feature("web"):
 		# Redimensionner la taille de la fenêtre
