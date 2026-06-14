@@ -27,12 +27,22 @@ func _ready() -> void:
 		label_victoire.text = "VICTOIRE DES SURVIVANTS"
 	
 	# Afficher les 10 premiers éperviers en nombre d'infection
+	var leaderboard_data = Globals.get_sorted_infections_leaderboard("infections", MAX_LINE_LEADERBOARD)
 	var rank = 1
-	for player_id in Globals.players:
-		if rank <= MAX_LINE_LEADERBOARD:
-			if Globals.players[player_id]["infections"] > 0:
-				var lb_item = TOP_INFECTIONS_ITEM.instantiate()
-				v_box_leaderboard.add_child(lb_item)
-				var p_name = Globals.players[player_id]["name"] + " (" + str(player_id) + ")"
-				lb_item.set_values(rank, p_name, Globals.players[player_id]["infections"])
-				rank += 1
+	
+	for player_data in leaderboard_data:
+		var p_id = player_data["id"]
+		var p_name = player_data["name"]
+		var p_infections = player_data["infections"]
+		
+		if p_infections > 0:
+			var lb_item = TOP_INFECTIONS_ITEM.instantiate()
+			v_box_leaderboard.add_child(lb_item)
+			lb_item.set_values(
+				rank,
+				p_name + " (" + str(p_id) + ")",
+				p_infections
+			)
+			
+			rank += 1
+	

@@ -38,9 +38,6 @@ func _ready() -> void:
 	players[998] = {"name": "Player 998", "infections": 1, "last_round_infections": 5}
 	players[999] = {"name": "Player 999", "infections": 19, "last_round_infections": 0}
 	
-	var leaderboard = get_sorted_infections_leaderboard()
-	print(leaderboard)
-	
 	if !OS.has_feature("web"):
 		# Redimensionner la taille de la fenêtre
 		DisplayServer.window_set_size(Vector2i(1280, 720))
