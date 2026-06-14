@@ -50,4 +50,6 @@ func _ready() -> void:
 			)
 			
 			rank += 1
-	
+
+func _on_button_nouvelle_partie_pressed() -> void:
+	get_tree().change_scene_to_file("res://UI/Menus/mainui.tscn")
