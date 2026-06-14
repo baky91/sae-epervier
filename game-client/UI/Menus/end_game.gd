@@ -23,8 +23,10 @@ func _ready() -> void:
 	# Déterminer le camp vainqueur
 	if survivors_left <= 0:
 		label_victoire.text = "VICTOIRE DES ÉPERVIERS"
+		label_victoire.label_settings.font_color = "#ed382e"
 	else:
 		label_victoire.text = "VICTOIRE DES SURVIVANTS"
+		label_victoire.label_settings.font_color = "#2e8aed"
 	
 	# Afficher les 10 premiers éperviers en nombre d'infection
 	var leaderboard_data = Globals.get_sorted_infections_leaderboard("infections", MAX_LINE_LEADERBOARD)
