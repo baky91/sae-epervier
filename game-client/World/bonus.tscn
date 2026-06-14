@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dqa0aqf5pj3vv"]
 
-[ext_resource type="Script" uid="uid://dtboqa7lt358t" path="res://World/bonus.gd" id="1_0jsq2"]
-[ext_resource type="Shader" uid="uid://drhn3wxy3qhdc" path="res://Shaders/outline2D_outer.gdshader" id="2_55axi"]
-[ext_resource type="Texture2D" uid="uid://bf0ctkf6a7v01" path="res://Assets/bonus-dash.png" id="3_h3hyg"]
+[ext_resource type="Script" uid="uid://dtboqa7lt358t" path="res://world/bonus.gd" id="1_0jsq2"]
+[ext_resource type="Shader" uid="uid://drhn3wxy3qhdc" path="res://shaders/outline2D_outer.gdshader" id="2_55axi"]
+[ext_resource type="Texture2D" uid="uid://bf0ctkf6a7v01" path="res://assets/bonus-dash.png" id="3_h3hyg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eq7rh"]
 shader = ExtResource("2_55axi")

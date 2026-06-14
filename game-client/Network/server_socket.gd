@@ -5,6 +5,10 @@ signal player_connected(id: int, name: String)
 signal player_use_bonus(id: int, bonus_name: String)
 signal player_left(id: int)
 
+signal start_countdown
+signal countdown_tick(value: int)
+signal round_start
+
 var socket = WebSocketPeer.new()
 var origin_url = "http://localhost:3000"
 var url_to_join: String
@@ -59,7 +63,11 @@ func _handle_server_message(json):
 		"ROOM_CREATED":
 			room_created.emit(json.data.code, url_to_join + "/" + json.data.code)
 		"PLAYER_JOIN":
-			players_ids.append(int(json.data.id))
+			Globals.players[int(json.data.id)] = {
+				"name": json.data.name,
+				"infections": 0,
+				"last_round_infections": 0
+			}
 			player_connected.emit(int(json.data.id), json.data.name)
 			
 		"MOVE":
@@ -70,7 +78,18 @@ func _handle_server_message(json):
 			player_use_bonus.emit(int(json.id), json.data.bonus)
 			
 		"PLAYER_LEFT":
+			Globals.players.erase(int(json.id))
 			player_left.emit(int(json.id))
+			
+		# Signaux pour les décomptes avant le lancement de chaque manche
+		"START_COUNTDOWN":
+			start_countdown.emit()
+			
+		"COUNTDOWN_TICK":
+			countdown_tick.emit(json.value)
+		
+		"ROUND_START":
+			round_start.emit()
 
 func send_message_to_server(data: Dictionary):
 	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:

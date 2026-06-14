@@ -23,7 +23,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // FICHIERS STATIQUES
-if (isDev){
+if (isDev) {
   app.use(express.static(join(__dirname, "../client")));
   app.use(express.static(join(__dirname, "../public")));
 } else {

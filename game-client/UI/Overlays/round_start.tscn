@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://cleon43d2a8xp"]
+
+[ext_resource type="Script" uid="uid://b8yt26orvxfbk" path="res://ui/overlays/round_start.gd" id="1_6sbca"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_hsvu1"]
+font_size = 179
+
+[node name="round_start" type="Control" unique_id=1538082545]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_6sbca")
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=1087165811]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.49803922)
+
+[node name="LabelNumber" type="Label" parent="." unique_id=1839657556]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "3, 2, 1 Go !!!!"
+label_settings = SubResource("LabelSettings_hsvu1")
+horizontal_alignment = 1

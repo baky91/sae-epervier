@@ -2,7 +2,7 @@ class_name Player extends CharacterBody2D
 
 signal get_bonus(player_id: int, bonus_name: String)
 signal role_changed(player_id: int, role: String)
-signal player_infected
+signal player_infected(sparrowhawk_id: int, infected_id: int)
 
 const ROLE_SURVIVOR = "survivor"
 const ROLE_INFECTED = "infected"
@@ -39,6 +39,9 @@ var speed_boosting = false
 # Bonus can be use
 var can_dash = true
 var can_speed_boost = true
+
+# If the player is in the 
+var is_safe = false
 
 func _physics_process(_delta: float) -> void:
 	if role != ROLE_INFECTED:
@@ -112,11 +115,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			ServerSocket.players_inputs_buffer[id] = Vector2(0, 0)
 			role_changed.emit(id, ROLE_INFECTED)
 			# Envoie d'un signal réceptionné par l'Arène pour mettre à jour son compteur de joueurs
-			player_infected.emit()
+			player_infected.emit(body.id, id)
 		elif role == ROLE_SPARROWHAWK and body.role == ROLE_SURVIVOR:
 			# Le joueur cible devient infecté
 			print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
 			ServerSocket.players_inputs_buffer[body.id] = Vector2(0, 0)
 			body.role_changed.emit(body.id, ROLE_INFECTED)
 			# Envoie d'un signal réceptionné par l'Arène pour mettre à jour son compteur de joueurs
-			player_infected.emit()
+			player_infected.emit(id, body.id)

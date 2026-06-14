@@ -7,7 +7,7 @@ var bonus_name: String
 func _ready() -> void:
 	# Random Bonus
 	bonus_name = BONUS_LIST.pick_random()
-	var path = "res://Assets/bonus-" + bonus_name + ".png"
+	var path = "res://assets/bonus-" + bonus_name + ".png"
 	$Sprite2D.texture = load(path)
 	
 	# Random Position

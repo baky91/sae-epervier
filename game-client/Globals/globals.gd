@@ -1,5 +1,28 @@
 extends Node
 
+var time_rounds = 0
+var count_rounds = 0
+var auto_button:bool
+
+const SAFE_SURVIVORS = "safe_survivor"
+
+#player_id: {
+	#name: <player_name>,
+	#infections: <nb_infection_player>,
+	#last_round_infections: <nb_infection_player>
+#}
+var players = {}
+
+var players_counter = {
+	"total": 0,
+	SAFE_SURVIVORS: 0,
+	Player.ROLE_SURVIVOR: 0,
+	Player.ROLE_INFECTED: 0,
+	Player.ROLE_SPARROWHAWK: 0,
+}
+
+var inputs_blocked = true
+
 func _ready() -> void:
 	if !OS.has_feature("web"):
 		# Redimensionner la taille de la fenêtre

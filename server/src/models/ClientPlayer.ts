@@ -31,7 +31,7 @@ export default class ClientPlayer extends ClientModel {
   }
 
   handlePlayerMessage(message: SocketMessage) {
-    if (this.hostSocket) {
+    if (this.hostSocket && !this.hostSocket.inputsBlocked) {
       this.hostSocket.sendMessage({
         type: message.type,
         id: this.id,
@@ -61,7 +61,9 @@ export default class ClientPlayer extends ClientModel {
       },
     });
 
-    logMessage(`Joueur ${this.name} (ID: ${this.id}) s'est reconnecté dans la partie ${this.hostSocket.hostCode}`);    
+    logMessage(
+      `Joueur ${this.name} (ID: ${this.id}) s'est reconnecté dans la partie ${this.hostSocket.hostCode}`,
+    );
   }
 
   closeWithTimeout(timeout: number): void {
@@ -72,8 +74,10 @@ export default class ClientPlayer extends ClientModel {
           type: "PLAYER_LEFT",
           id: this.id,
         });
-        
-        logMessage(`Joueur ${this.name} (ID: ${this.id}) s'est déconnecté de la partie ${this.hostSocket.hostCode}`);    
+
+        logMessage(
+          `Joueur ${this.name} (ID: ${this.id}) s'est déconnecté de la partie ${this.hostSocket.hostCode}`,
+        );
       }, timeout * 1000);
     }
   }
