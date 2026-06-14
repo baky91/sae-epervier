@@ -359,9 +359,7 @@ func _on_player_infected(sparrowhawk_id: int, _infected_id: int):
 	Globals.players[sparrowhawk_id]["infections"] += 1
 	Globals.players[sparrowhawk_id]["last_round_infections"] += 1
 	
-	if Globals.players_counter[Player.ROLE_SURVIVOR] == 0:
-		_end_round()
-		print("Tous les joueurs ont été infectés : les éperviers sont vainqueurs.")
+	_check_end_of_round()
 	
 	_update_players_labels()
 	
