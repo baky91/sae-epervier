@@ -1,8 +1,10 @@
 extends Node
 
+var host_code: String = ""
+var join_url: String = ""
 var time_rounds = 0
 var count_rounds = 0
-var auto_button:bool
+var auto_nb_rounds: bool = true
 
 const SAFE_SURVIVORS = "safe_survivor"
 

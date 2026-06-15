@@ -18,13 +18,13 @@ var style_button_left_on = preload("res://UI/styles/btn_left_on.tres")
 var style_button_right_off = preload("res://UI/styles/btn_right_off.tres")
 var style_button_right_on = preload("res://UI/styles/btn_right_on.tres")
 var empty_style = StyleBoxEmpty.new()
+@onready var check_button_auto_nb_round: CheckButton = $MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/CheckButton
 @onready var h_slider_nb_round: HSlider = $MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/HBoxContainer/HSliderNbRound
 @onready var label_nb_round: Label = $MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/HBoxContainer/LabelNbRound
 
 var hostCode: String
 var counter_players = 0
 var count_rounds:int
-
 
 func _ready():
 	ServerSocket.room_created.connect(_on_room_created)
@@ -33,13 +33,27 @@ func _ready():
 	
 	set_all_button_styles(button_option_1, style_button_left_on)
 	set_all_button_styles(button_option_2, style_button_right_off)
-	Globals.auto_button = $MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/CheckButton.button_pressed
 	
 	h_slider_nb_round.visible = false
+	
+	# Restauration dans le cas d'une relance
+	if Globals.host_code != "":
+		_on_room_created(Globals.host_code, Globals.join_url)
+	
+	if Globals.time_rounds > 0:
+		h_slider_round_duration.value = Globals.time_rounds
+	
+	if Globals.count_rounds > 0:
+		h_slider_nb_round.value = Globals.count_rounds
+	
 	update()
 
 func _on_room_created(code: String, url_to_join: String):
 	hostCode = code
+	
+	Globals.host_code = code
+	Globals.join_url = url_to_join
+	
 	label_code.text = hostCode
 	_qr_rect.data = url_to_join.to_upper()
 	label_url.text = url_to_join
@@ -102,8 +116,7 @@ func _on_button_option_2_pressed() -> void:
 
 func _on_check_button_toggled(toggled_on: bool) -> void:
 	h_slider_nb_round.visible = !toggled_on
-	Globals.auto_button = toggled_on
-		
+
 	if toggled_on:
 		update()
 

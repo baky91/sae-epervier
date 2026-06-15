@@ -52,4 +52,23 @@ func _ready() -> void:
 			rank += 1
 
 func _on_button_nouvelle_partie_pressed() -> void:
+	# Envoie du message au serveur pour demander si le joueur souhaite relancer
+	ServerSocket.send_message_to_server({
+		"type": "REQUEST_REPLAY",
+		"id": 0
+	})
+	
+	# Nettoyage : vider la liste des joueurs
+	Globals.players.clear()
+	
+	# Nettoyage : remettre les compteurs à zéro
+	Globals.players_counter = {
+		"total": 0,
+		Globals.SAFE_SURVIVORS: 0,
+		Player.ROLE_SURVIVOR: 0,
+		Player.ROLE_INFECTED: 0,
+		Player.ROLE_SPARROWHAWK: 0
+	}
+	
+	# Basculement vers l'écran principal
 	get_tree().change_scene_to_file("res://UI/Menus/mainui.tscn")
