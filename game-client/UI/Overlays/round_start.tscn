@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cleon43d2a8xp"]
 
-[ext_resource type="Script" uid="uid://b8yt26orvxfbk" path="res://UI/overlays/round_start.gd" id="1_6sbca"]
+[ext_resource type="Script" uid="uid://b8yt26orvxfbk" path="res://UI/Overlays/round_start.gd" id="1_6sbca"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hsvu1"]
 font_size = 179
