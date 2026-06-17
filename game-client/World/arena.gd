@@ -175,7 +175,9 @@ func _start_round():
 				next_sparrowhawk.append(player)
 				Globals.players_counter[Player.ROLE_SPARROWHAWK] += 1
 				Globals.players[key]["last_round_infections"] = 0
-			else:
+			else: # Role survivant
+				# Le joueur n'est pas dans la zone de sécurité opposée
+				player.is_safe = false
 				Globals.players_counter[Player.ROLE_SURVIVOR] += 1
 		
 		# On met tous les éperviers au centre
@@ -225,6 +227,7 @@ func _end_round():
 
 func _end_game():
 	print("Fin de la partie")
+	Globals.last_round_number = current_round
 	get_tree().change_scene_to_file("res://UI/Menus/end_game.tscn")
 
 func _on_room_created(_code: String, url_to_join: String):
@@ -300,6 +303,8 @@ func _on_timer_round_timeout() -> void:
 	for player in players_nodes.values():
 		if player.role == Player.ROLE_SURVIVOR && !player.is_safe:
 			player.set_role(Player.ROLE_INFECTED)
+			Globals.players_counter[Player.ROLE_INFECTED] += 1
+			Globals.players_counter[Player.ROLE_SURVIVOR] -= 1
 	
 	_end_round()
 
@@ -354,9 +359,7 @@ func _on_player_infected(sparrowhawk_id: int, _infected_id: int):
 	Globals.players[sparrowhawk_id]["infections"] += 1
 	Globals.players[sparrowhawk_id]["last_round_infections"] += 1
 	
-	if Globals.players_counter[Player.ROLE_SURVIVOR] == 0:
-		_end_round()
-		print("Tous les joueurs ont été infectés : les éperviers sont vainqueurs.")
+	_check_end_of_round()
 	
 	_update_players_labels()
 	

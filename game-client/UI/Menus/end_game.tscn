@@ -191,3 +191,5 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 35
 text = "Nouvelle Partie"
+
+[connection signal="pressed" from="MarginContainer/VBoxMain/ZoneAction/ButtonNouvellePartie" to="." method="_on_button_nouvelle_partie_pressed"]

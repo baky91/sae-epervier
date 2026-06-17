@@ -38,6 +38,8 @@ export default class ClientHost extends ClientModel {
       } else if (type === "REQUEST_ROUND_END") {
         this.inputsBlocked = true;
         return;
+      } else if (type === "REQUEST_REPLAY") {
+        this.gameStarted = false;
       }
 
       this.sendToAllPlayers(message);
