@@ -4,8 +4,8 @@ const TOP_ZONE = "top_zone"
 const BOTTOM_ZONE = "bottom_zone"
 
 # Scènes d'overlay
-const OVERLAY_SCENE_START_ROUND = preload("res://UI/overlays/round_start.tscn")
-const OVERLAY_SCENE_END_ROUND = preload("res://UI/overlays/round_end.tscn")
+const OVERLAY_SCENE_START_ROUND = preload("res://UI/Overlays/round_start.tscn")
+const OVERLAY_SCENE_END_ROUND = preload("res://UI/Overlays/round_end.tscn")
 
 var round_start_overlay: Control
 
