@@ -86,7 +86,7 @@ func _on_button_start_pressed():
 	}
 	ServerSocket.send_message_to_server(data_to_send)
 	
-	get_tree().change_scene_to_file("res://world/arena.tscn")
+	get_tree().change_scene_to_file("res://World/arena.tscn")
 
 func add_player_counter():
 	counter_players += 1

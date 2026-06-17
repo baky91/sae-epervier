@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bba5xavotj0pr"]
 
-[ext_resource type="Script" uid="uid://kmvji7ix2dw6" path="res://ui/top_infections_item.gd" id="1_2yjcx"]
+[ext_resource type="Script" uid="uid://kmvji7ix2dw6" path="res://UI/top_infections_item.gd" id="1_2yjcx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xqbdw"]
 font_size = 28
