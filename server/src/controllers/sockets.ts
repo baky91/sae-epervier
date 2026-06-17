@@ -18,7 +18,7 @@ export function setupWebSockets(
 
     if (type === "host") {
       let code = generateUniqueCode(hosts);
-      code = "ABCD"; // Utilisation d'un code défini pour faciliter le développement
+      if (process.env.NODE_ENV === "development") code = "ABCD"; // Utilisation d'un code défini pour faciliter le développement
 
       currentUser = new ClientHost(ws, code);
       hosts.set(code, currentUser);
@@ -63,6 +63,20 @@ export function setupWebSockets(
       if (currentUser instanceof ClientPlayer) {
         currentUser.reconnect(ws);
       } else {
+        if (hostSocket.gameStarted) {
+          // La partie est déjà lancée, on refuse les nouveaux joueurs
+          ws.send(
+            JSON.stringify({
+              type: "ERROR",
+              error_type: "GAME_STARTED",
+              message: "La partie a déjà commencé",
+            }),
+          );
+
+          ws.close();
+          return;
+        }
+
         // Création du joueur si le salon existe
         const playerId = hostSocket.getNextPlayerId();
         currentUser = new ClientPlayer(playerId, ws, name, hostSocket);
@@ -88,7 +102,9 @@ export function setupWebSockets(
           },
         });
 
-        logMessage(`Joueur ${name} (ID: ${currentUser.id}) a rejoint la partie ${hostCode}`);
+        logMessage(
+          `Joueur ${name} (ID: ${currentUser.id}) a rejoint la partie ${hostCode}`,
+        );
       }
     }
 

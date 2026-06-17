@@ -31,11 +31,6 @@ export function createRouter(hosts: Map<string, ClientHost>) {
       return res.redirect("/error?reason=not_found&code=" + hostCode);
     }
 
-    // Erreur 2 : La partie est déjà lancée
-    if (host.gameStarted) {
-      return res.redirect("/error?reason=started&code=" + hostCode);
-    }
-
     // Succès : La partie existe et elle est disponible
     return res.sendFile(join(staticPath, "controller.html"));
   });

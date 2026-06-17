@@ -105,6 +105,9 @@ const start = (hostCode, pseudo, playerId = null) => {
       `;
     } else if (msg.type === "ERROR") {
       console.log("Erreur :", msg.message);
+      if (msg.error_type === "GAME_STARTED") {
+        window.location.href = `/error?reason=started&code=${hostCode}`;
+      }
     }
   };
 
