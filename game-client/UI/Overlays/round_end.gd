@@ -4,7 +4,7 @@ extends Control
 @onready var survivors_count: Label = $MarginContainer/VBoxMain/HBoxStatsTop/VBoxSurvivors/SurvivorsCount
 @onready var infected_count: Label = $MarginContainer/VBoxMain/HBoxStatsTop/VBoxInfected/InfectedCount
 @onready var sparrowhawks_count: Label = $MarginContainer/VBoxMain/HBoxStatsTop/VBoxSparrowhawks/SparrowhawksCount
-const TOP_INFECTIONS_ITEM = preload("res://ui/top_infections_item.tscn")
+const TOP_INFECTIONS_ITEM = preload("res://UI/top_infections_item.tscn")
 const MAX_LINE_LEADERBOARD = 5
 
 func _ready() -> void:

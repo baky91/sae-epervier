@@ -4,13 +4,13 @@ const TOP_ZONE = "top_zone"
 const BOTTOM_ZONE = "bottom_zone"
 
 # Scènes d'overlay
-const OVERLAY_SCENE_START_ROUND = preload("res://ui/overlays/round_start.tscn")
-const OVERLAY_SCENE_END_ROUND = preload("res://ui/overlays/round_end.tscn")
+const OVERLAY_SCENE_START_ROUND = preload("res://UI/overlays/round_start.tscn")
+const OVERLAY_SCENE_END_ROUND = preload("res://UI/overlays/round_end.tscn")
 
 var round_start_overlay: Control
 
-var player_scene = preload("res://player/player.tscn")
-var bonus_scene = preload("res://world/bonus.tscn")
+var player_scene = preload("res://Player/player.tscn")
+var bonus_scene = preload("res://World/bonus.tscn")
 
 @export var qr_code: QRCodeRect
 
