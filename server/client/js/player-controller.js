@@ -51,6 +51,7 @@ export class PlayerController {
 
     this.initJoystick();
     this.setupKeyboard();
+    this.lockOrientation();
 
     // Empêche le zoom au double-tap
     document.addEventListener(
