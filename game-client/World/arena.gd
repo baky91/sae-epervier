@@ -68,9 +68,9 @@ func _physics_process(_delta):
 				vector_move = Vector2(0, 0)
 			else:
 				vector_move = ServerSocket.players_inputs_buffer[id]
-			player_node.direction = vector_move
+			#player_node.direction = vector_move
 			
-			#player_node.direction = player_node.direction.lerp(vector_move, 0.2)
+			player_node.direction = player_node.direction.lerp(vector_move, 0.2)
 
 func _start_game():
 	# Génération des joueurs après avoir cliqué sur le bouton pour lancer (UI scène par défaut)
