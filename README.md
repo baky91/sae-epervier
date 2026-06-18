@@ -53,7 +53,7 @@ npm install
 
 3. Lancement du serveur
 ```bash
-npm start
+npm run dev
 ```
 Le serveur sera accessible sur http://localhost:3000
 

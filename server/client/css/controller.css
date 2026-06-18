@@ -4,7 +4,6 @@ html, body {
     padding: 0;
     width: 100%;
     height: 100dvh;
-    overflow: hidden;
     touch-action: none;
 }
 
@@ -97,6 +96,38 @@ html, body {
     font-size: 1.25rem;
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 0.5rem;
+    width: 2.75rem; /* 44px */
+    height: 2.75rem; /* 44px */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    padding: 0;
+}
+
+.header-btn:hover, .header-btn:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.header-btn svg {
+    width: 1.5rem; /* 24px */
+    height: 1.5rem; /* 24px */
+    stroke: white;
+}
+
 .status-badge {
     padding: 0.5rem 1.5rem;
     border-radius: 9999px;
@@ -122,20 +153,6 @@ html, body {
     background: rgba(239, 68, 68, 0.3);
     color: #fca5a5;
     border: 2px solid #f87171;
-}
-
-#toggle-fullscreen {
-    cursor: pointer;
-    display: flex;
-    padding: .5rem;
-    gap: 0.5rem;
-    border-radius: 10px;
-    border: 2px solid black;
-}
-
-#toggle-fullscreen img {
-    width: 16px;
-    height: 16px;
 }
 
 /* Main control area */

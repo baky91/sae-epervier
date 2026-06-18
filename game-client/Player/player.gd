@@ -21,10 +21,12 @@ const ROLES_CONFIG = {
 @onready var timer_dash = $TimerDash
 @onready var timer_speed_boost = $TimerSpeedBoost
 @export var players_collisions: Area2D
+@onready var label_name: Label = $LabelName
+@onready var label_number: Label = $LabelNumber
 
 var id: int
-var speed: int = 300
-var dash_speed: int = 600
+var speed: int = 225
+var dash_speed: int = 500
 var direction: Vector2 = Vector2.ZERO
 var role: String
 var bonus: Dictionary = {
@@ -75,8 +77,13 @@ func set_role(new_role: String):
 	
 	if role == ROLE_INFECTED:
 		$Area2D/CollisionShape2D.set_deferred("disabled", true)
+		
+		Globals.players[id]["is_infected"] = true
+		
 	else:
 		$Area2D/CollisionShape2D.set_deferred("disabled", false)
+		
+		Globals.players[id]["is_infected"] = false
 		
 	if role == ROLE_SPARROWHAWK:
 		# Mettre le 4ème bit (Sparrowhawk) à 1
@@ -88,17 +95,20 @@ func set_role(new_role: String):
 func set_color(color: Color):
 	$MeshInstance2D.modulate = color
 	
-func set_label(text: String):
-	$LabelNumber.text = text
-	
+func set_label_num_text(number: String):
+	label_number.text = number
+
+func set_label_name_text(p_name: String):
+	label_name.text = p_name
+
 func add_bonus(bonus_name: String):
 	if bonus.has(bonus_name):
 		bonus[bonus_name] += 1
 		get_bonus.emit(id, bonus_name)
-		print("Player " + str(id) + " : Bonus " + bonus_name + " added.")
+		#print("Player " + str(id) + " : Bonus " + bonus_name + " added.")
 
 func _on_timer_dash_timeout() -> void:
-	print("end dash")
+	#print("end dash")
 	dashing = false
 
 func _on_timer_dash_cooldown_timeout() -> void:
@@ -111,14 +121,14 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
 		if role == ROLE_SURVIVOR and body.role == ROLE_SPARROWHAWK:
 			# Le joueur actuel devient infecté
-			print("Joueur " + str(id) + " : je suis survivant et j'ai touché un épervier")
+			#print("Joueur " + str(id) + " : je suis survivant et j'ai touché un épervier")
 			ServerSocket.players_inputs_buffer[id] = Vector2(0, 0)
 			role_changed.emit(id, ROLE_INFECTED)
 			# Envoie d'un signal réceptionné par l'Arène pour mettre à jour son compteur de joueurs
 			player_infected.emit(body.id, id)
 		elif role == ROLE_SPARROWHAWK and body.role == ROLE_SURVIVOR:
 			# Le joueur cible devient infecté
-			print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
+			#print("Joueur " + str(id) + " : je suis épervier et j'ai touché un survivant")
 			ServerSocket.players_inputs_buffer[body.id] = Vector2(0, 0)
 			body.role_changed.emit(body.id, ROLE_INFECTED)
 			# Envoie d'un signal réceptionné par l'Arène pour mettre à jour son compteur de joueurs

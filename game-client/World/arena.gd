@@ -68,9 +68,9 @@ func _physics_process(_delta):
 				vector_move = Vector2(0, 0)
 			else:
 				vector_move = ServerSocket.players_inputs_buffer[id]
-			player_node.direction = vector_move
+			#player_node.direction = vector_move
 			
-			#player_node.direction = player_node.direction.lerp(vector_move, 0.2)
+			player_node.direction = player_node.direction.lerp(vector_move, 0.2)
 
 func _start_game():
 	# Génération des joueurs après avoir cliqué sur le bouton pour lancer (UI scène par défaut)
@@ -79,7 +79,7 @@ func _start_game():
 		
 		if players_ids:
 			var random_sparrowhawk_id = players_ids.pick_random()
-			print("Id de l'épervier: ", str(random_sparrowhawk_id))
+			#print("Id de l'épervier: ", str(random_sparrowhawk_id))
 			
 			var safe_zone_height = 80
 			var player_radius = 16
@@ -94,7 +94,9 @@ func _start_game():
 			var max_y = height - player_radius
 			
 			for id in players_ids:
-				print("Création du joueur ", id)
+				var p_name = Globals.players[id]["name"]
+				
+				#print("Création du joueur ", id)
 				var player = player_scene.instantiate()
 				player.name = str(id)
 				player.id = id
@@ -104,9 +106,6 @@ func _start_game():
 				player.get_bonus.connect(_on_player_signal_bonus)
 				player.role_changed.connect(_on_role_changed)
 				player.player_infected.connect(_on_player_infected)
-				
-				# Ajout du numéro sur le pion du joueur
-				player.set_label(str(id))
 
 				# Positionnement du joueur
 				if id == random_sparrowhawk_id: # si épervier, on le place au milieu
@@ -118,6 +117,13 @@ func _start_game():
 				
 				# Ajout dans la scène
 				$Players.add_child(player)
+				
+				# Ajout du numéro et du nom sur le pion du joueur
+				player.set_label_num_text(str(id))
+				
+				if Globals.show_names:
+					# Prendre les 10 premiers caractères pour éviter d'avoir un nom trop long affiché à l'écran
+					player.set_label_name_text(p_name.substr(0, 10))
 			
 		game_started = true
 		ServerSocket.send_message_to_server({
@@ -151,7 +157,7 @@ func _start_round():
 			Player.ROLE_SPARROWHAWK: 0
 		}
 		
-		print("Commencement de la manche ", str(current_round))
+		#print("Commencement de la manche ", str(current_round))
 		label_nb_manche.text = "Manche " + str(current_round) + "/" + str(max_round)
 		label_duree_manche.text = str(int(timer_round.wait_time)) + " s" 
 		
@@ -204,7 +210,7 @@ func _start_round():
 		_end_round()
 
 func _end_round():
-	print("Fin de la manche ", str(current_round))
+	#print("Fin de la manche ", str(current_round))
 	timer_round.stop()
 	
 	# Envoi d'un message au serveur pour bloquer les entrées
@@ -213,7 +219,8 @@ func _end_round():
 	
 	var last_round = \
 		(current_round == max_round) || \
-		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SURVIVOR] == 0)
+		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SURVIVOR] == 0) || \
+		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SPARROWHAWK] == 0)
 	
 	# Affichage de l'overlay de statistiques de la manche
 	await _end_round_overlay()
@@ -233,26 +240,8 @@ func _end_game():
 func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
 
-# Ne devrait plus être utilisé : un joueur n'est pas censé pouvoir rejoindre une partie commencée
-func _on_player_connected(id: int, p_name: String) -> void:
-	print("New player joined : " + p_name + " (ID: " + str(id) + ")")
-	var player = player_scene.instantiate()
-	player.name = str(id)
-	player.id = id
-	var viewport_size = get_viewport().get_visible_rect().size
-	var width = viewport_size[0]
-	var height = viewport_size[1]
-	player.global_position = Vector2(randf_range(0, width), randf_range(80, height - 80)) # 80: Height of a safe zone
-	player.set_label(str(id))
-	player.get_bonus.connect(_on_player_signal_bonus)
-	player.role_changed.connect(_on_role_changed)
-	
-	players_nodes[id] = player
-	
-	$Players.add_child(player)
-
 func _on_player_use_bonus(id: int, bonus: String):
-	print("Le joueur " + str(id) + " a utilisé le bonus " + bonus)
+	#print("Le joueur " + str(id) + " a utilisé le bonus " + bonus)
 
 	var player = players_nodes[id]
 
@@ -264,11 +253,25 @@ func _on_player_use_bonus(id: int, bonus: String):
 		player.timer_dash.start()
 
 func _on_player_left(id: int):
-	Globals.players.erase(id)
 	if players_nodes.has(id):
+		print("Player n°" + str(id) + " left.")
+		var player = players_nodes[id]
+		
+		# Mise à jour des compteurs
+		var role = player.role
+		Globals.players_counter[role] -= 1
+		Globals.players_counter["total"] -= 1
+		
+		_update_players_labels()
+		
+		# Suppression du joueur de la scène
 		players_nodes[id].queue_free()
 		players_nodes.erase(id)
-		print("Player n°" + str(id) + " left.")
+		
+		# Détection fin de manche
+		_check_end_of_round()
+		
+		Globals.players.erase(id)
 
 func _on_timer_bonus_timeout() -> void:
 	var bonus = bonus_scene.instantiate()
@@ -339,12 +342,15 @@ func _on_bottom_zone_area_2d_body_exited(body: Node2D) -> void:
 		Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
 
 func _check_end_of_round():
-	print(Globals.players_counter)
+	#print(Globals.players_counter)
 	#On vérifie si le nombre de survivant dans la zone est égale au nombre total de joueurs sans les infectés
 	var total = Globals.players_counter["total"]
 	var survivors = Globals.players_counter[Globals.SAFE_SURVIVORS]
 	var infected = Globals.players_counter[Player.ROLE_INFECTED]
 	var sparrowhawks = Globals.players_counter[Player.ROLE_SPARROWHAWK]
+	
+	if sparrowhawks == 0:
+		_end_round()
 	
 	if survivors == total - infected - sparrowhawks:
 		_end_round()

@@ -8,6 +8,10 @@ export class PlayerController {
       speed: 0,
       dash: 0,
     };
+    this.bonusCooldowns = {
+      speed: false,
+      dash: false,
+    };
     this.onMove = options.onMove;
     this.onUseBonus = options.onUseBonus;
     this.keys = {
@@ -19,38 +23,25 @@ export class PlayerController {
 
     this.render();
 
-    document.getElementById("btn-quit").addEventListener("click", () => {
-      sessionStorage.clear();
-      window.location.href = "/";
-    });
+    const onFullscreenChange = () => {
+      // On récupère le bouton à chaque changement pour éviter les références obsolètes après un re-render
+      const fullscreenBtn = document.getElementById("toggle-fullscreen");
+      if (!fullscreenBtn) return;
 
-    const fullscreenBtn = document.getElementById("toggle-fullscreen");
-    fullscreenBtn.addEventListener("click", () => {
-      if (!document.fullscreenElement) {
-        console.log("Mode Plein-Ecran activé")
+      const isFullscreen = !!(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      );
+      fullscreenBtn.innerHTML = this.getFullscreenIcon(isFullscreen);
+    };
 
-        if (document.documentElement.requestFullscreen) {
-          document.documentElement.requestFullscreen(); // Standard (Chrome, Edge moderne)
-        } else if (document.documentElement.mozRequestFullScreen) { 
-          document.documentElement.mozRequestFullScreen(); // Firefox
-        } else if (document.documentElement.webkitRequestFullscreen) { 
-          document.documentElement.webkitRequestFullscreen(); // Safari et vieux Chrome
-        } else if (document.documentElement.msRequestFullscreen) { 
-          document.documentElement.msRequestFullscreen(); // Internet Explorer
-        }
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+    document.addEventListener("mozfullscreenchange", onFullscreenChange);
+    document.addEventListener("MSFullscreenChange", onFullscreenChange);
 
-        fullscreenBtn.innerHTML = getFullscreenIcon(true);
-
-      } else if (document.exitFullscreen) {
-        console.log("Mode Plein-Ecran désactivé")
-
-        document.exitFullscreen();
-
-        fullscreenBtn.innerHTML = getFullscreenIcon(false);
-      }
-
-    })
-    
     this.initJoystick();
     this.setupKeyboard();
 
@@ -117,12 +108,17 @@ export class PlayerController {
                     </div>
                 </div>
 
-                <button id="toggle-fullscreen">
-                  ${this.getFullscreenIcon(false)}
-                </button>
-
-                <button id="btn-quit">Quitter</button>
-
+                <div class="header-actions">
+                    <button id="btn-refresh" class="header-btn" title="Rafraîchir la page">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    </button>
+                    <button id="toggle-fullscreen" class="header-btn" title="Activer/Désactiver le plein écran">
+                        ${this.getFullscreenIcon(!!document.fullscreenElement)}
+                    </button>
+                    <button id="btn-quit" class="header-btn" title="Quitter la partie">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </button>
+                </div>
             </div>
 
             <!-- Control Area -->
@@ -143,7 +139,7 @@ export class PlayerController {
                         .map((type) => {
                           return `
                           <div class="bonus-section">
-                            <button id="${type}-btn" class="bonus-button ${type}" ${this.bonus[type] === 0 || this.role === "infected" ? "disabled" : ""}>
+                            <button id="${type}-btn" class="bonus-button ${type}" ${this.bonus[type] === 0 || this.role === "infected" || this.bonusCooldowns[type] ? "disabled" : ""}>
                                 ${this.getBonusIcon(type)}
                                 <span>${ucfirst(type)}</span>
                             </button>
@@ -170,6 +166,47 @@ export class PlayerController {
                 }
             </div>
         `;
+
+    // --- Attachement des écouteurs d'événements ---
+
+    // Boutons de l'en-tête
+    document.getElementById("btn-quit").addEventListener("click", () => {
+      sessionStorage.clear();
+      window.location.href = "/";
+    });
+
+    document.getElementById("btn-refresh").addEventListener("click", () => {
+      window.location.reload();
+    });
+
+    const fullscreenBtn = document.getElementById("toggle-fullscreen");
+    const toggleFullScreen = () => {
+      const doc = window.document;
+      const docEl = doc.documentElement;
+
+      const requestFullScreen =
+        docEl.requestFullscreen ||
+        docEl.mozRequestFullScreen ||
+        docEl.webkitRequestFullscreen ||
+        docEl.msRequestFullscreen;
+      const cancelFullScreen =
+        doc.exitFullscreen ||
+        doc.mozCancelFullScreen ||
+        doc.webkitExitFullscreen ||
+        doc.msExitFullscreen;
+
+      if (
+        !doc.fullscreenElement &&
+        !doc.mozFullScreenElement &&
+        !doc.webkitFullscreenElement &&
+        !doc.msFullscreenElement
+      ) {
+        requestFullScreen.call(docEl);
+      } else {
+        cancelFullScreen.call(doc);
+      }
+    };
+    fullscreenBtn.addEventListener("click", toggleFullScreen);
 
     // Add event listeners for bonus buttons
     const speedBtn = document.getElementById(`speed-btn`);
@@ -321,7 +358,8 @@ export class PlayerController {
 
       // Update button
       // console.log("disabled ?", btn.disabled);
-      btn.disabled = value === 0 || this.role === "infected";
+      btn.disabled =
+        value === 0 || this.role === "infected" || this.bonusCooldowns[key];
       // console.log("disabled ?", btn.disabled);
 
       // Update count
@@ -377,19 +415,13 @@ export class PlayerController {
         </svg>`;
   }
 
-  getFullscreenIcon(enabled){
-    // Si le mode plein écran est activé, 
-    // on affiche l'image permettant de désactiver, et inversement
-    if (enabled){
-      return `
-          <img src="images/fullscreen-disable.svg">
-          <span>Désactiver Plein-Ecran</span>
-          `;
+  getFullscreenIcon(enabled) {
+    if (enabled) {
+      // Icône pour quitter le plein écran
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>`;
     } else {
-      return `
-          <img src="images/fullscreen-disable.svg">
-          <span>Activer Plein-Ecran</span>
-        `;
+      // Icône pour passer en plein écran
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`;
     }
   }
 }

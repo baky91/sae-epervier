@@ -57,11 +57,9 @@ const start = (hostCode, pseudo, playerId = null) => {
           const btn = document.getElementById(`${type}-btn`);
           if (!btn || btn.disabled) return;
 
-          // Mise à jour de l'interface
-          controller.removeBonus(type);
-
-          // Désactivation du bouton
-          btn.disabled = true;
+          // On active le cooldown et on désactive le bouton via la mise à jour de l'affichage
+          controller.bonusCooldowns[type] = true;
+          controller.updateBonusDisplay();
 
           // Envoie au serveur
           socket.send(
@@ -73,7 +71,8 @@ const start = (hostCode, pseudo, playerId = null) => {
 
           // Réactivation après 5 secondes
           setTimeout(() => {
-            if (controller.bonus[type] > 0) btn.disabled = false;
+            controller.bonusCooldowns[type] = false;
+            controller.updateBonusDisplay();
           }, 5000);
         },
       });
@@ -91,6 +90,11 @@ const start = (hostCode, pseudo, playerId = null) => {
 
         controller.addBonus(bonusName);
       }
+    } else if (msg.type === "UPDATE_BONUS") {
+      if (controller) {
+        const { bonus, count } = msg.data;
+        controller.setBonusCount(bonus, count);
+      }
     } else if (msg.type === "SET_ROLE") {
       if (controller) {
         const newRole = msg.data.role;
@@ -105,6 +109,9 @@ const start = (hostCode, pseudo, playerId = null) => {
       `;
     } else if (msg.type === "ERROR") {
       console.log("Erreur :", msg.message);
+      if (msg.error_type === "GAME_STARTED") {
+        window.location.href = `/error?reason=started&code=${hostCode}`;
+      }
     }
   };
 
