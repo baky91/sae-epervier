@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://d3pua8qcs87wj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xedsj"]
+font_size = 30
+
+[node name="LabelInfected1" type="Label" unique_id=16302562]
+custom_minimum_size = Vector2(120, 0)
+text = "Joueur 1 (1)"
+label_settings = SubResource("LabelSettings_xedsj")
