@@ -1,36 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>L'épervier masqué - Erreur</title>
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./css/error-page.css">
-    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/error-page.css" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <script src="/js/pwa.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <h1 id="error-title">Erreur</h1>
     <div class="error-infos">
-        <p id="error-message"></p>
-        <p>Réessayez avec un autre code ou retournez à l'accueil.</p>
+      <p id="error-message"></p>
+      <p>Réessayez avec un autre code ou retournez à l'accueil.</p>
     </div>
     <main class="error-page-main">
+      <div class="left-div">
+        <form id="form-code">
+          <label for="game-code">Code de partie</label>
+          <input
+            type="text"
+            name="game-code"
+            id="game-code"
+            placeholder="Entrez le code"
+            required
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="characters"
+            spellcheck="false"
+          />
+          <button type="submit">Valider</button>
+        </form>
+      </div>
 
-        <div class="left-div">
-            <form id="form-code">
-                <label for="game-code">Code de partie</label>
-                <input type="text" name="game-code" id="game-code" autocomplete="off" placeholder="Entrez le code" required>
-                <button type="submit">Valider</button>
-            </form>
-        </div>
-
-        <div class="right-div">
-            <a id="go-to-home" href="/">Retour à l'accueil</a>
-        </div>
-
+      <div class="right-div">
+        <a id="go-to-home" href="/">Retour à l'accueil</a>
+      </div>
     </main>
 
     <script type="module" src="js/error-page.js"></script>
-</body>
+  </body>
 </html>

@@ -138,7 +138,7 @@ if (!pseudo) {
 
   formPseudo.addEventListener("submit", (e) => {
     e.preventDefault();
-    pseudo = inputPseudo.value;
+    pseudo = inputPseudo.value.trim();
     // On enregistre le pseudo en cas de reconnexion
     sessionStorage.setItem("pseudo", pseudo);
     sessionStorage.setItem("hostCode", hostCode);

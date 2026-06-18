@@ -7,66 +7,108 @@
 		body { 
 			margin: 0; 
 			padding: 0; 
-			background-color: #1a1a1a; 
-			color: white; 
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+			background-color: #0b0f19; 
+			color: #f3f4f6; 
+			font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
 			overflow: hidden;
 		}
 
+		/* Barre supérieure modernisée */
 		#ui-container { 
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 10px 20px; 
-			background: #2a2a2a; 
-			box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-			height: 40px;
+			padding: 0 24px; 
+			background: linear-gradient(135deg, #111827, #1f2937); 
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+			height: 60px;
+			border-bottom: 1px solid #374151;
+			box-sizing: border-box;
 		}
 
 		h1 { 
 			margin: 0; 
-			font-size: 1.2rem; 
-			color: #4CAF50; 
+			font-size: 1.3rem; 
+			font-weight: 700;
+			color: #10b981; /* Vert Émeraude moderne */
+			letter-spacing: 0.5px;
+			text-transform: uppercase;
+		}
+
+		/* Groupe de boutons d'action */
+		.action-buttons {
+			display: flex;
+			gap: 12px;
+			align-items: center;
 		}
 
 		button { 
-			padding: 8px 16px; 
+			padding: 10px 20px; 
 			cursor: pointer; 
-			background: #4CAF50; 
 			color: white; 
 			border: none; 
-			border-radius: 4px; 
-			font-weight: bold;
-			transition: background 0.2s;
-		}
-		button:hover { 
-			background: #45a049; 
+			border-radius: 6px; 
+			font-weight: 600;
+			font-size: 0.9rem;
+			transition: all 0.2s ease-in-out;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		}
 
+		/* Bouton Plein Écran */
+		#fullscreen-btn { 
+			background: #2563eb; /* Bleu gaming */
+		}
+		#fullscreen-btn:hover { 
+			background: #1d4ed8; 
+			transform: translateY(-1px);
+			box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+		}
+
+		/* Bouton Fermer la partie (Rouge) */
+		#close-game-btn {
+			background: #dc2626; /* Rouge destructif */
+		}
+		#close-game-btn:hover {
+			background: #b91c1c;
+			transform: translateY(-1px);
+			box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+		}
+
+		button:active {
+			transform: translateY(1px);
+		}
+
+		/* Zone de rendu du jeu Godot */
 		#game-container { 
 			display: flex; 
-			justify-content: center; 
-			align-items: center; 
-			height: calc(100vh - 60px); 
+			justify-content: center;
+			align-items: center;
 			width: 100vw;
-			background-color: #111;
-			overflow: hidden;
+			height: calc(100vh - 60px); /* Prend tout l'espace restant sous la barre */
+			background-color: #0b0f19;
 		}
 		
 		canvas { 
-			width: 97% !important;
-			height: 97% !important;
+			width: 100% !important;
+			height: 100% !important;
 			object-fit: contain !important;
 			object-position: center !important;
 			outline: none;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 		}
 	</style>
 	$GODOT_HEAD_INCLUDE
 </head>
 <body>
 	<div id="ui-container">
-		<h1>L'Épervier Masqué - Écran Hôte</h1>
-        <button id="fullscreen-btn">Mettre en plein écran</button>
+		<h1>L'Épervier Masqué 🦅</h1>
+		<div class="action-buttons">
+			<button id="fullscreen-btn">📺 Plein écran</button>
+			<button id="close-game-btn">🛑 Fermer la partie</button>
+		</div>
     </div>
 
     <div id="game-container">
@@ -86,17 +128,26 @@
 		const canvasElement = document.getElementById('canvas');
 
 		fullscreenBtn.addEventListener('click', () => {
-			// L'API Fullscreen change selon les navigateurs, on teste les principaux
 			if (canvasElement.requestFullscreen) {
-				canvasElement.requestFullscreen(); // Standard (Chrome, Edge moderne)
+				canvasElement.requestFullscreen();
 			} else if (canvasElement.mozRequestFullScreen) { 
-				canvasElement.mozRequestFullScreen(); // Firefox
+				canvasElement.mozRequestFullScreen();
 			} else if (canvasElement.webkitRequestFullscreen) { 
-				canvasElement.webkitRequestFullscreen(); // Safari et vieux Chrome
+				canvasElement.webkitRequestFullscreen();
 			} else if (canvasElement.msRequestFullscreen) { 
-				canvasElement.msRequestFullscreen(); // Internet Explorer
+				canvasElement.msRequestFullscreen();
 			}
 		});
-	</script>
+
+		// --- LOGIQUE DE FERMETURE DE LA PARTIE ---
+		const closeGameBtn = document.getElementById('close-game-btn');
+		closeGameBtn.addEventListener('click', () => {
+			const confirmClose = confirm("Êtes-vous sûr de vouloir fermer la partie ? Cela déconnectera tous les joueurs.");
+			if (confirmClose) {
+				// Redirection vers l'accueil pour quitter le salon
+				window.location.href = "/";
+			}
+		});
+    </script>
 </body>
 </html>
