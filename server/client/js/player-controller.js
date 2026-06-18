@@ -55,7 +55,6 @@ export class PlayerController {
 
     this.initJoystick();
     this.setupKeyboard();
-    this.lockOrientation();
 
     // Empêche le zoom au double-tap
     document.addEventListener(
@@ -324,7 +323,8 @@ export class PlayerController {
 
       // Update button
       // console.log("disabled ?", btn.disabled);
-      btn.disabled = value === 0 || this.role === "infected" || this.bonusCooldowns[key];
+      btn.disabled =
+        value === 0 || this.role === "infected" || this.bonusCooldowns[key];
       // console.log("disabled ?", btn.disabled);
 
       // Update count
