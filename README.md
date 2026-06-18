@@ -16,7 +16,6 @@ Le projet est divisé en trois entités distinctes communiquant en temps réel v
 
 ## Structure du projet
 
-
 ```
 sae-epervier
 ├─ game-client          # Projet Godot
@@ -54,7 +53,7 @@ npm install
 
 3. Lancement du serveur
 ```bash
-npm start
+npm run dev
 ```
 Le serveur sera accessible sur http://localhost:3000
 
