@@ -1,6 +1,6 @@
 {
   "name": "L’épervier masqué - Contrôleur",
-  "short_name": "Contrôleur",
+  "short_name": "Epervier",
   "description": "Contrôleur pour le jeu L’épervier masqué.",
   "start_url": "/",
   "display": "fullscreen",
