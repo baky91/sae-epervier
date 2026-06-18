@@ -12,7 +12,8 @@ const SAFE_SURVIVORS = "safe_survivor"
 #player_id: {
 	#name: <player_name>,
 	#infections: <nb_infection_player>,
-	#last_round_infections: <nb_infection_player>
+	#last_round_infections: <nb_infection_player>,
+	#Optional[is_infected]: <true|false>
 #}
 var players = {}
 

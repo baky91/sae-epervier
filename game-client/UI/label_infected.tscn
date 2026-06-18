@@ -3,7 +3,9 @@
 [sub_resource type="LabelSettings" id="LabelSettings_xedsj"]
 font_size = 30
 
-[node name="LabelInfected1" type="Label" unique_id=16302562]
+[sub_resource type="GDScript" id="GDScript_trw5b"]
+
+[node name="LabelInfected" type="Label" unique_id=16302562]
 custom_minimum_size = Vector2(120, 0)
-text = "Joueur 1 (1)"
 label_settings = SubResource("LabelSettings_xedsj")
+script = SubResource("GDScript_trw5b")

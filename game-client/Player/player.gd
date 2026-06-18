@@ -77,8 +77,13 @@ func set_role(new_role: String):
 	
 	if role == ROLE_INFECTED:
 		$Area2D/CollisionShape2D.set_deferred("disabled", true)
+		
+		Globals.players[id]["is_infected"] = true
+		
 	else:
 		$Area2D/CollisionShape2D.set_deferred("disabled", false)
+		
+		Globals.players[id]["is_infected"] = false
 		
 	if role == ROLE_SPARROWHAWK:
 		# Mettre le 4ème bit (Sparrowhawk) à 1
