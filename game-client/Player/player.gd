@@ -25,8 +25,8 @@ const ROLES_CONFIG = {
 @onready var label_number: Label = $LabelNumber
 
 var id: int
-var speed: int = 300
-var dash_speed: int = 600
+var speed: int = 225
+var dash_speed: int = 500
 var direction: Vector2 = Vector2.ZERO
 var role: String
 var bonus: Dictionary = {
