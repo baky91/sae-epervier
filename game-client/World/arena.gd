@@ -79,7 +79,7 @@ func _start_game():
 		
 		if players_ids:
 			var random_sparrowhawk_id = players_ids.pick_random()
-			print("Id de l'épervier: ", str(random_sparrowhawk_id))
+			#print("Id de l'épervier: ", str(random_sparrowhawk_id))
 			
 			var safe_zone_height = 80
 			var player_radius = 16
@@ -96,7 +96,7 @@ func _start_game():
 			for id in players_ids:
 				var p_name = Globals.players[id]["name"]
 				
-				print("Création du joueur ", id)
+				#print("Création du joueur ", id)
 				var player = player_scene.instantiate()
 				player.name = str(id)
 				player.id = id
@@ -157,7 +157,7 @@ func _start_round():
 			Player.ROLE_SPARROWHAWK: 0
 		}
 		
-		print("Commencement de la manche ", str(current_round))
+		#print("Commencement de la manche ", str(current_round))
 		label_nb_manche.text = "Manche " + str(current_round) + "/" + str(max_round)
 		label_duree_manche.text = str(int(timer_round.wait_time)) + " s" 
 		
@@ -210,7 +210,7 @@ func _start_round():
 		_end_round()
 
 func _end_round():
-	print("Fin de la manche ", str(current_round))
+	#print("Fin de la manche ", str(current_round))
 	timer_round.stop()
 	
 	# Envoi d'un message au serveur pour bloquer les entrées
@@ -240,7 +240,7 @@ func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
 
 func _on_player_use_bonus(id: int, bonus: String):
-	print("Le joueur " + str(id) + " a utilisé le bonus " + bonus)
+	#print("Le joueur " + str(id) + " a utilisé le bonus " + bonus)
 
 	var player = players_nodes[id]
 
@@ -327,7 +327,7 @@ func _on_bottom_zone_area_2d_body_exited(body: Node2D) -> void:
 		Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
 
 func _check_end_of_round():
-	print(Globals.players_counter)
+	#print(Globals.players_counter)
 	#On vérifie si le nombre de survivant dans la zone est égale au nombre total de joueurs sans les infectés
 	var total = Globals.players_counter["total"]
 	var survivors = Globals.players_counter[Globals.SAFE_SURVIVORS]

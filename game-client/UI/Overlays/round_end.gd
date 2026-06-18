@@ -8,7 +8,7 @@ const TOP_INFECTIONS_ITEM = preload("res://UI/top_infections_item.tscn")
 const MAX_LINE_LEADERBOARD = 5
 
 func _ready() -> void:
-	print("Overlay de fin de manche")
+	#print("Overlay de fin de manche")
 	# Afficher le nombre de survivants restants
 	survivors_count.text = str(Globals.players_counter[Player.ROLE_SURVIVOR])
 	
@@ -22,7 +22,7 @@ func _ready() -> void:
 	
 	# Afficher les 10 premiers éperviers en nombre d'infection
 	var leaderboard_data = Globals.get_sorted_infections_leaderboard("last_round_infections", MAX_LINE_LEADERBOARD)
-	print(leaderboard_data)
+	#print(leaderboard_data)
 	var rank = 1
 	
 	for player_data in leaderboard_data:
