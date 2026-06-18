@@ -31,6 +31,40 @@ export default class ClientPlayer extends ClientModel {
   }
 
   handlePlayerMessage(message: SocketMessage) {
+    // Logique spécifique pour l'utilisation des bonus
+    if (message.type === "USE_BONUS") {
+      const bonusType = message.data.bonus;
+
+      // On vérifie si le joueur peut utiliser le bonus
+      if (
+        this.hostSocket &&
+        !this.hostSocket.inputsBlocked &&
+        this.bonus[bonusType] > 0
+      ) {
+        this.bonus[bonusType]--; // On décrémente le bonus côté serveur
+
+        // On relaie le message à Godot
+        this.hostSocket.sendMessage({
+          type: "USE_BONUS",
+          id: this.id,
+          data: message.data,
+        });
+      }
+
+      // Dans tous les cas (succès ou échec), on renvoie le nombre de bonus au joueur
+      // pour synchroniser l'interface. Si l'utilisation a échoué, le nombre est inchangé,
+      // ce qui "rembourse" le bonus sur l'interface du joueur.
+      this.sendMessage({
+        type: "UPDATE_BONUS",
+        data: {
+          bonus: bonusType,
+          count: this.bonus[bonusType],
+        },
+      });
+      return;
+    }
+
+    // Comportement par défaut pour les autres messages (ex: MOVE)
     if (this.hostSocket && !this.hostSocket.inputsBlocked) {
       this.hostSocket.sendMessage({
         type: message.type,
