@@ -16,6 +16,7 @@ Le projet est divisé en trois entités distinctes communiquant en temps réel v
 
 ## Structure du projet
 
+
 ```
 sae-epervier
 ├─ game-client          # Projet Godot
