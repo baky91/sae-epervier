@@ -8,6 +8,10 @@ export class PlayerController {
       speed: 0,
       dash: 0,
     };
+    this.bonusCooldowns = {
+      speed: false,
+      dash: false,
+    };
     this.onMove = options.onMove;
     this.onUseBonus = options.onUseBonus;
     this.keys = {
@@ -141,7 +145,7 @@ export class PlayerController {
                         .map((type) => {
                           return `
                           <div class="bonus-section">
-                            <button id="${type}-btn" class="bonus-button ${type}" ${this.bonus[type] === 0 || this.role === "infected" ? "disabled" : ""}>
+                            <button id="${type}-btn" class="bonus-button ${type}" ${this.bonus[type] === 0 || this.role === "infected" || this.bonusCooldowns[type] ? "disabled" : ""}>
                                 ${this.getBonusIcon(type)}
                                 <span>${ucfirst(type)}</span>
                             </button>
@@ -319,7 +323,7 @@ export class PlayerController {
 
       // Update button
       // console.log("disabled ?", btn.disabled);
-      btn.disabled = value === 0 || this.role === "infected";
+      btn.disabled = value === 0 || this.role === "infected" || this.bonusCooldowns[key];
       // console.log("disabled ?", btn.disabled);
 
       // Update count
