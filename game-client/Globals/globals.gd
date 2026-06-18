@@ -5,6 +5,7 @@ var join_url: String = ""
 var time_rounds = 0
 var count_rounds = 0
 var auto_nb_rounds: bool = true
+var show_names: bool
 
 const SAFE_SURVIVORS = "safe_survivor"
 

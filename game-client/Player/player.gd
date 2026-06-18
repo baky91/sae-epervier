@@ -21,6 +21,8 @@ const ROLES_CONFIG = {
 @onready var timer_dash = $TimerDash
 @onready var timer_speed_boost = $TimerSpeedBoost
 @export var players_collisions: Area2D
+@onready var label_name: Label = $LabelName
+@onready var label_number: Label = $LabelNumber
 
 var id: int
 var speed: int = 300
@@ -88,9 +90,12 @@ func set_role(new_role: String):
 func set_color(color: Color):
 	$MeshInstance2D.modulate = color
 	
-func set_label(text: String):
-	$LabelNumber.text = text
-	
+func set_label_num_text(number: String):
+	label_number.text = number
+
+func set_label_name_text(p_name: String):
+	label_name.text = p_name
+
 func add_bonus(bonus_name: String):
 	if bonus.has(bonus_name):
 		bonus[bonus_name] += 1

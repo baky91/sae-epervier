@@ -21,6 +21,7 @@ var empty_style = StyleBoxEmpty.new()
 @onready var check_button_auto_nb_round: CheckButton = $MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/CheckButton
 @onready var h_slider_nb_round: HSlider = $MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/HBoxContainer/HSliderNbRound
 @onready var label_nb_round: Label = $MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/HBoxContainer/LabelNbRound
+@onready var check_button_show_names: CheckButton = $MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer5/VBoxContainer/CheckButton
 
 var hostCode: String
 var counter_players = 0
@@ -139,3 +140,6 @@ func update():
 	
 	# Affichage de la durée maximale de chaque manche
 	label_round_duration.text = str(int(h_slider_round_duration.value)) + "s"
+
+func _on_check_button_show_names_toggled(toggled_on: bool) -> void:
+	Globals.show_names = toggled_on

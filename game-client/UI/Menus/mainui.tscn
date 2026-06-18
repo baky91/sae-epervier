@@ -486,9 +486,28 @@ theme_override_font_sizes/font_size = 20
 label_settings = SubResource("LabelSettings_w64ug")
 horizontal_alignment = 2
 
+[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer" unique_id=2070185736]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer5" unique_id=2018600417]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer5/VBoxContainer" unique_id=1410854862]
+layout_mode = 2
+text = "Paramètres visuels"
+label_settings = SubResource("LabelSettings_n14il")
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer5/VBoxContainer" unique_id=1414875271]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Afficher noms joueurs"
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MiddleContainer/VBoxContainer/MarginContainer3/ButtonStart" to="." method="_on_button_start_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer3/VBoxContainer/HBoxContainer/ButtonOption1" to="." method="_on_button_option_1_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer3/VBoxContainer/HBoxContainer/ButtonOption2" to="." method="_on_button_option_2_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer4/VBoxContainer/HBoxContainer/HSliderNbRound" to="." method="_on_h_slider_nb_round_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer/HSliderRoundDuration" to="." method="_on_h_slider_round_duration_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/VBoxContainer/MarginContainer5/VBoxContainer/CheckButton" to="." method="_on_check_button_show_names_toggled"]

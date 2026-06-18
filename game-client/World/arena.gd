@@ -94,6 +94,8 @@ func _start_game():
 			var max_y = height - player_radius
 			
 			for id in players_ids:
+				var p_name = Globals.players[id]["name"]
+				
 				print("Création du joueur ", id)
 				var player = player_scene.instantiate()
 				player.name = str(id)
@@ -104,9 +106,6 @@ func _start_game():
 				player.get_bonus.connect(_on_player_signal_bonus)
 				player.role_changed.connect(_on_role_changed)
 				player.player_infected.connect(_on_player_infected)
-				
-				# Ajout du numéro sur le pion du joueur
-				player.set_label(str(id))
 
 				# Positionnement du joueur
 				if id == random_sparrowhawk_id: # si épervier, on le place au milieu
@@ -118,6 +117,13 @@ func _start_game():
 				
 				# Ajout dans la scène
 				$Players.add_child(player)
+				
+				# Ajout du numéro et du nom sur le pion du joueur
+				player.set_label_num_text(str(id))
+				
+				if Globals.show_names:
+					# Prendre les 10 premiers caractères pour éviter d'avoir un nom trop long affiché à l'écran
+					player.set_label_name_text(p_name.substr(0, 10))
 			
 		game_started = true
 		ServerSocket.send_message_to_server({
@@ -232,24 +238,6 @@ func _end_game():
 
 func _on_room_created(_code: String, url_to_join: String):
 	qr_code.data = url_to_join.to_upper() # In the QRCode addon, only uppercases characters are used
-
-# Ne devrait plus être utilisé : un joueur n'est pas censé pouvoir rejoindre une partie commencée
-func _on_player_connected(id: int, p_name: String) -> void:
-	print("New player joined : " + p_name + " (ID: " + str(id) + ")")
-	var player = player_scene.instantiate()
-	player.name = str(id)
-	player.id = id
-	var viewport_size = get_viewport().get_visible_rect().size
-	var width = viewport_size[0]
-	var height = viewport_size[1]
-	player.global_position = Vector2(randf_range(0, width), randf_range(80, height - 80)) # 80: Height of a safe zone
-	player.set_label(str(id))
-	player.get_bonus.connect(_on_player_signal_bonus)
-	player.role_changed.connect(_on_role_changed)
-	
-	players_nodes[id] = player
-	
-	$Players.add_child(player)
 
 func _on_player_use_bonus(id: int, bonus: String):
 	print("Le joueur " + str(id) + " a utilisé le bonus " + bonus)
