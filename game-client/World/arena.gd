@@ -219,7 +219,8 @@ func _end_round():
 	
 	var last_round = \
 		(current_round == max_round) || \
-		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SURVIVOR] == 0)
+		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SURVIVOR] == 0) || \
+		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SPARROWHAWK] == 0)
 	
 	# Affichage de l'overlay de statistiques de la manche
 	await _end_round_overlay()
@@ -252,11 +253,25 @@ func _on_player_use_bonus(id: int, bonus: String):
 		player.timer_dash.start()
 
 func _on_player_left(id: int):
-	Globals.players.erase(id)
 	if players_nodes.has(id):
+		print("Player n°" + str(id) + " left.")
+		var player = players_nodes[id]
+		
+		# Mise à jour des compteurs
+		var role = player.role
+		Globals.players_counter[role] -= 1
+		Globals.players_counter["total"] -= 1
+		
+		_update_players_labels()
+		
+		# Suppression du joueur de la scène
 		players_nodes[id].queue_free()
 		players_nodes.erase(id)
-		print("Player n°" + str(id) + " left.")
+		
+		# Détection fin de manche
+		_check_end_of_round()
+		
+		Globals.players.erase(id)
 
 func _on_timer_bonus_timeout() -> void:
 	var bonus = bonus_scene.instantiate()
@@ -333,6 +348,9 @@ func _check_end_of_round():
 	var survivors = Globals.players_counter[Globals.SAFE_SURVIVORS]
 	var infected = Globals.players_counter[Player.ROLE_INFECTED]
 	var sparrowhawks = Globals.players_counter[Player.ROLE_SPARROWHAWK]
+	
+	if sparrowhawks == 0:
+		_end_round()
 	
 	if survivors == total - infected - sparrowhawks:
 		_end_round()

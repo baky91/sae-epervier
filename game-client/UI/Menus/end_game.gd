@@ -21,7 +21,7 @@ func _ready() -> void:
 	valeur_eperviers.text = str(sparrowhawks_left)
 	
 	# Déterminer le camp vainqueur
-	if survivors_left <= 0:
+	if survivors_left <= 0 and sparrowhawks_left > 0:
 		label_victoire.text = "VICTOIRE DES ÉPERVIERS"
 		label_victoire.label_settings.font_color = "#ed382e"
 	else:
