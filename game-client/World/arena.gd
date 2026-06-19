@@ -78,9 +78,12 @@ func _start_game():
 		var players_ids = Globals.players.keys()
 		
 		if players_ids:
-			var random_sparrowhawk_id = players_ids.pick_random()
-			#print("Id de l'épervier: ", str(random_sparrowhawk_id))
-			
+			var players_ids_copy = players_ids.duplicate()
+			var nb_epervier = int(players_ids.size()/6)
+			players_ids_copy.shuffle()	
+
+			var random_sparrowhawk_ids = players_ids_copy.slice(0, nb_epervier)
+
 			var safe_zone_height = 80
 			var player_radius = 16
 			var viewport_size = get_viewport().get_visible_rect().size
@@ -108,7 +111,7 @@ func _start_game():
 				player.player_infected.connect(_on_player_infected)
 
 				# Positionnement du joueur
-				if id == random_sparrowhawk_id: # si épervier, on le place au milieu
+				if id in random_sparrowhawk_ids: # si épervier, on le place au milieu
 					player.role_changed.emit(id, Player.ROLE_SPARROWHAWK)
 					player.global_position = Vector2(width / 2, height / 2)
 				else: # sinon, on le place dans la zone de sécurité inférieure
