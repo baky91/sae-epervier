@@ -79,7 +79,7 @@ func _start_game():
 		
 		if players_ids:
 			var players_ids_copy = players_ids.duplicate()
-			var nb_epervier = int(players_ids.size()/6)
+			var nb_epervier = nb_sparrowhawks_at_start(players_ids.size())
 			players_ids_copy.shuffle()	
 
 			var random_sparrowhawk_ids = players_ids_copy.slice(0, nb_epervier)
@@ -422,3 +422,10 @@ func _end_round_overlay():
 	var round_end_overlay = show_overlay(OVERLAY_SCENE_END_ROUND)
 	await get_tree().create_timer(5.0).timeout
 	round_end_overlay.queue_free()
+
+func nb_sparrowhawks_at_start(totalPlayers: int) -> int:
+	if totalPlayers < 10: return 1
+	if totalPlayers < 18: return 2
+	if totalPlayers < 28: return 3
+	if totalPlayers < 15: return 4
+	return 5
