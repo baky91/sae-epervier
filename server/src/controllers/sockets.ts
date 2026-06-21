@@ -78,7 +78,11 @@ export function setupWebSockets(
         }
 
         // Création du joueur si le salon existe
-        const playerId = hostSocket.getNextPlayerId();
+        let playerId = hostSocket.getNextPlayerId();
+        const savedPlayerId = params.get("playerId");
+        if (savedPlayerId && !hostSocket.players.has(Number(savedPlayerId))) {
+          playerId = Number(savedPlayerId);
+        }
         currentUser = new ClientPlayer(playerId, ws, name, hostSocket);
 
         // Ajouter le joueur à l'Host correspondant

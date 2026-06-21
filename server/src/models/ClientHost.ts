@@ -40,6 +40,7 @@ export default class ClientHost extends ClientModel {
         return;
       } else if (type === "RESTART_GAME") {
         this.replayGame();
+        return;
       }
 
       this.sendToAllPlayers(message);
@@ -73,12 +74,16 @@ export default class ClientHost extends ClientModel {
   }
 
   getNextPlayerId(): number {
-    return this.counterPlayers + 1;
+    let id = 1;
+    while (this.players.has(id)) {
+      id++;
+    }
+    return id;
   }
 
   addPlayer(player: ClientPlayer): void {
     this.players.set(player.id, player);
-    this.counterPlayers++;
+    this.counterPlayers = this.players.size;
   }
 
   getPlayer(id: number): ClientPlayer | undefined {
@@ -92,6 +97,7 @@ export default class ClientHost extends ClientModel {
   removePlayer(id: number): void {
     const playerName = this.getPlayer(id)?.name;
     this.players.delete(id);
+    this.counterPlayers = this.players.size;
     logMessage(
       `Joueur ${playerName} (ID: ${id}) a quitté la partie ${this.hostCode}`,
     );
@@ -126,6 +132,10 @@ export default class ClientHost extends ClientModel {
 
   replayGame() {
     this.gameStarted = false;
-
+    this.inputsBlocked = true;
+    this.currentRound = 0;
+    this.counterPlayers = 0;
+    this.sendToAllPlayers({ type: "RESTART_GAME" });
+    this.players.clear();
   }
 }

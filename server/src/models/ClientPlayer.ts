@@ -31,6 +31,29 @@ export default class ClientPlayer extends ClientModel {
   }
 
   handlePlayerMessage(message: SocketMessage) {
+    if (message.type === "REPLAY") {
+      if (this.hostSocket) {
+        this.hostSocket.addPlayer(this);
+
+        this.hostSocket.sendMessage({
+          type: "PLAYER_JOIN",
+          data: {
+            id: this.id,
+            name: this.name,
+          },
+        });
+
+        this.sendMessage({
+          type: "SETUP_CONTROLLER",
+          data: {
+            id: this.id,
+            name: this.name,
+          },
+        });
+      }
+      return;
+    }
+
     // Logique spécifique pour l'utilisation des bonus
     if (message.type === "USE_BONUS") {
       const bonusType = message.data.bonus;
