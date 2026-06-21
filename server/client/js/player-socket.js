@@ -112,6 +112,47 @@ const start = (hostCode, pseudo, playerId = null) => {
       if (msg.error_type === "GAME_STARTED") {
         window.location.href = `/error?reason=started&code=${hostCode}`;
       }
+    } else if (msg.type === "RESTART_GAME") {
+      const controlArea = document.querySelector(".control-area");
+      if (controlArea) {
+        controlArea.innerHTML = `
+          <div class="replay-card">
+            <h2 class="replay-title">L'hôte a relancé la partie</h2>
+            <p class="replay-desc">Souhaitez-vous rejouer ?</p>
+            <div class="replay-buttons">
+              <button id="btn-replay" class="btn-action btn-replay">Rejouer</button>
+              <button id="btn-home" class="btn-action btn-home">Retourner à l'accueil</button>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("btn-replay").addEventListener("click", () => {
+          socket.send(
+            JSON.stringify({
+              type: "REPLAY",
+            })
+          );
+
+          controlArea.innerHTML = `
+            <div class="replay-card">
+              <div class="spinner"></div>
+              <h2 class="replay-title">Demande envoyée</h2>
+              <p class="replay-desc">En attente du lancement de la partie par l'hôte...</p>
+            </div>
+          `;
+        });
+
+        document.getElementById("btn-home").addEventListener("click", () => {
+          socket.send(
+            JSON.stringify({
+              type: "INSTANT_LEAVE",
+            })
+          );
+
+          sessionStorage.clear();
+          window.location.href = "/";
+        });
+      }
     }
   };
 

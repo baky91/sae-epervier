@@ -66,6 +66,16 @@ func _on_player_connected(id: int, p_name: String):
 	new_card.remove_player_on_lobby.connect(_on_player_left)
 	add_player_counter()
 	grid_players.add_child(new_card)
+	
+	# Trier les cartes de joueurs par ID
+	var new_index = 0
+	for child in grid_players.get_children():
+		if child != new_card and not child.is_queued_for_deletion() and child.name.is_valid_int():
+			var child_id = child.name.to_int()
+			if id > child_id:
+				new_index += 1
+	grid_players.move_child(new_card, new_index)
+	
 	update()
 	
 func _on_player_left(id: int):

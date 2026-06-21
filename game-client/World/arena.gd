@@ -78,9 +78,12 @@ func _start_game():
 		var players_ids = Globals.players.keys()
 		
 		if players_ids:
-			var random_sparrowhawk_id = players_ids.pick_random()
-			#print("Id de l'épervier: ", str(random_sparrowhawk_id))
-			
+			var players_ids_copy = players_ids.duplicate()
+			var nb_epervier = nb_sparrowhawks_at_start(players_ids.size())
+			players_ids_copy.shuffle()	
+
+			var random_sparrowhawk_ids = players_ids_copy.slice(0, nb_epervier)
+
 			var safe_zone_height = 80
 			var player_radius = 16
 			var viewport_size = get_viewport().get_visible_rect().size
@@ -108,7 +111,7 @@ func _start_game():
 				player.player_infected.connect(_on_player_infected)
 
 				# Positionnement du joueur
-				if id == random_sparrowhawk_id: # si épervier, on le place au milieu
+				if id in random_sparrowhawk_ids: # si épervier, on le place au milieu
 					player.role_changed.emit(id, Player.ROLE_SPARROWHAWK)
 					player.global_position = Vector2(width / 2, height / 2)
 				else: # sinon, on le place dans la zone de sécurité inférieure
@@ -419,3 +422,10 @@ func _end_round_overlay():
 	var round_end_overlay = show_overlay(OVERLAY_SCENE_END_ROUND)
 	await get_tree().create_timer(5.0).timeout
 	round_end_overlay.queue_free()
+
+func nb_sparrowhawks_at_start(totalPlayers: int) -> int:
+	if totalPlayers < 10: return 1
+	if totalPlayers < 18: return 2
+	if totalPlayers < 28: return 3
+	if totalPlayers < 15: return 4
+	return 5

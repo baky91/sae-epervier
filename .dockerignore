@@ -1,0 +1,64 @@
+# =========================
+# Git
+# =========================
+
+.git
+.gitignore
+.gitattributes
+
+# =========================
+# Node
+# =========================
+
+node_modules
+**/node_modules
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+server/dist
+**/dist
+
+# =========================
+# Godot
+# =========================
+
+game-client/.godot
+server/game
+
+# Fichiers temporaires Godot
+**/*.tmp
+**/*.log
+
+# =========================
+# IDE
+# =========================
+
+.vscode
+.idea
+
+*.swp
+*.swo
+
+# =========================
+# OS
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+# Docker
+# =========================
+
+Dockerfile
+.dockerignore
+
+# =========================
+# Tests / docs inutiles au build
+# =========================
+
+coverage
+*.md
+!README.md

@@ -1,49 +1,40 @@
 <!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contrôleur de Joueur - Jeu de l'Épervier</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/controller.css" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <meta name="apple-mobile-web-app-title" content="L'épervier masqué" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <script src="/js/pwa.js" defer></script>
-  </head>
-  <body>
-    <div class="modal hidden">
-      <form id="form-pseudo">
-        <label for="player-pseudo">Pseudo</label>
-        <input
-          type="text"
-          name="player-pseudo"
-          id="player-pseudo"
-          placeholder="Entrez votre pseudo"
-          required
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="words"
-          spellcheck="false"
-        />
-        <a href="/" id="go-to-home" style="background: red">Retour</a>
-        <button type="submit">Valider</button>
-      </form>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contrôleur de Joueur - Jeu de l'Épervier</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/controller.css" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="L'épervier masqué" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <script src="/js/pwa.js" defer></script>
+</head>
+
+<body>
+  <div class="modal hidden">
+    <form id="form-pseudo">
+      <label for="player-pseudo">Pseudo</label>
+      <input type="text" name="player-pseudo" id="player-pseudo" placeholder="Entrez votre pseudo" required
+        autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" />
+      <a href="/" id="go-to-home">Retour</a>
+      <button type="submit">Valider</button>
+    </form>
+  </div>
+
+  <div class="overlay hidden"></div>
+
+  <div id="app" class="controller-container">
+    <div class="controller-wrapper">
+      <div id="controller" class="controller"></div>
     </div>
+  </div>
 
-    <div class="overlay hidden"></div>
+  <script type="module" src="/js/player-socket.js"></script>
+</body>
 
-    <div id="app" class="controller-container">
-      <div class="controller-wrapper">
-        <div id="controller" class="controller"></div>
-      </div>
-    </div>
-
-    <script type="module" src="/js/player-socket.js"></script>
-  </body>
 </html>

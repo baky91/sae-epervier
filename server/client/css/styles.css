@@ -47,12 +47,12 @@ a {
 }
 
 
-#btn-quit:hover{
+#btn-quit:hover {
     background-color: #ff694e;
 }
 
 /* Colonnes Gauche et Droite */
-.left-div, 
+.left-div,
 .right-div {
     flex: 1;
     display: flex;
@@ -68,7 +68,7 @@ a {
     color: #fff;
 }
 
-.left-div:hover, 
+.left-div:hover,
 .right-div:hover {
     border-color: #6c63ff;
 }
@@ -76,29 +76,27 @@ a {
 #game-code,
 #player-pseudo {
     width: 100%;
-    padding: 12px;
-    background: #111827;
-    border: 2px solid #374151;
-    border-radius: 8px;
+    padding: 14px;
+    background: rgba(17, 24, 39, 0.8);
+    border: 2px solid rgba(75, 85, 99, 0.5);
+    border-radius: 10px;
     color: white;
     font-size: 1.5rem;
-    /* text-align: center; */
-    letter-spacing: 5px;
+    letter-spacing: 3px;
     font-weight: bold;
-    margin-bottom:15px;
+    margin-bottom: 15px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #game-code:focus,
 #player-pseudo:focus {
     outline: none;
-    border-color: #6c63ff;
+    border-color: #818cf8;
+    box-shadow: 0 0 10px rgba(108, 99, 255, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-#game-code,
-#host-button,
-#go-to-home,
-button[type="submit"] {
-    font-weight: bold;
+#game-code {
     text-transform: uppercase;
 }
 
@@ -134,69 +132,107 @@ h1 {
 }
 
 form {
-    margin: 1rem;
     display: flex;
     flex-direction: column;
 }
 
 form label {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #9ca3af;
+    margin-bottom: 0.5rem;
 }
 
 #form-pseudo {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
+    background: rgba(31, 41, 55, 0.85);
+    border: 2px solid #374151;
+    border-radius: 1.5rem;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 2.5rem;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+    width: 90%;
+    max-width: 450px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+#form-pseudo label {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(108, 99, 255, 0.4);
+    text-align: center;
+    margin-bottom: 0.5rem;
 }
 
 #form-code {
     width: 100%;
-    gap: 10px;
+    gap: 15px;
 }
 
+/* Base button animations & shapes */
 button[type="submit"],
 #go-to-home,
 #host-button {
-    margin-top: auto;
-    padding: 12px;
+    margin-top: 10px;
+    padding: 14px 20px;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.1s, background-color 0.3s;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 button[type="submit"] {
-    font-weight: 800;
+    background: linear-gradient(135deg, #6c63ff 0%, #4f46e5 100%);
+    border: 2px solid #818cf8;
+    box-shadow: 0 4px 14px rgba(108, 99, 255, 0.3);
 }
 
-button[type="submit"],
 #go-to-home {
-    background-color: #6c63ff;
+    background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+    border: 2px solid #4b5563;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 #host-button {
-    background-color:#10b981;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: 2px solid #34d399;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
 }
 
+/* Hover effects */
+button[type="submit"]:hover {
+    box-shadow: 0 6px 20px rgba(108, 99, 255, 0.5);
+    transform: translateY(-2px);
+}
 
-button[type="submit"]:hover,
 #go-to-home:hover {
-    background-color: #5a52e0;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
 }
 
 #host-button:hover {
-    background-color: #059669;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    transform: translateY(-2px);
 }
 
+/* Active scale feedback */
 button[type="submit"]:active,
 #go-to-home:active,
 #host-button:active {
-    transform: scale(0.98);
+    transform: translateY(0) scale(0.98);
 }
 
 .overlay {
@@ -226,7 +262,7 @@ button[type="submit"]:active,
 }
 
 
-#btn-quit:hover{
+#btn-quit:hover {
     background-color: #ff694e;
 }
 
@@ -242,8 +278,8 @@ button[type="submit"]:active,
     .error-page-main {
         flex-direction: column;
     }
-    
-    .left-div, 
+
+    .left-div,
     .right-div {
         width: 100%;
     }

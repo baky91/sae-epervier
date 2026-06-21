@@ -32,14 +32,23 @@ export default class ClientHost extends ClientModel {
       if (type === "GAME_START") {
         logMessage(`La partie ${this.hostCode} a démarré`);
         this.gameStarted = true;
+        this.players.forEach((player, id) => {
+          if (!player.isReplaying) {
+            logMessage(`Joueur ${player.name} (ID: ${id}) n'a pas rejoint à temps et est retiré.`);
+            player.socket.close();
+            this.players.delete(id);
+          }
+        });
+        this.counterPlayers = this.players.size;
       } else if (type === "REQUEST_ROUND_START") {
         this.prepareNextRound();
         return;
       } else if (type === "REQUEST_ROUND_END") {
         this.inputsBlocked = true;
         return;
-      } else if (type === "REQUEST_REPLAY") {
-        this.gameStarted = false;
+      } else if (type === "RESTART_GAME") {
+        this.replayGame();
+        return;
       }
 
       this.sendToAllPlayers(message);
@@ -73,12 +82,16 @@ export default class ClientHost extends ClientModel {
   }
 
   getNextPlayerId(): number {
-    return this.counterPlayers + 1;
+    let id = 1;
+    while (this.players.has(id)) {
+      id++;
+    }
+    return id;
   }
 
   addPlayer(player: ClientPlayer): void {
     this.players.set(player.id, player);
-    this.counterPlayers++;
+    this.counterPlayers = this.players.size;
   }
 
   getPlayer(id: number): ClientPlayer | undefined {
@@ -92,6 +105,7 @@ export default class ClientHost extends ClientModel {
   removePlayer(id: number): void {
     const playerName = this.getPlayer(id)?.name;
     this.players.delete(id);
+    this.counterPlayers = this.players.size;
     logMessage(
       `Joueur ${playerName} (ID: ${id}) a quitté la partie ${this.hostCode}`,
     );
@@ -122,5 +136,17 @@ export default class ClientHost extends ClientModel {
       this.inputsBlocked = false;
       this.socket.send(JSON.stringify({ type: "ROUND_START" }));
     }, 3000);
+  }
+
+  replayGame() {
+    this.gameStarted = false;
+    this.inputsBlocked = true;
+    this.currentRound = 0;
+    this.players.forEach((player) => {
+      player.isReplaying = false;
+      player.sendMessage({ type: "SET_ROLE", data: { role: "" } });
+    });
+    this.sendToAllPlayers({ type: "RESTART_GAME" });
+    this.counterPlayers = 0;
   }
 }
