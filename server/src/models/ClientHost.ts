@@ -38,8 +38,8 @@ export default class ClientHost extends ClientModel {
       } else if (type === "REQUEST_ROUND_END") {
         this.inputsBlocked = true;
         return;
-      } else if (type === "REQUEST_REPLAY") {
-        this.gameStarted = false;
+      } else if (type === "RESTART_GAME") {
+        this.replayGame();
       }
 
       this.sendToAllPlayers(message);
@@ -122,5 +122,10 @@ export default class ClientHost extends ClientModel {
       this.inputsBlocked = false;
       this.socket.send(JSON.stringify({ type: "ROUND_START" }));
     }, 3000);
+  }
+
+  replayGame() {
+    this.gameStarted = false;
+
   }
 }

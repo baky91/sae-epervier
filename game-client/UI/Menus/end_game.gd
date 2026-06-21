@@ -54,7 +54,7 @@ func _ready() -> void:
 func _on_button_nouvelle_partie_pressed() -> void:
 	# Envoie du message au serveur pour demander si le joueur souhaite relancer
 	ServerSocket.send_message_to_server({
-		"type": "REQUEST_REPLAY",
+		"type": "RESTART_GAME",
 		"id": 0
 	})
 	
