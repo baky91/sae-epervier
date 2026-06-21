@@ -32,6 +32,14 @@ export default class ClientHost extends ClientModel {
       if (type === "GAME_START") {
         logMessage(`La partie ${this.hostCode} a démarré`);
         this.gameStarted = true;
+        this.players.forEach((player, id) => {
+          if (!player.isReplaying) {
+            logMessage(`Joueur ${player.name} (ID: ${id}) n'a pas rejoint à temps et est retiré.`);
+            player.socket.close();
+            this.players.delete(id);
+          }
+        });
+        this.counterPlayers = this.players.size;
       } else if (type === "REQUEST_ROUND_START") {
         this.prepareNextRound();
         return;
@@ -134,8 +142,10 @@ export default class ClientHost extends ClientModel {
     this.gameStarted = false;
     this.inputsBlocked = true;
     this.currentRound = 0;
-    this.counterPlayers = 0;
+    this.players.forEach((player) => {
+      player.isReplaying = false;
+    });
     this.sendToAllPlayers({ type: "RESTART_GAME" });
-    this.players.clear();
+    this.counterPlayers = 0;
   }
 }

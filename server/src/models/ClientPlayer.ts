@@ -12,6 +12,7 @@ export default class ClientPlayer extends ClientModel {
   bonus: {
     [Key: string]: number;
   };
+  isReplaying: boolean;
 
   constructor(
     id: number,
@@ -28,11 +29,13 @@ export default class ClientPlayer extends ClientModel {
       speed: 0,
       dash: 0,
     };
+    this.isReplaying = true;
   }
 
   handlePlayerMessage(message: SocketMessage) {
     if (message.type === "REPLAY") {
       if (this.hostSocket) {
+        this.isReplaying = true;
         this.hostSocket.addPlayer(this);
 
         this.hostSocket.sendMessage({
@@ -132,10 +135,12 @@ export default class ClientPlayer extends ClientModel {
     if (this.hostSocket) {
       this.disconnectTimeout = setTimeout(() => {
         this.hostSocket.removePlayer(this.id);
-        this.hostSocket.sendMessage({
-          type: "PLAYER_LEFT",
-          id: this.id,
-        });
+        if (this.isReplaying) {
+          this.hostSocket.sendMessage({
+            type: "PLAYER_LEFT",
+            id: this.id,
+          });
+        }
 
         logMessage(
           `Joueur ${this.name} (ID: ${this.id}) s'est déconnecté de la partie ${this.hostSocket.hostCode}`,
