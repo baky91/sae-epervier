@@ -16,6 +16,6 @@ func _on_button_remove_player_pressed() -> void:
 	remove_player_on_lobby.emit(id)
 	var data_to_send = {
 		"type": "PLAYER_KICK",
-		"player_id": id
+		"id": id
 	}
 	ServerSocket.send_message_to_server(data_to_send)
