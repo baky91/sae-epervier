@@ -1,47 +1,41 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>L'épervier masqué</title>
-    <link rel="stylesheet" href="./css/styles.css" />
-    <link rel="stylesheet" href="./css/main-page.css" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <script src="/js/pwa.js" defer></script>
-  </head>
-  <body>
-    <h1>L'épervier masqué</h1>
-    <main class="home-page-main">
-      <div class="left-div">
-        <div class="game-screen">
-          <img src="images/host-screen.png" alt="" />
-        </div>
 
-        <a id="host-button" href="/game">Héberger une partie</a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L'épervier masqué</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="stylesheet" href="./css/main-page.css" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <script type="module" src="/js/pwa.js" defer></script>
+</head>
+
+<body>
+  <h1>L'épervier masqué</h1>
+  <main class="home-page-main">
+    <div class="left-div">
+      <div class="game-screen">
+        <img src="images/host-screen.png" alt="" />
       </div>
 
-      <div class="right-div">
-        <div class="controller-screen">
-          <img src="images/controller-screen.png" />
-        </div>
-        <form id="form-code">
-          <label for="game-code">Code de partie</label>
-          <input
-            type="text"
-            name="game-code"
-            id="game-code"
-            placeholder="Entrez le code"
-            required
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="characters"
-            spellcheck="false"
-          />
-          <button type="submit" id="join-button">Rejoindre une partie</button>
-        </form>
-      </div>
-    </main>
+      <a id="host-button" href="/game">Héberger une partie</a>
+    </div>
 
-    <script type="module" src="js/home-page.js"></script>
-  </body>
+    <div class="right-div">
+      <div class="controller-screen">
+        <img src="images/controller-screen.png" />
+      </div>
+      <form id="form-code">
+        <label for="game-code">Code de partie</label>
+        <input type="text" name="game-code" id="game-code" placeholder="Entrez le code" required autocomplete="off"
+          autocorrect="off" autocapitalize="characters" spellcheck="false" />
+        <button type="submit" id="join-button">Rejoindre une partie</button>
+      </form>
+    </div>
+  </main>
+
+  <script type="module" src="js/home-page.js"></script>
+</body>
+
 </html>
