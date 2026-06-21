@@ -6,6 +6,10 @@
     flex-direction: column;
 }
 
+.right-div {
+    flex-direction: row;
+}
+
 h1 {
     font-size: 3rem;
 }
