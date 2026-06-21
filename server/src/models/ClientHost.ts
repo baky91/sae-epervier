@@ -146,6 +146,7 @@ export default class ClientHost extends ClientModel {
       player.isReplaying = false;
       player.sendMessage({ type: "SET_ROLE", data: { role: "" } });
     });
+    this.sendToAllPlayers({ type: "RESTART_GAME" });
     this.counterPlayers = 0;
   }
 }
