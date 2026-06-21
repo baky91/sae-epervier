@@ -96,6 +96,10 @@ a {
     box-shadow: 0 0 10px rgba(108, 99, 255, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+#game-code {
+    text-transform: uppercase;
+}
+
 #game-code::placeholder,
 #player-pseudo::placeholder {
     text-transform: none;
