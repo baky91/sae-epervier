@@ -143,6 +143,12 @@ const start = (hostCode, pseudo, playerId = null) => {
         });
 
         document.getElementById("btn-home").addEventListener("click", () => {
+          socket.send(
+            JSON.stringify({
+              type: "INSTANT_LEAVE",
+            })
+          );
+
           sessionStorage.clear();
           window.location.href = "/";
         });

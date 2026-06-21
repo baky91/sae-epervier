@@ -54,6 +54,11 @@ export default class ClientPlayer extends ClientModel {
       return;
     }
 
+    if (message.type === "INSTANT_LEAVE") {
+      this.closeWithTimeout(0);
+      return;
+    }
+
     // Logique spécifique pour l'utilisation des bonus
     if (message.type === "USE_BONUS") {
       const bonusType = message.data.bonus;
