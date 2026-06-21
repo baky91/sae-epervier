@@ -132,7 +132,6 @@ h1 {
 }
 
 form {
-    margin: 1rem;
     display: flex;
     flex-direction: column;
 }
@@ -183,6 +182,7 @@ button[type="submit"],
     color: white;
     border: none;
     border-radius: 10px;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -194,7 +194,6 @@ button[type="submit"],
 }
 
 button[type="submit"] {
-    font-weight: 800;
     background: linear-gradient(135deg, #6c63ff 0%, #4f46e5 100%);
     border: 2px solid #818cf8;
     box-shadow: 0 4px 14px rgba(108, 99, 255, 0.3);
