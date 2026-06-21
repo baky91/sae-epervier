@@ -25,6 +25,7 @@ server/dist
 # =========================
 
 game-client/.godot
+server/game
 
 # Fichiers temporaires Godot
 **/*.tmp
