@@ -144,8 +144,8 @@ export default class ClientHost extends ClientModel {
     this.currentRound = 0;
     this.players.forEach((player) => {
       player.isReplaying = false;
+      player.sendMessage({ type: "SET_ROLE", data: { role: "" } });
     });
-    this.sendToAllPlayers({ type: "RESTART_GAME" });
     this.counterPlayers = 0;
   }
 }
