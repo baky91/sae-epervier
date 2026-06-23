@@ -76,25 +76,30 @@ Exemple : lancer 50 bots dans la partie ayant le code "ABCD" → **npm run bots 
 
 ```
 sae-epervier
-├─ game-client          # Projet Godot
-│  ├─ Assets
-│  ├─ Network
-│  ├─ Player
-│  ├─ Shaders
-│  ├─ UI
-│  ├─ World
-│  └─ project.godot     
-└─ server               # Serveur NodeJS & Front-End
-   ├─ client            # Page d'accueil + Contrôleur web
-   ├─ game              # Jeu Godot exporté en HTML
-   ├─ src               # Serveur Express avec TypeScript
-   |  ├─ controllers
-   |  ├─ models
-   |  ├─ routes
-   |  ├─ types
-   |  ├─ utils
-   |  └─ index.ts       # Point d'entrée du serveur
-   └─ tests
+├─ create-docker-image   
+│  └─ Dockerfile           # Image Docker pour Godot + NodeJS
+├─ docs                    # Documentation technique (ex. protocole WebSocket)
+├─ game-client             # Projet de jeu Godot (4.6)
+│  ├─ Assets               
+│  ├─ Globals              
+│  ├─ Network              
+│  ├─ Player               
+│  ├─ Shaders              
+│  ├─ UI                   
+│  ├─ World                
+│  └─ project.godot        
+└─ server                  # Serveur de relais et hébergement Web (NodeJS / Express)
+   ├─ client               # Fichiers statiques du contrôleur web (HTML, CSS, JS)
+   ├─ game                 # Version exportée (Web) du client Godot
+   ├─ public               # Assets publics du serveur (images...)
+   ├─ src                  # Code source TypeScript du serveur Express
+   │  ├─ controllers       
+   │  ├─ models            
+   │  ├─ routes            
+   │  ├─ types             
+   │  ├─ utils             
+   │  └─ index.ts          # Point d'entrée de l'application
+   └─ tests                # Scripts de simulation / tests (bots)
 ```
 
 ## Auteurs

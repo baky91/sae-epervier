@@ -79,7 +79,7 @@ Ces messages permettent à l'instance de jeu Godot de contrôler l'état global 
 | **`RESTART_GAME`** | `{ "type": "RESTART_GAME", "id": 0 }` | Réinitialise la partie depuis l'écran de fin. | Réinitialise l'état du serveur, vide les rôles et envoie `RESTART_GAME` à tous les joueurs connectés. |
 | **`GET_BONUS`** | `{ "type": "GET_BONUS", "id": playerId, "data": { "bonus": "speed" \| "dash" } }` | Donne un bonus à un joueur spécifique. | Incrémente le bonus sur le serveur et le notifie au joueur via `GET_BONUS`. |
 | **`SET_ROLE`** | `{ "type": "SET_ROLE", "id": playerId, "data": { "role": "survivor" \| "infected" \| "sparrowhawk" } }` | Modifie le rôle d'un joueur ciblé. | Met à jour le rôle côté serveur et le notifie au joueur via `SET_ROLE`. |
-| **`PLAYER_KICK`** | `{ "type": "PLAYER_KICK", "player_id": playerId }` *(voir note ci-dessous)* | Expulse un joueur de la partie. | Supprime le joueur du salon de l'hôte et ferme sa socket. |
+| **`PLAYER_KICK`** | `{ "type": "PLAYER_KICK", "id": playerId }` *(voir note ci-dessous)* | Expulse un joueur de la partie. | Supprime le joueur du salon de l'hôte et ferme sa socket. |
 
 ### 📥 Reçus par l'Hôte (Godot) depuis le Serveur
 Ces messages notifient l'hôte des actions des joueurs et des états de synchronisation.
