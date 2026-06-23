@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 	<meta charset="utf-8">
 	<title>$GODOT_PROJECT_NAME</title>
 	<style>
-		body { 
-			margin: 0; 
-			padding: 0; 
-			background-color: #0b0f19; 
-			color: #f3f4f6; 
-			font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #0b0f19;
+			color: #f3f4f6;
+			font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 			overflow: hidden;
 		}
 
 		/* Barre supérieure modernisée */
-		#ui-container { 
+		#ui-container {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 0 24px; 
-			background: linear-gradient(135deg, #111827, #1f2937); 
+			padding: 0 24px;
+			background: linear-gradient(135deg, #111827, #1f2937);
 			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 			height: 60px;
 			border-bottom: 1px solid #374151;
 			box-sizing: border-box;
 		}
 
-		h1 { 
-			margin: 0; 
-			font-size: 1.3rem; 
+		h1 {
+			margin: 0;
+			font-size: 1.3rem;
 			font-weight: 700;
-			color: #10b981; /* Vert Émeraude moderne */
+			color: #10b981;
+			/* Vert Émeraude moderne */
 			letter-spacing: 0.5px;
 			text-transform: uppercase;
 		}
@@ -42,12 +44,12 @@
 			align-items: center;
 		}
 
-		button { 
-			padding: 10px 20px; 
-			cursor: pointer; 
-			color: white; 
-			border: none; 
-			border-radius: 6px; 
+		button {
+			padding: 10px 20px;
+			cursor: pointer;
+			color: white;
+			border: none;
+			border-radius: 6px;
 			font-weight: 600;
 			font-size: 0.9rem;
 			transition: all 0.2s ease-in-out;
@@ -58,19 +60,23 @@
 		}
 
 		/* Bouton Plein Écran */
-		#fullscreen-btn { 
-			background: #2563eb; /* Bleu gaming */
+		#fullscreen-btn {
+			background: #2563eb;
+			/* Bleu gaming */
 		}
-		#fullscreen-btn:hover { 
-			background: #1d4ed8; 
+
+		#fullscreen-btn:hover {
+			background: #1d4ed8;
 			transform: translateY(-1px);
 			box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 		}
 
 		/* Bouton Fermer la partie (Rouge) */
 		#close-game-btn {
-			background: #dc2626; /* Rouge destructif */
+			background: #dc2626;
+			/* Rouge destructif */
 		}
+
 		#close-game-btn:hover {
 			background: #b91c1c;
 			transform: translateY(-1px);
@@ -82,16 +88,17 @@
 		}
 
 		/* Zone de rendu du jeu Godot */
-		#game-container { 
-			display: flex; 
+		#game-container {
+			display: flex;
 			justify-content: center;
 			align-items: center;
 			width: 100vw;
-			height: calc(100vh - 60px); /* Prend tout l'espace restant sous la barre */
+			height: calc(100vh - 60px);
+			/* Prend tout l'espace restant sous la barre */
 			background-color: #0b0f19;
 		}
-		
-		canvas { 
+
+		canvas {
 			width: 100% !important;
 			height: 100% !important;
 			object-fit: contain !important;
@@ -99,9 +106,111 @@
 			outline: none;
 			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 		}
+
+		/* Écran de chargement moderne */
+		#loader-container {
+			position: absolute;
+			top: 60px;
+			/* Aligné sous la barre supérieure de 60px */
+			left: 0;
+			width: 100%;
+			height: calc(100vh - 60px);
+			background-color: #0b0f19;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 1000;
+			transition: opacity 0.5s ease, visibility 0.5s ease;
+		}
+
+		/* Classe pour masquer le loader proprement après le chargement */
+		#loader-container.fade-out {
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+		}
+
+		.loader-content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+			padding: 40px;
+			background: rgba(17, 24, 39, 0.6);
+			backdrop-filter: blur(12px);
+			border: 1px solid rgba(255, 255, 255, 0.05);
+			border-radius: 16px;
+			box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+			max-width: 400px;
+			width: 90%;
+			box-sizing: border-box;
+		}
+
+		.loader-logo {
+			font-size: 4rem;
+			margin-bottom: 16px;
+			animation: pulse-glow 2s infinite ease-in-out;
+		}
+
+		.loader-title {
+			margin: 0 0 8px 0;
+			font-size: 1.5rem;
+			font-weight: 700;
+			background: linear-gradient(135deg, #10b981, #06b6d4);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			letter-spacing: 0.5px;
+		}
+
+		.loader-status {
+			font-size: 0.9rem;
+			color: #9ca3af;
+			margin-bottom: 24px;
+			min-height: 1.2rem;
+		}
+
+		.progress-bar-container {
+			width: 100%;
+			height: 8px;
+			background-color: #1f2937;
+			border-radius: 4px;
+			overflow: hidden;
+			margin-bottom: 12px;
+			box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+		}
+
+		.progress-bar {
+			width: 0%;
+			height: 100%;
+			background: linear-gradient(90deg, #10b981, #06b6d4);
+			border-radius: 4px;
+			transition: width 0.1s ease-out;
+			box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+		}
+
+		.loader-percentage {
+			font-size: 1rem;
+			font-weight: 600;
+			color: #10b981;
+		}
+
+		@keyframes pulse-glow {
+
+			0%,
+			100% {
+				transform: scale(1);
+				filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.3));
+			}
+
+			50% {
+				transform: scale(1.05);
+				filter: drop-shadow(0 0 25px rgba(16, 185, 129, 0.6));
+			}
+		}
 	</style>
 	$GODOT_HEAD_INCLUDE
 </head>
+
 <body>
 	<div id="ui-container">
 		<h1>L'Épervier Masqué 🦅</h1>
@@ -109,32 +218,76 @@
 			<button id="fullscreen-btn">📺 Plein écran</button>
 			<button id="close-game-btn">🛑 Fermer la partie</button>
 		</div>
-    </div>
+	</div>
 
-    <div id="game-container">
-        <canvas id="canvas">
-            Votre navigateur ne supporte pas le canvas HTML5.
-        </canvas>
-    </div>
+	<!-- Écran de chargement -->
+	<div id="loader-container">
+		<div class="loader-content">
+			<div class="loader-logo">🦅</div>
+			<h2 class="loader-title">L'Épervier Masqué</h2>
+			<div class="loader-status" id="loader-status">Connexion au serveur...</div>
+			<div class="progress-bar-container">
+				<div class="progress-bar" id="loader-progress"></div>
+			</div>
+			<div class="loader-percentage" id="loader-percentage">0%</div>
+		</div>
+	</div>
 
-    <script src="$GODOT_URL"></script>
-    <script>
-        // Initialisation de Godot
-        const engine = new Engine($GODOT_CONFIG);
-        engine.startGame();
+	<div id="game-container">
+		<canvas id="canvas">
+			Votre navigateur ne supporte pas le canvas HTML5.
+		</canvas>
+	</div>
 
-        // --- LOGIQUE DU PLEIN ÉCRAN ---
+	<script src="$GODOT_URL"></script>
+	<script>
+		// Initialisation de Godot
+		const engine = new Engine($GODOT_CONFIG);
+
+		// Éléments DOM du loader
+		const loaderContainer = document.getElementById('loader-container');
+		const loaderStatus = document.getElementById('loader-status');
+		const loaderProgress = document.getElementById('loader-progress');
+		const loaderPercentage = document.getElementById('loader-percentage');
+
+		loaderStatus.textContent = "Téléchargement des ressources du jeu...";
+
+		// Lancement du jeu avec callback de progression
+		engine.startGame({
+			onProgress: function (current, total) {
+				if (total > 0) {
+					const percent = Math.round((current / total) * 100);
+					loaderProgress.style.width = percent + "%";
+					loaderPercentage.textContent = percent + "%";
+
+					loaderStatus.textContent = `Chargement du jeu...`;
+				} else {
+					loaderStatus.textContent = "Téléchargement en cours...";
+				}
+			}
+		}).then(() => {
+			// Masquage progressif de l'écran de chargement
+			loaderContainer.classList.add('fade-out');
+		}).catch((err) => {
+			console.error("Erreur de lancement:", err);
+			loaderStatus.textContent = "Erreur lors du chargement du jeu.";
+			loaderStatus.style.color = "#dc2626";
+			loaderPercentage.textContent = "Échec";
+			loaderPercentage.style.color = "#dc2626";
+		});
+
+		// --- LOGIQUE DU PLEIN ÉCRAN ---
 		const fullscreenBtn = document.getElementById('fullscreen-btn');
 		const canvasElement = document.getElementById('canvas');
 
 		fullscreenBtn.addEventListener('click', () => {
 			if (canvasElement.requestFullscreen) {
 				canvasElement.requestFullscreen();
-			} else if (canvasElement.mozRequestFullScreen) { 
+			} else if (canvasElement.mozRequestFullScreen) {
 				canvasElement.mozRequestFullScreen();
-			} else if (canvasElement.webkitRequestFullscreen) { 
+			} else if (canvasElement.webkitRequestFullscreen) {
 				canvasElement.webkitRequestFullscreen();
-			} else if (canvasElement.msRequestFullscreen) { 
+			} else if (canvasElement.msRequestFullscreen) {
 				canvasElement.msRequestFullscreen();
 			}
 		});
@@ -148,6 +301,7 @@
 				window.location.href = "/";
 			}
 		});
-    </script>
+	</script>
 </body>
+
 </html>
