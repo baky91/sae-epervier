@@ -222,6 +222,7 @@ func _end_round():
 	
 	var last_round = \
 		(current_round == max_round) || \
+		(Globals.players_counter["total"] == 0) || \
 		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SURVIVOR] == 0) || \
 		(Globals.players_counter["total"] > 0 && Globals.players_counter[Player.ROLE_SPARROWHAWK] == 0)
 	
