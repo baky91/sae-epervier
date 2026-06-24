@@ -139,10 +139,25 @@ export default class ClientPlayer extends ClientModel {
   }
 
   closeWithTimeout(timeout: number): void {
+    if (this.definitelyLeave && timeout > 0) {
+      return;
+    }
+
+    if (timeout === 0) {
+      this.definitelyLeave = true;
+    }
+
+    if (this.disconnectTimeout) {
+      clearTimeout(this.disconnectTimeout);
+      this.disconnectTimeout = null;
+    }
+
     if (this.hostSocket) {
       this.disconnectTimeout = setTimeout(() => {
-        this.hostSocket.removePlayer(this.id);
-        if (this.isReplaying) {
+        this.disconnectTimeout = null;
+
+        const removed = this.hostSocket.removePlayer(this.id);
+        if (removed && this.isReplaying) {
           this.hostSocket.sendMessage({
             type: "PLAYER_LEFT",
             id: this.id,
@@ -152,7 +167,10 @@ export default class ClientPlayer extends ClientModel {
         logMessage(
           `Joueur ${this.name} (ID: ${this.id}) s'est déconnecté de la partie ${this.hostSocket.hostCode}`,
         );
-        this.disconnectTimeout = null;
+
+        if (this.socket.readyState === WebSocket.OPEN) {
+          this.socket.close();
+        }
       }, timeout * 1000);
     }
   }

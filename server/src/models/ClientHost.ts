@@ -102,13 +102,16 @@ export default class ClientHost extends ClientModel {
     return this.players;
   }
 
-  removePlayer(id: number): void {
-    const playerName = this.getPlayer(id)?.name;
+  removePlayer(id: number): boolean {
+    const player = this.getPlayer(id);
+    if (!player) return false;
+    const playerName = player.name;
     this.players.delete(id);
     this.counterPlayers = this.players.size;
     logMessage(
       `Joueur ${playerName} (ID: ${id}) a quitté la partie ${this.hostCode}`,
     );
+    return true;
   }
 
   closeGame(): void {
