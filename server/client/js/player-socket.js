@@ -1,6 +1,8 @@
 import { PlayerController } from "./player-controller.js";
 
 const start = (hostCode, pseudo, playerId = null) => {
+  document.title = `L'épervier masqué - ${hostCode}`
+
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
   let socketUrl = `${protocol}://${window.location.host}/?clientType=player&hostCode=${hostCode}&name=${pseudo}`;
   if (playerId) {
@@ -26,6 +28,11 @@ const start = (hostCode, pseudo, playerId = null) => {
       controller = new PlayerController("controller", {
         playerNumber: player_id,
         playerName: player_name,
+        onLeave: () => {
+          socket.send(JSON.stringify({ type: "REQUEST_LEAVE" }));
+          sessionStorage.clear();
+          window.location.href = "/";
+        },
         onMove: (x, y) => {
           const now = Date.now();
           if (x === 0 && y === 0) {

@@ -12,6 +12,7 @@ export class PlayerController {
       speed: false,
       dash: false,
     };
+    this.onLeave = options.onLeave;
     this.onMove = options.onMove;
     this.onUseBonus = options.onUseBonus;
     this.keys = {
@@ -136,8 +137,8 @@ export class PlayerController {
 
                     <div class="controls-right">
                       ${Object.keys(this.bonus)
-                        .map((type) => {
-                          return `
+        .map((type) => {
+          return `
                           <div class="bonus-section">
                             <button id="${type}-btn" class="bonus-button ${type}" ${this.bonus[type] === 0 || this.role === "infected" || this.bonusCooldowns[type] ? "disabled" : ""}>
                                 ${this.getBonusIcon(type)}
@@ -148,32 +149,28 @@ export class PlayerController {
                             </div>
                           </div>
                         `;
-                        })
-                        .join("")}
+        })
+        .join("")}
                     </div>
 
                 </div>
 
-                ${
-                  this.role === "infected"
-                    ? `
+                ${this.role === "infected"
+        ? `
                     <div class="status-message">
                         ${this.getShieldIcon()}
                         <span class="status-message-text">Vous êtes immobilisé jusqu'à la prochaine manche</span>
                     </div>
                 `
-                    : ""
-                }
+        : ""
+      }
             </div>
         `;
 
     // --- Attachement des écouteurs d'événements ---
 
     // Boutons de l'en-tête
-    document.getElementById("btn-quit").addEventListener("click", () => {
-      sessionStorage.clear();
-      window.location.href = "/";
-    });
+    document.getElementById("btn-quit").addEventListener("click", this.onLeave);
 
     document.getElementById("btn-refresh").addEventListener("click", () => {
       window.location.reload();

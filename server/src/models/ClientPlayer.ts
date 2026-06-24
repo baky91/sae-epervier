@@ -13,6 +13,7 @@ export default class ClientPlayer extends ClientModel {
     [Key: string]: number;
   };
   isReplaying: boolean;
+  definitelyLeave: boolean;
 
   constructor(
     id: number,
@@ -30,6 +31,7 @@ export default class ClientPlayer extends ClientModel {
       dash: 0,
     };
     this.isReplaying = true;
+    this.definitelyLeave = false;
   }
 
   handlePlayerMessage(message: SocketMessage) {
@@ -57,7 +59,12 @@ export default class ClientPlayer extends ClientModel {
       return;
     }
 
-    if (message.type === "INSTANT_LEAVE") {
+    // Logique de déconnexion
+    if (message.type === "INSTANT_LEAVE" ||
+      // Si le joueur quitte la partie lorsque la partie n'est pas lancée, on n'attends pas que le timeout s'écoule
+      (message.type === "REQUEST_LEAVE" && !this.hostSocket.gameStarted)
+    ) {
+      this.definitelyLeave = true;
       this.closeWithTimeout(0);
       return;
     }
@@ -132,10 +139,25 @@ export default class ClientPlayer extends ClientModel {
   }
 
   closeWithTimeout(timeout: number): void {
+    if (this.definitelyLeave && timeout > 0) {
+      return;
+    }
+
+    if (timeout === 0) {
+      this.definitelyLeave = true;
+    }
+
+    if (this.disconnectTimeout) {
+      clearTimeout(this.disconnectTimeout);
+      this.disconnectTimeout = null;
+    }
+
     if (this.hostSocket) {
       this.disconnectTimeout = setTimeout(() => {
-        this.hostSocket.removePlayer(this.id);
-        if (this.isReplaying) {
+        this.disconnectTimeout = null;
+
+        const removed = this.hostSocket.removePlayer(this.id);
+        if (removed && this.isReplaying) {
           this.hostSocket.sendMessage({
             type: "PLAYER_LEFT",
             id: this.id,
@@ -145,6 +167,10 @@ export default class ClientPlayer extends ClientModel {
         logMessage(
           `Joueur ${this.name} (ID: ${this.id}) s'est déconnecté de la partie ${this.hostSocket.hostCode}`,
         );
+
+        if (this.socket.readyState === WebSocket.OPEN) {
+          this.socket.close();
+        }
       }, timeout * 1000);
     }
   }
