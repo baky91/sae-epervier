@@ -61,8 +61,7 @@ export default class ClientPlayer extends ClientModel {
 
     // Logique de déconnexion
     if (message.type === "INSTANT_LEAVE" ||
-      // Si le joueur quitte la partie lorsque la partie n'est pas lancée, on n'attends pas que le timeout s'écoule
-      (message.type === "REQUEST_LEAVE" && !this.hostSocket.gameStarted)
+      (message.type === "REQUEST_LEAVE")
     ) {
       this.definitelyLeave = true;
       this.closeWithTimeout(0);
