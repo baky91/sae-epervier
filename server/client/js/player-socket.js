@@ -1,6 +1,8 @@
 import { PlayerController } from "./player-controller.js";
 
 const start = (hostCode, pseudo, playerId = null) => {
+  document.title = `L'épervier masqué - ${hostCode}`
+
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
   let socketUrl = `${protocol}://${window.location.host}/?clientType=player&hostCode=${hostCode}&name=${pseudo}`;
   if (playerId) {
