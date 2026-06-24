@@ -26,6 +26,7 @@ var players_nodes = {}
 
 var game_started = false
 var current_round = 0
+var is_ending_round = false
 
 var max_round: int:
 	get:
@@ -144,6 +145,7 @@ func _start_round():
 
 	if current_round < max_round:
 		current_round += 1
+		is_ending_round = false
 
 		if current_round > 1:
 			if dest_safe_zone == TOP_ZONE:
@@ -213,6 +215,9 @@ func _start_round():
 		_end_round()
 
 func _end_round():
+	if is_ending_round:
+		return
+	is_ending_round = true
 	#print("Fin de la manche ", str(current_round))
 	timer_round.stop()
 	
@@ -355,8 +360,7 @@ func _check_end_of_round():
 	
 	if sparrowhawks == 0:
 		_end_round()
-	
-	if survivors == total - infected - sparrowhawks:
+	elif survivors == total - infected - sparrowhawks:
 		_end_round()
 		
 func _on_player_infected(sparrowhawk_id: int, _infected_id: int):
