@@ -28,6 +28,11 @@ const start = (hostCode, pseudo, playerId = null) => {
       controller = new PlayerController("controller", {
         playerNumber: player_id,
         playerName: player_name,
+        onLeave: () => {
+          socket.send(JSON.stringify({ type: "REQUEST_LEAVE" }));
+          sessionStorage.clear();
+          window.location.href = "/";
+        },
         onMove: (x, y) => {
           const now = Date.now();
           if (x === 0 && y === 0) {
