@@ -78,7 +78,10 @@ Exemple : lancer 50 bots dans la partie ayant le code "ABCD" → **npm run bots 
 sae-epervier
 ├─ create-docker-image   
 │  └─ Dockerfile           # Image Docker pour Godot + NodeJS
-├─ docs                    # Documentation technique (ex. protocole WebSocket)
+├─ docs                    # Documentation (manuels d'utilisation, d'installation, protocoles)
+│  ├─ manuel_installation.md
+│  ├─ manuel_utilisation.md
+│  └─ websocket_messages.md
 ├─ game-client             # Projet de jeu Godot (4.6)
 │  ├─ Assets               
 │  ├─ Globals              
