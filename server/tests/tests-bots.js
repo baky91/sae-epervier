@@ -3,7 +3,7 @@ import { randomIntFromInterval, toSquare } from "../dist/utils/utils.js";
 // Usage : node tests/tests-bots.js {hostCode} {numBots}
 
 const SERVER_URL = process.argv[4]
-  ? "wss://multiplicative-emmett-knockless.ngrok-free.dev"
+  ? "wss://sae-epervier.onrender.com"
   : "ws://localhost:3000";
 
 const HOST_CODE = process.argv[2] || "ABCD";
