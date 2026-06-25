@@ -270,6 +270,8 @@ func _on_player_left(id: int):
 		var role = player.role
 		Globals.players_counter[role] -= 1
 		Globals.players_counter["total"] -= 1
+		if player.is_safe:
+			Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
 		
 		_update_players_labels()
 		
@@ -323,47 +325,46 @@ func _on_timer_round_timeout() -> void:
 func _on_top_zone_area_2d_body_entered(body: Node2D) -> void:
 	if dest_safe_zone == TOP_ZONE:
 		var player = body as Player
-		player.is_safe = true
-		
-		Globals.players_counter[Globals.SAFE_SURVIVORS] += 1
-		_check_end_of_round()
+		if player and player.role == Player.ROLE_SURVIVOR:
+			player.is_safe = true
+			Globals.players_counter[Globals.SAFE_SURVIVORS] += 1
+			_check_end_of_round()
 
 func _on_top_zone_area_2d_body_exited(body: Node2D) -> void:
 	if dest_safe_zone == TOP_ZONE:
 		var player = body as Player
-		player.is_safe = false
-		
-		Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
+		if player and player.role == Player.ROLE_SURVIVOR:
+			player.is_safe = false
+			Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
 
 func _on_bottom_zone_area_2d_body_entered(body: Node2D) -> void:
 	if dest_safe_zone == BOTTOM_ZONE:
 		var player = body as Player
-		player.is_safe = true
-		
-		Globals.players_counter[Globals.SAFE_SURVIVORS] += 1
-		_check_end_of_round()
+		if player and player.role == Player.ROLE_SURVIVOR:
+			player.is_safe = true
+			Globals.players_counter[Globals.SAFE_SURVIVORS] += 1
+			_check_end_of_round()
 		
 func _on_bottom_zone_area_2d_body_exited(body: Node2D) -> void:
 	if dest_safe_zone == BOTTOM_ZONE:
 		var player = body as Player
-		player.is_safe = false
-		
-		Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
+		if player and player.role == Player.ROLE_SURVIVOR:
+			player.is_safe = false
+			Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
 
 func _check_end_of_round():
-	#print(Globals.players_counter)
-	#On vérifie si le nombre de survivant dans la zone est égale au nombre total de joueurs sans les infectés
-	var total = Globals.players_counter["total"]
-	var survivors = Globals.players_counter[Globals.SAFE_SURVIVORS]
-	var infected = Globals.players_counter[Player.ROLE_INFECTED]
+	var survivors = Globals.players_counter[Player.ROLE_SURVIVOR]
+	var safe_survivors = Globals.players_counter[Globals.SAFE_SURVIVORS]
 	var sparrowhawks = Globals.players_counter[Player.ROLE_SPARROWHAWK]
 	
 	if sparrowhawks == 0:
 		_end_round()
-	elif survivors == total - infected - sparrowhawks:
+	elif survivors == 0:
+		_end_round()
+	elif safe_survivors == survivors:
 		_end_round()
 		
-func _on_player_infected(sparrowhawk_id: int, _infected_id: int):
+func _on_player_infected(sparrowhawk_id: int, infected_id: int):
 	#print("Un joueur a été infecté")
 	#On décrémente le compteur de survivants et on incrémente le compteur d'infectés
 	Globals.players_counter[Player.ROLE_INFECTED] += 1
@@ -372,6 +373,11 @@ func _on_player_infected(sparrowhawk_id: int, _infected_id: int):
 	# On incrémente le compteur d'infection pour l'épervier
 	Globals.players[sparrowhawk_id]["infections"] += 1
 	Globals.players[sparrowhawk_id]["last_round_infections"] += 1
+	
+	var infected_player = players_nodes[infected_id]
+	if infected_player.is_safe:
+		infected_player.is_safe = false
+		Globals.players_counter[Globals.SAFE_SURVIVORS] -= 1
 	
 	_check_end_of_round()
 	
