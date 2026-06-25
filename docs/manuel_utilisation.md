@@ -17,9 +17,19 @@ Selon votre environnement de test :
 Pour tester l'ensemble de la chaîne (Serveur Express + WebSockets + Client de jeu Godot Web + Manettes Web), suivez les étapes ci-dessous :
 
 ### Étape 1 : Héberger la partie (Écran central)
-1. Ouvrez un navigateur sur votre écran principal (PC, TV, etc.).
-2. Accédez à `http://localhost:3000/game` (ou cliquez sur **Héberger une partie** depuis la page d'accueil `/`).
-3. Le client de jeu Godot se charge. Une fois prêt, un **code de partie à 4 lettres** (ex: `ABCD`) ainsi qu'un **QR Code** s'affichent à l'écran.
+Vous pouvez héberger la partie de deux manières différentes :
+
+*   **Via le navigateur Web :**
+    1. Ouvrez un navigateur sur votre écran principal (PC, TV, etc.).
+    2. Accédez à `http://localhost:3000/game` (ou cliquez sur **Héberger une partie** depuis la page d'accueil `/`).
+    3. Le client de jeu Godot se charge automatiquement.
+
+*   **Directement depuis l'éditeur Godot :**
+    1. Assurez-vous que le serveur local Node.js est en cours d'exécution (`npm run dev`).
+    2. Ouvrez le dossier `game-client/` dans **Godot Engine 4.6**.
+    3. Lancez le projet en cliquant sur le bouton **Play** en haut à droite. Le jeu se lancera dans une fenêtre native et se connectera au serveur local.
+
+Une fois le jeu connecté et prêt, un **code de partie à 4 lettres** (ex: `ABCD`) ainsi qu'un **QR Code** s'affichent sur l'écran central.
 
 ### Étape 2 : Connecter un joueur (Manette mobile)
 1. Prenez un smartphone ou ouvrez un autre onglet/navigateur.
